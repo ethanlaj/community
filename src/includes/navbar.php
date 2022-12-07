@@ -8,7 +8,7 @@
     <br/>
     <a href="<?php echo $path; ?>index.php" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
     <a href="<?php echo $path; ?>students.php" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Blue Jays</a>
-    <a href="<?php echo $path; ?>internships.php" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Work-Based Learning Experiences</a>
+    <a href="<?php echo $path; ?>internships.php" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Community Service</a>
     <a href="<?php echo $path; ?>first_destinations.php" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">First Destinations</a> 
     <a href="<?php echo $path; ?>survey.php" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Student Survey</a> 
     <a href="<?php echo $path; ?>coaching.php" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Coaching</a>

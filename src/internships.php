@@ -8,8 +8,8 @@ require_once("functions/generalized_functions.php");
 require_once("functions/tables.php");
 
 $table = getTable('internship');
-$heading = "Work-Based Learning Experiences";
-$itemName = "Work-Based Learning Experience";
+$heading = "Community Service";
+$itemName = "Community Service";
 
 //Sets the page value for display
 $page = isset($_GET["page"])?$_GET["page"]:"search";

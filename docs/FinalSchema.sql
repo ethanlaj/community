@@ -17,15 +17,15 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema emcsdb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `emcsdb` DEFAULT CHARACTER SET utf8 ;
-USE `emcsdb` ;
+CREATE SCHEMA IF NOT EXISTS `community` DEFAULT CHARACTER SET utf8 ;
+USE `community` ;
 
 -- -----------------------------------------------------
 -- Table `emcsdb`.`company`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `emcsdb`.`company` ;
+DROP TABLE IF EXISTS `community`.`company` ;
 
-CREATE TABLE IF NOT EXISTS `emcsdb`.`company` (
+CREATE TABLE IF NOT EXISTS `community`.`company` (
   `companyID` INT NOT NULL AUTO_INCREMENT,
   `companyName` VARCHAR(75) NOT NULL,
   `etown_companyID` INT NULL,
@@ -54,9 +54,9 @@ COMMENT = '	';
 -- -----------------------------------------------------
 -- Table `emcsdb`.`student`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `emcsdb`.`student` ;
+DROP TABLE IF EXISTS `community`.`student` ;
 
-CREATE TABLE IF NOT EXISTS `emcsdb`.`student` (
+CREATE TABLE IF NOT EXISTS `community`.`student` (
   `studentID` INT NOT NULL AUTO_INCREMENT,
   `firstName` VARCHAR(45) NOT NULL,
   `lastName` VARCHAR(100) NOT NULL,
@@ -84,9 +84,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `emcsdb`.`first_destination`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `emcsdb`.`first_destination` ;
+DROP TABLE IF EXISTS `community`.`first_destination` ;
 
-CREATE TABLE IF NOT EXISTS `emcsdb`.`first_destination` (
+CREATE TABLE IF NOT EXISTS `community`.`first_destination` (
   `first_destinationID` INT NOT NULL AUTO_INCREMENT,
   `companyID` INT NULL,
   `studentID` INT NULL,
@@ -108,9 +108,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `emcsdb`.`survey`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `emcsdb`.`survey` ;
+DROP TABLE IF EXISTS `community`.`survey` ;
 
-CREATE TABLE IF NOT EXISTS `emcsdb`.`survey` (
+CREATE TABLE IF NOT EXISTS `community`.`survey` (
   `surveyID` INT NOT NULL AUTO_INCREMENT,
   `surveyType` VARCHAR(45) NULL,
   `submitDate` VARCHAR(45) NULL,
@@ -144,9 +144,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `emcsdb`.`internship`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `emcsdb`.`internship` ;
+DROP TABLE IF EXISTS `community`.`internship` ;
 
-CREATE TABLE IF NOT EXISTS `emcsdb`.`internship` (
+CREATE TABLE IF NOT EXISTS `community`.`internship` (
   `internshipID` INT NOT NULL AUTO_INCREMENT,
   `studentID` INT NULL,
   `companyID` INT NULL,
@@ -169,9 +169,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `emcsdb`.`contact`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `emcsdb`.`contact` ;
+DROP TABLE IF EXISTS `community`.`contact` ;
 
-CREATE TABLE IF NOT EXISTS `emcsdb`.`contact` (
+CREATE TABLE IF NOT EXISTS `community`.`contact` (
   `contactID` INT NOT NULL AUTO_INCREMENT,
   `companyID` INT NULL,
   `firstName` VARCHAR(45) NOT NULL,
@@ -192,9 +192,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `emcsdb`.`coaching`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `emcsdb`.`coaching` ;
+DROP TABLE IF EXISTS `community`.`coaching` ;
 
-CREATE TABLE IF NOT EXISTS `emcsdb`.`coaching` (
+CREATE TABLE IF NOT EXISTS `community`.`coaching` (
   `coachingID` INT NOT NULL AUTO_INCREMENT,
   `studentID` INT NULL,
   `date` DATE NULL,
@@ -213,9 +213,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `emcsdb`.`user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `emcsdb`.`user` ;
+DROP TABLE IF EXISTS `community`.`user` ;
 
-CREATE TABLE IF NOT EXISTS `emcsdb`.`user` (
+CREATE TABLE IF NOT EXISTS `community`.`user` (
   `userID` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(100) NULL,
   `firstName` VARCHAR(45) NULL,
@@ -229,9 +229,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `emcsdb`.`meeting`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `emcsdb`.`meeting` ;
+DROP TABLE IF EXISTS `community`.`meeting` ;
 
-CREATE TABLE IF NOT EXISTS `emcsdb`.`meeting` (
+CREATE TABLE IF NOT EXISTS `community`.`meeting` (
   `meetingID` INT NOT NULL AUTO_INCREMENT,
   `meetingType` VARCHAR(55) NULL,
   `date` DATE NULL,
@@ -255,4 +255,4 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 INSERT INTO user (email, firstName, lastName, passwordHash, permissionLevel) VALUES ("root@root","Root","",sha2(CONCAT("SALT14PS",CONCAT("diffPass32768","PSSALT2")),512),10);
 INSERT INTO user (email, firstName, lastName, passwordHash, permissionLevel) VALUES ("user@etown.edu","Test","User",sha2(CONCAT("SALT14PS",CONCAT("password","PSSALT2")),512),1);
 INSERT INTO user (email, firstName, lastName, passwordHash, permissionLevel) VALUES ("reddign@etown.edu","Nancy","Reddig",sha2(CONCAT("SALT14PS",CONCAT("341mysqlEngineering","PSSALT2")),512),10);
-INSERT INTO user (email, firstName, lastName, passwordHash, permissionLevel) VALUES ("zegerss@etown.edu","Stephanie","Zegers",sha2(CONCAT("SALT14PS",CONCAT("password","PSSALT2")),512),10);
+INSERT INTO user (email, firstName, lastName, passwordHash, permissionLevel) VALUES ("watersj@etown.edu","Jesse","Waters",sha2(CONCAT("SALT14PS",CONCAT("password","PSSALT2")),512),10);
