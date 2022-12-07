@@ -1,0 +1,16 @@
+﻿body,h1,h2,h3,h4,h5 {font-family: "Clarendon Bold Condensed", sans-serif}
+body {font-size:20px; position: relative; min-height:100vh; margin:0;}
+body::after {content: ''; display: block; height: 120px; /* Set same as footer's height */}
+.footer {position: absolute; bottom: 0; width: 100%; height: 70px;}
+.w3-half img{margin-bottom:-6px;margin-top:16px;opacity:1;cursor:pointer}
+.w3-half img:hover{opacity:0.8;}
+.w3-blue,.w3-hover-blue:hover{color:rgb(255, 255, 255)!important;background-color:#0A2240!important}
+.w3-blue,.w3-hover-blue:hover{color:rgb(255, 255, 255)!important;background-color:#004B98!important}
+
+#delete {margin-left: 35px;}
+.selected {font-weight: bold;}
+td {min-width: 17em;}
+table, th, td { border: 2px solid black; border-collapse: collapse; }
+fieldset {border: none; margin: 0px; padding: 0px;}
+.hidden {visibility: hidden;}
+.nodisplay {display: none;}
