@@ -4,10 +4,12 @@ import Joi from "joi";
 import Select from "./Select";
 
 class Form extends Component {
-	state = {
-		data: {},
-		errors: {},
-	};
+	constructor(schema) {
+		super();
+
+		this.schema = schema;
+		this.schemaClass = Joi.object(schema);
+	}
 
 	validate = () => {
 		const options = { abortEarly: false };

@@ -3,17 +3,20 @@ import Joi from "joi";
 import Form from "./common/Form";
 
 class LoginForm extends Form {
+	constructor() {
+		const schema = {
+			email: Joi.string().required().label("Email"),
+			password: Joi.string().required().label("Password"),
+			test: Joi.string().required(),
+		};
+
+		super(schema);
+	}
+
 	state = {
 		data: { email: "", password: "", test: "" },
 		errors: {},
 	};
-
-	schema = {
-		email: Joi.string().required().label("Email"),
-		password: Joi.string().required().label("Password"),
-		test: Joi.string().required(),
-	};
-	schemaClass = Joi.object(this.schema);
 
 	doSubmit = async () => {
 		console.log("Submitted");
