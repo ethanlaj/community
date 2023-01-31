@@ -1,3 +1,17 @@
 body {
 	margin: 25px;
 }
+
+#error-page {
+	width: calc(100vw - 50px);
+	height: calc(100vh - 50px);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#error-page > p,
+#error-page > h1 {
+	margin: 1rem 0;
+}
