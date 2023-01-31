@@ -1,40 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
-import RequireAuth from './components/common/RequireAuth'
 import App from './App';
-import ErrorPage from "./components/common/Error";
-import SuperSecret from './components/SuperSecret';
 import './index.css';
-import LoginForm from './components/LoginForm';
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element:
-      <RequireAuth>
-        <App></App>
-      </RequireAuth>,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/SuperSecret",
-    element:
-      <RequireAuth>
-        <SuperSecret></SuperSecret>
-      </RequireAuth>,
-  },
-  {
-    path: "/login",
-    element: <LoginForm></LoginForm>,
-  }
-]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <App></App>
   </React.StrictMode>
 );
 

@@ -1,60 +1,62 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Joi from "joi";
 import Form from "./common/Form";
 import accountService from "../services/accountService";
+import { getCurrentUser } from "../services/jwtService";
 
-class LoginForm extends Form {
-	constructor() {
-		const schema = {
-			email: Joi.string().required().label("Email"),
-			password: Joi.string().required().label("Password"),
-		};
+const LoginForm = () => {
+	let navigate = useNavigate();
+	let location = useLocation();
+	const [data, setData] = useState({ email: "", password: "" });
+	const [errors, setErrors] = useState({});
 
-		super(schema);
+	let from = location.state?.from?.pathname || "/";
+
+	let currentUser = getCurrentUser();
+	if (currentUser?.userID) {
+		navigate(from, { replace: true });
 	}
 
-	state = {
-		data: { email: "", password: "" },
-		errors: {},
+	const schema = {
+		email: Joi.string().required().label("Email"),
+		password: Joi.string().required().label("Password"),
 	};
 
-	doSubmit = async () => {
+	const doSubmit = async () => {
 		try {
-			const { email, password } = this.state.data;
+			const { email, password } = data;
 			await accountService.login(email, password);
 
-			//const { state } = this.props.location;
-			//window.location = state ? state.from.pathname : "/";
+			navigate(from, { replace: true });
 		} catch (ex) {
 			if (ex.response && ex.response.status === 401) {
-				const errors = { ...this.state.errors };
-				errors.email = "Incorrect email or password.";
-				this.setState({ errors });
+				const errorMsg = "Incorrect email or password.";
+
+				const errorsClone = { ...errors };
+				errorsClone.email = errorMsg;
+
+				setErrors(errorsClone);
 			}
 		}
 	};
 
-	render() {
-		return (
-			<Fragment>
-				<h1>Login</h1>
-				<form onSubmit={this.handleSubmit}>
-					{this.renderInput(
-						"email",
-						"Email",
-						"Enter your email address"
-					)}
-					{this.renderInput(
-						"password",
-						"Password",
-						"Enter your password",
-						"password"
-					)}
-					{this.renderButton("Login")}
-				</form>
-			</Fragment>
-		);
-	}
-}
+	let form = new Form(data, setData, errors, setErrors, schema, doSubmit);
+	return (
+		<Fragment>
+			<h1>Login</h1>
+			<form onSubmit={form.handleSubmit}>
+				{form.renderInput("email", "Email", "Enter your email address")}
+				{form.renderInput(
+					"password",
+					"Password",
+					"Enter your password",
+					"password"
+				)}
+				{form.renderButton("Login")}
+			</form>
+		</Fragment>
+	);
+};
 
 export default LoginForm;

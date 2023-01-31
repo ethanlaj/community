@@ -4,16 +4,21 @@ import Joi from "joi";
 import Select from "./Select";
 
 class Form extends Component {
-	constructor(schema) {
+	constructor(data, setData, errors, setErrors, schema, doSubmit) {
 		super();
 
+		this.data = data;
+		this.setData = setData;
+		this.errors = errors;
+		this.setErrors = setErrors;
 		this.schema = schema;
 		this.schemaClass = Joi.object(schema);
+		this.doSubmit = doSubmit;
 	}
 
 	validate = () => {
 		const options = { abortEarly: false };
-		const { error } = this.schemaClass.validate(this.state.data, options);
+		const { error } = this.schemaClass.validate(this.data, options);
 		if (!error) return null;
 
 		const errors = {};
@@ -32,22 +37,23 @@ class Form extends Component {
 		e.preventDefault();
 
 		const errors = this.validate();
-		this.setState({ errors: errors || {} });
+		this.setErrors(this.errors || {});
 		if (errors) return;
 
 		this.doSubmit();
 	};
 
 	handleChange = ({ currentTarget: input }) => {
-		const errors = { ...this.state.errors };
+		const errors = { ...this.errors };
 		const errorMessage = this.validateProperty(input);
 		if (errorMessage) errors[input.id] = errorMessage;
 		else delete errors[input.id];
 
-		const data = { ...this.state.data };
+		const data = { ...this.data };
 		data[input.id] = input.value;
 
-		this.setState({ data, errors });
+		this.setData(data);
+		this.setErrors(errors);
 	};
 
 	renderButton(label) {
@@ -59,31 +65,27 @@ class Form extends Component {
 	}
 
 	renderSelect(id, label, options) {
-		const { data, errors } = this.state;
-
 		return (
 			<Select
 				id={id}
 				label={label}
 				options={options}
-				value={data[id]}
-				error={errors[id]}
+				value={this.data[id]}
+				error={this.errors[id]}
 				onChange={this.handleChange}
 			/>
 		);
 	}
 
 	renderInput(id, label, placeholder = "", type = "text") {
-		const { data, errors } = this.state;
-
 		return (
 			<Input
 				id={id}
 				label={label}
 				type={type}
 				placeholder={placeholder}
-				value={data[id]}
-				error={errors[id]}
+				value={this.data[id]}
+				error={this.errors[id]}
 				onChange={this.handleChange}
 			/>
 		);
