@@ -1,32 +1,40 @@
 import { Fragment } from "react";
 import Joi from "joi";
 import Form from "./common/Form";
+import accountService from "../services/accountService";
 
 class LoginForm extends Form {
 	constructor() {
 		const schema = {
 			email: Joi.string().required().label("Email"),
 			password: Joi.string().required().label("Password"),
-			test: Joi.string().required(),
 		};
 
 		super(schema);
 	}
 
 	state = {
-		data: { email: "", password: "", test: "" },
+		data: { email: "", password: "" },
 		errors: {},
 	};
 
 	doSubmit = async () => {
-		console.log("Submitted");
+		try {
+			const { email, password } = this.state.data;
+			await accountService.login(email, password);
+
+			//const { state } = this.props.location;
+			//window.location = state ? state.from.pathname : "/";
+		} catch (ex) {
+			if (ex.response && ex.response.status === 401) {
+				const errors = { ...this.state.errors };
+				errors.email = "Incorrect email or password.";
+				this.setState({ errors });
+			}
+		}
 	};
 
 	render() {
-		const options = [
-			{ value: "value1", name: "name1" },
-			{ value: "value2", name: "name2" },
-		];
 		return (
 			<Fragment>
 				<h1>Login</h1>
@@ -42,7 +50,6 @@ class LoginForm extends Form {
 						"Enter your password",
 						"password"
 					)}
-					{this.renderSelect("test", "test", options)}
 					{this.renderButton("Login")}
 				</form>
 			</Fragment>
