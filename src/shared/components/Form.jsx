@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Input from "./Input";
+import ReactiveSearch from "../../shared/components/ReactiveSearch";
 import Joi from "joi";
 import Select from "./Select";
 
@@ -44,6 +45,8 @@ class Form extends Component {
 	};
 
 	handleChange = ({ currentTarget: input }) => {
+		console.log(input);
+
 		const errors = { ...this.errors };
 		const errorMessage = this.validateProperty(input);
 		if (errorMessage) errors[input.id] = errorMessage;
@@ -56,11 +59,30 @@ class Form extends Component {
 		this.setErrors(errors);
 	};
 
+	handleSearchChange = (id, value) => {
+		this.handleChange({ currentTarget: { id, value } });
+	};
+
 	renderButton(label) {
 		return (
 			<button disabled={this.validate()} className="btn btn-primary">
 				{label}
 			</button>
+		);
+	}
+
+	renderSearch(id, items, keyPath, valuePath, headerLabel) {
+		return (
+			<ReactiveSearch
+				items={items}
+				headerLabel={headerLabel}
+				selectionLabel="Select item"
+				idPath={keyPath}
+				valuePath={valuePath}
+				value={this.data[id]}
+				error={this.errors[id]}
+				onChange={(value) => this.handleSearchChange(id, value)}
+			/>
 		);
 	}
 

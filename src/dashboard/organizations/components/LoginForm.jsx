@@ -1,9 +1,9 @@
 import { Fragment, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Joi from "joi";
-import Form from "./common/Form";
-import accountService from "../services/accountService";
-import { getCurrentUser } from "../services/jwtService";
+import Form from "../../../shared/components/Form";
+import accountService from "../../../services/accountService";
+import { getCurrentUser } from "../../../services/jwtService";
 
 const LoginForm = () => {
 	let navigate = useNavigate();

@@ -1,5 +1,9 @@
 body {
-	margin: 25px;
+	margin: 1rem;
+}
+
+.formContainer {
+	width: 50%;
 }
 
 #error-page {
