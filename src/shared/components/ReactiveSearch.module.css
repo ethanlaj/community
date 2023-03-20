@@ -73,6 +73,10 @@
 	background-color: #f0f0f0;
 }
 
+.focusedItem {
+	background-color: #e9ecef;
+}
+
 .refreshButton {
 	position: absolute;
 	right: 0;
