@@ -1,25 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import Input from "./Input";
 import ReactiveSearch from "../../shared/components/ReactiveSearch";
 import Joi from "joi";
 import Select from "./Select";
 
-class Form extends Component {
-	constructor(data, setData, errors, setErrors, schema, doSubmit) {
-		super();
+const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
+	const schemaClass = Joi.object(schema);
 
-		this.data = data;
-		this.setData = setData;
-		this.errors = errors;
-		this.setErrors = setErrors;
-		this.schema = schema;
-		this.schemaClass = Joi.object(schema);
-		this.doSubmit = doSubmit;
-	}
-
-	validate = () => {
+	const validate = () => {
 		const options = { abortEarly: false };
-		const { error } = this.schemaClass.validate(this.data, options);
+		const { error } = schemaClass.validate(data, options);
 		if (!error) return null;
 
 		const errors = {};
@@ -27,91 +17,98 @@ class Form extends Component {
 		return errors;
 	};
 
-	validateProperty = ({ id, value }) => {
+	const validateProperty = ({ id, value }, subSchema) => {
 		const obj = { [id]: value };
-		const schema = Joi.object({ [id]: this.schema[id] });
-		const { error } = schema.validate(obj);
+		const fieldSchema = Joi.object({ [id]: (subSchema || schema)[id] });
+		const { error } = fieldSchema.validate(obj);
 		return error ? error.details[0].message : null;
 	};
 
-	handleSubmit = (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		const errors = this.validate();
-		this.setErrors(this.errors || {});
+		const errors = validate();
+		setErrors(errors || {});
 		if (errors) return;
 
-		this.doSubmit();
+		doSubmit();
 	};
 
-	handleChange = ({ currentTarget: input }) => {
-		console.log(input);
+	const handleChange = ({ currentTarget: input }, subSchema) => {
+		const currentErrors = { ...errors };
+		const errorMessage = validateProperty(input, subSchema);
 
-		const errors = { ...this.errors };
-		const errorMessage = this.validateProperty(input);
-		if (errorMessage) errors[input.id] = errorMessage;
-		else delete errors[input.id];
+		if (errorMessage) currentErrors[input.id] = errorMessage;
+		else delete currentErrors[input.id];
 
-		const data = { ...this.data };
-		data[input.id] = input.value;
+		const newData = { ...data };
+		newData[input.id] = input.value;
 
-		this.setData(data);
-		this.setErrors(errors);
+		setData(newData);
+		setErrors(currentErrors);
 	};
 
-	handleSearchChange = (id, value) => {
-		this.handleChange({ currentTarget: { id, value } });
+	const handleSearchChange = (id, value) => {
+		handleChange({ currentTarget: { id, value } });
 	};
 
-	renderButton(label) {
-		return (
-			<button disabled={this.validate()} className="btn btn-primary">
-				{label}
-			</button>
-		);
-	}
+	const renderButton = (label) => (
+		<button disabled={validate()} className="btn btn-primary">
+			{label}
+		</button>
+	);
 
-	renderSearch(id, items, keyPath, valuePath, headerLabel) {
-		return (
-			<ReactiveSearch
-				items={items}
-				headerLabel={headerLabel}
-				selectionLabel="Select item"
-				idPath={keyPath}
-				valuePath={valuePath}
-				value={this.data[id]}
-				error={this.errors[id]}
-				onChange={(value) => this.handleSearchChange(id, value)}
-			/>
-		);
-	}
+	const renderSearch = (id, items, keyPath, valuePath, headerLabel) => (
+		<ReactiveSearch
+			items={items}
+			headerLabel={headerLabel}
+			selectionLabel="Select item"
+			idPath={keyPath}
+			valuePath={valuePath}
+			value={data[id]}
+			error={errors[id]}
+			onChange={(value) => handleSearchChange(id, value)}
+		/>
+	);
 
-	renderSelect(id, label, options) {
-		return (
-			<Select
-				id={id}
-				label={label}
-				options={options}
-				value={this.data[id]}
-				error={this.errors[id]}
-				onChange={this.handleChange}
-			/>
-		);
-	}
+	const renderSelect = (id, label, options) => (
+		<Select
+			id={id}
+			label={label}
+			options={options}
+			value={data[id]}
+			error={errors[id]}
+			onChange={handleChange}
+		/>
+	);
 
-	renderInput(id, label, placeholder = "", type = "text") {
-		return (
-			<Input
-				id={id}
-				label={label}
-				type={type}
-				placeholder={placeholder}
-				value={this.data[id]}
-				error={this.errors[id]}
-				onChange={this.handleChange}
-			/>
-		);
-	}
-}
+	const renderInput = (
+		id,
+		label,
+		placeholder = "",
+		type = "text",
+		subSchema
+	) => (
+		<Input
+			id={id}
+			label={label}
+			type={type}
+			placeholder={placeholder}
+			value={data[id]}
+			error={errors[id]}
+			onChange={(e) => handleChange(e, subSchema)}
+		/>
+	);
 
-export default Form;
+	return {
+		handleSubmit,
+		handleChange,
+		handleSearchChange,
+		renderButton,
+		renderSearch,
+		renderSelect,
+		renderInput,
+	};
+};
+
+export default useForm;
