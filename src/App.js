@@ -7,12 +7,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import CreateOrganization from "./dashboard/pages/organizations/components/CreateOrganization";
-import SideBar from "./shared/components/SideBar";
+import Organizations from "./dashboard/pages/organizations/Organizations";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <SideBar></SideBar>,
+    element: <Organizations></Organizations>,
     children: [
       {
         path: "/create-organization",

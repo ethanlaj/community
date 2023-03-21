@@ -1,14 +1,19 @@
 import React from "react";
 import { Nav, Col } from "react-bootstrap";
+import styles from "./Sidebar.module.css";
 
 const Sidebar = ({ activeKey, onSelect }) => {
   return (
-    <Col xs={3} md={2} className="d-none d-md-block bg-light sidebar">
+    <Col
+      xs={3}
+      md={2}
+      className={`${styles.sidebar} d-none d-md-block bg-light sidebar`}
+    >
       <Nav className="flex-column" activeKey={activeKey} onSelect={onSelect}>
-        <Nav.Link eventKey="home">Home</Nav.Link>
-        <Nav.Link eventKey="profile">Profile</Nav.Link>
-        <Nav.Link eventKey="settings">Settings</Nav.Link>
-        <Nav.Link eventKey="help">Help</Nav.Link>
+        <Nav.Link eventKey="Admin">Admin</Nav.Link>
+        <Nav.Link eventKey="Organizations">Organizations</Nav.Link>
+        <Nav.Link eventKey="Contacts">Contacts</Nav.Link>
+        <Nav.Link eventKey="Communications">Communications</Nav.Link>
       </Nav>
     </Col>
   );
