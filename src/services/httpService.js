@@ -15,12 +15,12 @@ axios.interceptors.response.use(null, error => {
 });
 
 function setJwt(jwt) {
-	axios.defaults.headers.common['x-auth-token'] = jwt;
+	axios.defaults.headers.common["x-auth-token"] = jwt;
 	localStorage.setItem("token", jwt);
 }
 
 function unsetJwt() {
-	axios.defaults.headers.common['x-auth-token'] = null;
+	axios.defaults.headers.common["x-auth-token"] = null;
 	localStorage.removeItem("token");
 }
 
