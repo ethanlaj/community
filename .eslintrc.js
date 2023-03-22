@@ -16,5 +16,7 @@ module.exports = {
 		"linebreak-style": ["error", "unix"],
 		quotes: ["error", "double"],
 		semi: ["error", "always"],
+		"react/prop-types": "off",
+		"no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
 	},
 };

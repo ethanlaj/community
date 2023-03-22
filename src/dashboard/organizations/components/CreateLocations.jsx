@@ -31,9 +31,9 @@ const CreateLocations = ({ onLocationSubmit }) => {
 		doSubmit
 	);
 
-	const handleAddLocation = (e) => {
-		form.handleSubmit(e);
-	};
+	// const handleAddLocation = (e) => {
+	// 	form.handleSubmit(e);
+	// };
 
 	return (
 		<>
