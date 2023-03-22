@@ -52,8 +52,13 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 		handleChange({ currentTarget: { id, value } });
 	};
 
-	const renderButton = (label) => (
-		<button disabled={validate()} className="btn btn-primary">
+	const renderButton = (label, type) => (
+		<button
+			disabled={validate()}
+			type={type}
+			onClick={type === "button" ? handleSubmit : null}
+			className="btn btn-primary"
+		>
 			{label}
 		</button>
 	);
