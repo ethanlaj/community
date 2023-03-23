@@ -1,33 +1,48 @@
-import React, { useState } from "react";
-import Joi from "joi";
-import useForm from "@/shared/components/Form";
+import React from "react";
+// import Joi from "joi";
+//import useForm from "@/shared/components/Form";
 
-const CreateLocation = ({ onSubmit }) => {
-	const [data, setData] = useState({
-		name: "",
-		address: "",
-	});
-	const [errors, setErrors] = useState({});
+const locationObj = { name: "", address: "" };
 
-	const schema = {
-		name: Joi.string().required().label("Name"),
-		address: Joi.string().required().label("Address"),
+const CreateLocation = ({ form, data, errors, onChange: setData }) => {
+	// if (!data || !setData) {
+	// 	[data, setData] = useState({
+	// 		locations: [locationObj],
+	// 	});
+	// }
+	// const [errors, setErrors] = useState({});
+
+	// const schema = {
+	// 	locations: Joi.array().items({
+	// 		name: Joi.string().required().label("Name"),
+	// 		address: Joi.string().required().label("Address"),
+	// 	}),
+	// };
+
+	const columns = [
+		{ title: "Name", field: "name" },
+		{ title: "Address", field: "address" },
+	];
+
+	const handleAddLocation = () => {
+		setData([...data, locationObj]);
 	};
 
-	const doSubmit = () => {
-		onSubmit(data);
-		setData({ name: "", address: "" });
+	const handleUpdateLocations = (locations) => {
+		setData([...locations]);
 	};
 
-	const form = useForm(data, setData, errors, setErrors, schema, doSubmit);
-
+	//const form = useForm(data, setData, errors, setErrors, schema, doSubmit);
 	return (
 		<div>
-			<div>
-				{form.renderInput("name", "Name", "Location name")}
-				{form.renderInput("address", "Address", "Location address")}
-				{form.renderButton("Add Location", "button", doSubmit)}
-			</div>
+			<h3>Add Locations</h3>
+			{form.renderEditableTable(
+				columns,
+				data,
+				errors.locations,
+				handleUpdateLocations,
+				handleAddLocation
+			)}
 		</div>
 	);
 };

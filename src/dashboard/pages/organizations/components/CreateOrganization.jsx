@@ -1,41 +1,42 @@
+import React, { Fragment, useState } from "react";
 import Joi from "joi";
-import React, { Fragment, useState, useEffect } from "react";
-//import { useNavigate } from "react-router-dom";
 import useForm from "@/shared/components/Form";
-import organizationService from "@/services/organizationService";
+// import organizationService from "@/services/organizationService";
 import styles from "@/App.module.css";
 import CreateLocation from "@/dashboard/organizations/components/CreateLocation";
 
 const CreateOrganization = () => {
-	//const navigate = useNavigate();
 	const [data, setData] = useState({
-		organizationId: null,
+		name: "",
+		locations: [
+			{
+				name: "",
+				address: "",
+			},
+		],
 	});
 	const [errors, setErrors] = useState({});
 
-	const [organizations, setOrganizations] = useState([]);
-	const [locations, setLocations] = useState([]);
+	// useEffect(() => {
+	// 	const fetchOrganizations = async () => {
+	// 		const data = await organizationService.getAll();
+	// 		setOrganizations(data);
+	// 	};
 
-	const handleAddLocation = (location) => {
-		setLocations([...locations, location]);
-	};
-
-	useEffect(() => {
-		const fetchOrganizations = async () => {
-			const data = await organizationService.getAll();
-			setOrganizations(data);
-		};
-
-		fetchOrganizations();
-	}, []);
+	// 	fetchOrganizations();
+	// }, []);
 
 	const schema = {
-		organizationId: Joi.number().required().label("Organization"),
+		name: Joi.string().required().label("Organization Name"),
+		locations: Joi.array().items({
+			name: Joi.string().required().label("Location Name"),
+			address: Joi.string().required().label("Location Address"),
+		}),
 	};
 
 	const doSubmit = async () => {
 		try {
-			console.log("Submit to api", { ...data, locations });
+			console.log("Submit to api", { ...data });
 
 			//navigate("/", { replace: true });
 		} catch (ex) {
@@ -50,29 +51,19 @@ const CreateOrganization = () => {
 		}
 	};
 
-	let form = useForm(data, setData, errors, setErrors, schema, doSubmit);
+	const form = useForm(data, setData, errors, setErrors, schema, doSubmit);
+
 	return (
 		<Fragment>
 			<h1>Create Organization</h1>
-			<form
-				className={`${styles.formContainer}`}
-				onSubmit={form.handleSubmit}
-			>
-				{form.renderSearch(
-					"organizationId",
-					organizations,
-					"id",
-					"name",
-					"Organization"
+			<form className={`${styles.formContainer}`}>
+				{form.renderInput("name", "Name")}
+				{form.renderChildForm(
+					form,
+					"locations",
+					CreateLocation,
+					data.locations
 				)}
-				<h2>Locations</h2>
-				{locations.map((location, index) => (
-					<div key={index}>
-						<p>Name: {location.name}</p>
-						<p>Address: {location.address}</p>
-					</div>
-				))}
-				<CreateLocation onSubmit={handleAddLocation} />
 				{form.renderButton("Create")}
 			</form>
 		</Fragment>

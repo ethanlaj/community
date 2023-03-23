@@ -1,6 +1,7 @@
 import React from "react";
 import Input from "./Input";
-import ReactiveSearch from "../../shared/components/ReactiveSearch";
+import ReactiveSearch from "./ReactiveSearch";
+import EditableTable from "./EditableTable";
 import Joi from "joi";
 import Select from "./Select";
 
@@ -12,14 +13,16 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 		const { error } = schemaClass.validate(data, options);
 		if (!error) return null;
 
-		const errors = {};
-		for (let item of error.details) errors[item.path[0]] = item.message;
-		return errors;
+		const currentErrors = {};
+		for (let item of error.details)
+			currentErrors[item.path[0]] = item.message;
+
+		return currentErrors;
 	};
 
-	const validateProperty = ({ id, value }, subSchema) => {
+	const validateProperty = ({ id, value }) => {
 		const obj = { [id]: value };
-		const fieldSchema = Joi.object({ [id]: (subSchema || schema)[id] });
+		const fieldSchema = Joi.object({ [id]: schema[id] });
 		const { error } = fieldSchema.validate(obj);
 		return error ? error.details[0].message : null;
 	};
@@ -34,9 +37,9 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 		doSubmit();
 	};
 
-	const handleChange = ({ currentTarget: input }, subSchema) => {
+	const handleChange = ({ currentTarget: input }) => {
 		const currentErrors = { ...errors };
-		const errorMessage = validateProperty(input, subSchema);
+		const errorMessage = validateProperty(input);
 
 		if (errorMessage) currentErrors[input.id] = errorMessage;
 		else delete currentErrors[input.id];
@@ -48,9 +51,34 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 		setErrors(currentErrors);
 	};
 
-	const handleSearchChange = (id, value) => {
+	const handleDataChange = (id, value) => {
 		handleChange({ currentTarget: { id, value } });
 	};
+
+	const renderChildForm = (form, id, ChildFormComponent, childData) => (
+		<ChildFormComponent
+			form={form}
+			data={childData}
+			errors={errors}
+			onChange={(value) => handleDataChange(id, value)}
+		/>
+	);
+
+	const renderEditableTable = (
+		columns,
+		tableData,
+		tableError,
+		onUpdate,
+		onAdd
+	) => (
+		<EditableTable
+			columns={columns}
+			data={tableData}
+			error={tableError}
+			onUpdate={onUpdate}
+			onAdd={onAdd}
+		/>
+	);
 
 	const renderButton = (label, type) => (
 		<button
@@ -72,7 +100,7 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 			valuePath={valuePath}
 			value={data[id]}
 			error={errors[id]}
-			onChange={(value) => handleSearchChange(id, value)}
+			onChange={(value) => handleDataChange(id, value)}
 		/>
 	);
 
@@ -87,13 +115,7 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 		/>
 	);
 
-	const renderInput = (
-		id,
-		label,
-		placeholder = "",
-		type = "text",
-		subSchema
-	) => (
+	const renderInput = (id, label, placeholder = "", type = "text") => (
 		<Input
 			id={id}
 			label={label}
@@ -101,14 +123,15 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 			placeholder={placeholder}
 			value={data[id]}
 			error={errors[id]}
-			onChange={(e) => handleChange(e, subSchema)}
+			onChange={handleChange}
 		/>
 	);
 
 	return {
 		handleSubmit,
 		handleChange,
-		handleSearchChange,
+		renderChildForm,
+		renderEditableTable,
 		renderButton,
 		renderSearch,
 		renderSelect,
