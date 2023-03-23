@@ -91,16 +91,30 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 		</button>
 	);
 
-	const renderSearch = (id, items, keyPath, valuePath, headerLabel) => (
+	const renderSearch = (
+		id,
+		items,
+		keyPath,
+		valuePath,
+		headerLabel,
+		handleChange,
+		resetOnSelect = false,
+		selectionLabel = "Select item"
+	) => (
 		<ReactiveSearch
 			items={items}
 			headerLabel={headerLabel}
-			selectionLabel="Select item"
+			resetOnSelect={resetOnSelect}
+			selectionLabel={selectionLabel}
 			idPath={keyPath}
 			valuePath={valuePath}
 			value={data[id]}
 			error={errors[id]}
-			onChange={(value) => handleDataChange(id, value)}
+			onChange={(value) =>
+				handleChange
+					? handleChange(id, value)
+					: handleDataChange(id, value)
+			}
 		/>
 	);
 

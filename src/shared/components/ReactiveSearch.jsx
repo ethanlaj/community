@@ -7,7 +7,8 @@ const ReactiveSearch = ({
 	id,
 	items,
 	headerLabel,
-	selectionLabel = "Select item",
+	resetOnSelect,
+	selectionLabel,
 	idPath = "",
 	valuePath = "",
 	error,
@@ -30,6 +31,8 @@ const ReactiveSearch = ({
 		handleItemChange(_.get(item, idPath));
 		setSearchTerm("");
 		setShowSearchBox(false);
+
+		if (resetOnSelect) setSelectedItem("");
 	};
 
 	const handleLabelClick = () => {
@@ -63,7 +66,7 @@ const ReactiveSearch = ({
 
 			setFocusedItemIndex(newIndex);
 
-			searchListRef.current.children[newIndex].scrollIntoView({
+			searchListRef.current.children[newIndex]?.scrollIntoView({
 				behavior: "smooth",
 				block: "nearest",
 			});
@@ -95,7 +98,7 @@ const ReactiveSearch = ({
 
 	return (
 		<Form.Group className="mb-3" controlId={id}>
-			<Form.Label>{headerLabel}</Form.Label>
+			{headerLabel && <Form.Label>{headerLabel}</Form.Label>}
 			<div className={styles.searchContainer} ref={searchContainerRef}>
 				<div
 					className={styles.labelContainer}

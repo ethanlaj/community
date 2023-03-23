@@ -35,7 +35,6 @@ const CreateLocation = ({ form, data, errors, onChange: setData }) => {
 	//const form = useForm(data, setData, errors, setErrors, schema, doSubmit);
 	return (
 		<div>
-			<h3>Add Locations</h3>
 			{form.renderEditableTable(
 				columns,
 				data,

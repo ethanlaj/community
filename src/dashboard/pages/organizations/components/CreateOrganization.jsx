@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from "react";
 import Joi from "joi";
 import useForm from "@/shared/components/Form";
-// import organizationService from "@/services/organizationService";
 import styles from "@/App.module.css";
 import CreateLocation from "@/dashboard/organizations/components/CreateLocation";
+import AddContacts from "@/dashboard/pages/contacts/AddContacts";
 
 const CreateOrganization = () => {
 	const [data, setData] = useState({
@@ -14,17 +14,9 @@ const CreateOrganization = () => {
 				address: "",
 			},
 		],
+		contacts: [],
 	});
 	const [errors, setErrors] = useState({});
-
-	// useEffect(() => {
-	// 	const fetchOrganizations = async () => {
-	// 		const data = await organizationService.getAll();
-	// 		setOrganizations(data);
-	// 	};
-
-	// 	fetchOrganizations();
-	// }, []);
 
 	const schema = {
 		name: Joi.string().required().label("Organization Name"),
@@ -32,6 +24,10 @@ const CreateOrganization = () => {
 			name: Joi.string().required().label("Location Name"),
 			address: Joi.string().required().label("Location Address"),
 		}),
+		contacts: Joi.array()
+			.items(Joi.number().label("Contact"))
+			.label("Organization")
+			.required(),
 	};
 
 	const doSubmit = async () => {
@@ -58,11 +54,19 @@ const CreateOrganization = () => {
 			<h1>Create Organization</h1>
 			<form className={`${styles.formContainer}`}>
 				{form.renderInput("name", "Name")}
+				<h3>Add Locations</h3>
 				{form.renderChildForm(
 					form,
 					"locations",
 					CreateLocation,
 					data.locations
+				)}
+				<h3>Add Contacts</h3>
+				{form.renderChildForm(
+					form,
+					"contacts",
+					AddContacts,
+					data.contacts
 				)}
 				{form.renderButton("Create")}
 			</form>
