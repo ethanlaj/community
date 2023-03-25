@@ -1,9 +1,9 @@
 import React from "react";
-import Input from "./Input";
-import ReactiveSearch from "./ReactiveSearch";
-import EditableTable from "./EditableTable";
+import Input from "../components/Input";
+import ReactiveSearch from "../components/ReactiveSearch";
+import EditableTable from "../components/EditableTable";
 import Joi from "joi";
-import Select from "./Select";
+import Select from "../components/Select";
 
 const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 	const schemaClass = Joi.object(schema);
@@ -80,11 +80,11 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 		/>
 	);
 
-	const renderButton = (label, type) => (
+	const renderButton = (label) => (
 		<button
 			disabled={validate()}
-			type={type}
-			onClick={type === "button" ? handleSubmit : null}
+			type="button"
+			onClick={handleSubmit}
 			className="btn btn-primary"
 		>
 			{label}

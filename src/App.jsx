@@ -7,7 +7,7 @@ import Unauthorized from "./shared/components/Unauthorized";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 //import styles from "./App.module.css"; // Make sure to use .module.css
-import CreateOrganization from "./dashboard/pages/organizations/components/CreateOrganization";
+import CreateOrganization from "./dashboard/pages/organizations/CreateOrganization";
 import Organizations from "./dashboard/pages/organizations/Organizations";
 
 function App() {

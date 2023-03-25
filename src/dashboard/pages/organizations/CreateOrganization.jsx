@@ -4,6 +4,7 @@ import useForm from "@/shared/components/Form";
 import styles from "@/App.module.css";
 import CreateLocation from "@/dashboard/organizations/components/CreateLocation";
 import AddContacts from "@/dashboard/pages/contacts/AddContacts";
+import organizationService from "@/services/organizationService";
 
 const CreateOrganization = () => {
 	const [data, setData] = useState({
@@ -33,6 +34,8 @@ const CreateOrganization = () => {
 	const doSubmit = async () => {
 		try {
 			console.log("Submit to api", { ...data });
+
+			await organizationService.create({ ...data });
 
 			//navigate("/", { replace: true });
 		} catch (ex) {
