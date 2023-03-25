@@ -23,15 +23,3 @@ html {
 #error-page > h1 {
   margin: 1rem 0;
 }
-
-.content {
-  margin-left: 250px;
-  padding: 20px;
-  min-height: 100vh;
-}
-
-@media (max-width: 767.98px) {
-  .content {
-    margin-left: 0;
-  }
-}
