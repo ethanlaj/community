@@ -7,8 +7,8 @@ import Unauthorized from "./shared/components/Unauthorized";
 import Sidebar from "./shared/components/Sidebar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
-//import styles from "./App.module.css"; // Make sure to use .module.css
-import CreateOrganization from "./dashboard/pages/organizations/components/CreateOrganization";
+import styles from "./App.module.css";
+import CreateOrganization from "./dashboard/pages/organizations/CreateOrganization";
 import Organizations from "./dashboard/pages/organizations/Organizations";
 
 function App() {
@@ -26,7 +26,10 @@ function App() {
 						/>
 						<Route path="/contacts" />
 						<Route path="/communications" />
-						<Route path="/unauthorized" element={<Unauthorized />} />
+						<Route
+							path="/unauthorized"
+							element={<Unauthorized />}
+						/>
 						<Route path="*" element={<UnexpectedError />} />
 					</Routes>
 				</Router>
