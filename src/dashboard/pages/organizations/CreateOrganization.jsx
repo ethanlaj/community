@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from "react";
 import Joi from "joi";
-import useForm from "@/shared/components/Form";
+import useForm from "@/shared/hooks/useForm";
 import styles from "@/App.module.css";
-import CreateLocation from "@/dashboard/organizations/components/CreateLocation";
+import CreateLocation from "@/dashboard/pages/organizations/CreateLocation";
 import AddContacts from "@/dashboard/pages/contacts/AddContacts";
 import organizationService from "@/services/organizationService";
 
