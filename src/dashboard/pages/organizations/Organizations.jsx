@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
-import styles from "./Organizations.module.css";
+import styles from "./Organizations.modules.css";
 import ClickableTable from "../../../shared/components/ClickableTable";
-import SideBar from "../../../shared/components/Sidebar";
 
 const Organizations = () => {
 	const columns = [
@@ -24,6 +23,7 @@ const Organizations = () => {
 			<div className={styles.content}>
 				<h1>Organizations</h1>
 				<ClickableTable
+					style={{width: "20px"}}
 					columns={columns}
 					data={data}
 					onRowClick={handleRowClick}

@@ -14,7 +14,7 @@ import Organizations from "./dashboard/pages/organizations/Organizations";
 function App() {
 	return (
 		<Fragment>
-			<div className={styles.app}>
+			<div className={styles.content}>
 				<Sidebar />
 				<ToastContainer />
 				<Router>

@@ -54,25 +54,27 @@ const CreateOrganization = () => {
 
 	return (
 		<Fragment>
-			<h1>Create Organization</h1>
-			<form className={`${styles.formContainer}`}>
-				{form.renderInput("name", "Name")}
-				<h3>Add Locations</h3>
-				{form.renderChildForm(
-					form,
-					"locations",
-					CreateLocation,
-					data.locations
-				)}
-				<h3>Add Contacts</h3>
-				{form.renderChildForm(
-					form,
-					"contacts",
-					AddContacts,
-					data.contacts
-				)}
-				{form.renderButton("Create")}
-			</form>
+			<div className={styles.content}>
+				<h1>Create Organization</h1>
+				<form className={`${styles.formContainer}`}>
+					{form.renderInput("name", "Name")}
+					<h3>Add Locations</h3>
+					{form.renderChildForm(
+						form,
+						"locations",
+						CreateLocation,
+						data.locations
+					)}
+					<h3>Add Contacts</h3>
+					{form.renderChildForm(
+						form,
+						"contacts",
+						AddContacts,
+						data.contacts
+					)}
+					{form.renderButton("Create")}
+				</form>
+			</div>
 		</Fragment>
 	);
 };
