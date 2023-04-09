@@ -14,8 +14,7 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 		if (!error) return null;
 
 		const currentErrors = {};
-		for (let item of error.details)
-			currentErrors[item.path[0]] = item.message;
+		for (let item of error.details) currentErrors[item.path[0]] = item.message;
 
 		return currentErrors;
 	};
@@ -55,22 +54,17 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 		handleChange({ currentTarget: { id, value } });
 	};
 
-	const renderChildForm = (form, id, ChildFormComponent, childData) => (
+	const renderChildForm = (form, id, ChildFormComponent, childData, params) => (
 		<ChildFormComponent
 			form={form}
 			data={childData}
 			errors={errors}
+			{...params}
 			onChange={(value) => handleDataChange(id, value)}
 		/>
 	);
 
-	const renderEditableTable = (
-		columns,
-		tableData,
-		tableError,
-		onUpdate,
-		onAdd
-	) => (
+	const renderEditableTable = (columns, tableData, tableError, onUpdate, onAdd) => (
 		<EditableTable
 			columns={columns}
 			data={tableData}
@@ -111,9 +105,7 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 			value={data[id]}
 			error={errors[id]}
 			onChange={(value) =>
-				handleChange
-					? handleChange(id, value)
-					: handleDataChange(id, value)
+				handleChange ? handleChange(id, value) : handleDataChange(id, value)
 			}
 		/>
 	);

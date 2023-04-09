@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./App.module.css";
 import CreateOrganization from "./dashboard/pages/organizations/CreateOrganization";
+import CreateCommunication from "./dashboard/pages/communications/CreateCommunication";
 import Organizations from "./dashboard/pages/organizations/Organizations";
 
 function App() {
@@ -20,16 +21,11 @@ function App() {
 				<Router>
 					<Routes>
 						<Route path="/" element={<Organizations />} />
-						<Route
-							path="/create-organization"
-							element={<CreateOrganization />}
-						/>
+						<Route path="/create-organization" element={<CreateOrganization />} />
 						<Route path="/contacts" />
 						<Route path="/communications" />
-						<Route
-							path="/unauthorized"
-							element={<Unauthorized />}
-						/>
+						<Route path="/create-communication" element={<CreateCommunication />} />
+						<Route path="/unauthorized" element={<Unauthorized />} />
 						<Route path="*" element={<UnexpectedError />} />
 					</Routes>
 				</Router>
