@@ -1,12 +1,15 @@
 import React, { Fragment, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Joi from "joi";
 import useForm from "@/shared/hooks/useForm";
-import styles from "@/App.module.css";
+import styles from "./CreateOrganization.module.css";
 import CreateLocation from "@/dashboard/pages/organizations/CreateLocation";
 import AddContacts from "@/dashboard/pages/contacts/AddContacts";
 import organizationService from "@/services/organizationService";
 
 const CreateOrganization = () => {
+	const navigate = useNavigate();
+
 	const [data, setData] = useState({
 		name: "",
 		locations: [
@@ -25,10 +28,7 @@ const CreateOrganization = () => {
 			name: Joi.string().required().label("Location Name"),
 			address: Joi.string().required().label("Location Address"),
 		}),
-		contacts: Joi.array()
-			.items(Joi.number().label("Contact"))
-			.label("Organization")
-			.required(),
+		contacts: Joi.array().items(Joi.number().label("Contact")).label("Organization").required(),
 	};
 
 	const doSubmit = async () => {
@@ -37,7 +37,7 @@ const CreateOrganization = () => {
 
 			await organizationService.create({ ...data });
 
-			//navigate("/", { replace: true });
+			navigate("/", { replace: true });
 		} catch (ex) {
 			if (ex.response && ex.response.status === 401) {
 				const errorMsg = "Incorrect email or password.";
@@ -54,24 +54,14 @@ const CreateOrganization = () => {
 
 	return (
 		<Fragment>
-			<div className={styles.content}>
+			<div>
 				<h1>Create Organization</h1>
 				<form className={`${styles.formContainer}`}>
 					{form.renderInput("name", "Name")}
 					<h3>Add Locations</h3>
-					{form.renderChildForm(
-						form,
-						"locations",
-						CreateLocation,
-						data.locations
-					)}
+					{form.renderChildForm(form, "locations", CreateLocation, data.locations)}
 					<h3>Add Contacts</h3>
-					{form.renderChildForm(
-						form,
-						"contacts",
-						AddContacts,
-						data.contacts
-					)}
+					{form.renderChildForm(form, "contacts", AddContacts, data.contacts)}
 					{form.renderButton("Create")}
 				</form>
 			</div>

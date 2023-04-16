@@ -1,11 +1,12 @@
 import React, { Fragment, useState } from "react";
 import Joi from "joi";
 import useForm from "@/shared/hooks/useForm";
-import styles from "@/App.module.css";
+import styles from "./CreateCommunication.module.css";
 import AddContacts from "@/dashboard/pages/contacts/AddContacts";
 import AddUsers from "@/dashboard/pages/users/AddUsers";
 import AddLocation from "@/dashboard/pages/organizations/AddLocation";
 import AddOrganization from "@/dashboard/pages/organizations/AddOrganization";
+import communicationService from "@/services/communicationService";
 
 const CreateCommunication = () => {
 	const now = new Date();
@@ -35,6 +36,7 @@ const CreateCommunication = () => {
 		try {
 			console.log("Submit to api", { ...data, locationId: data.location?.id });
 
+			await communicationService.create({ ...data, locationId: data.location?.id });
 			//navigate("/", { replace: true });
 		} catch (ex) {
 			console.error(ex);
@@ -45,7 +47,7 @@ const CreateCommunication = () => {
 
 	return (
 		<Fragment>
-			<div className={styles.content}>
+			<div>
 				<h1>Create Communication</h1>
 				<form className={`${styles.formContainer}`}>
 					{form.renderInput("date", "Date", null, "date")}
