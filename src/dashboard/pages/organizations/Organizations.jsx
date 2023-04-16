@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import styles from "./Organizations.modules.css";
+import styles from "./Organizations.module.css";
 import ClickableTable from "../../../shared/components/ClickableTable";
 
 const Organizations = () => {
