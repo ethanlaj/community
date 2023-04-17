@@ -1,7 +1,6 @@
 {
-	"family": "your-task-definition-family",
-	"taskRoleArn": "arn:aws:iam::your-account-id:role/your-task-role",
-	"executionRoleArn": "arn:aws:iam::your-account-id:role/your-execution-role",
+	"family": "community-task",
+	"executionRoleArn": "arn:aws:iam::020165421241:role/ecsTaskExecutionRole",
 	"networkMode": "awsvpc",
 	"containerDefinitions": [
 		{
