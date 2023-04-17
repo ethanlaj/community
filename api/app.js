@@ -26,7 +26,7 @@ database.sequelize
 
 var allowedOrigins = [
 	"http://localhost:3000",
-	"http://community-alb-1-1456052483.us-east-1.elb.amazonaws.com/",
+	"http://community-alb-1-1456052483.us-east-1.elb.amazonaws.com",
 ];
 app.use(
 	cors({
