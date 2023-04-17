@@ -1,5 +1,3 @@
-.env
-
 # Ignore common system files
 .DS_Store
 Thumbs.db
@@ -13,6 +11,9 @@ yarn-error.log*
 # Ignore Git files
 .git
 .gitignore
+
+# Ignore oldSrc folder
+oldSrc
 
 # Ignore development-related files
 .editorconfig
