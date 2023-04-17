@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently -k -n \"client,api\" -c \"bgBlue,bgMagenta\" \"npm:dev --prefix packages/client\" \"npm:dev --prefix packages/api\"",
-    "dev:api": "npm dev --prefix packages/api",
-    "dev:client": "npm dev --prefix packages/client",
-    "prod": "concurrently -k -n \"client,api\" -c \"bgBlue,bgMagenta\" \"npm:serve --prefix packages/client\" \"npm:start --prefix packages/api\"",
-    "prod:api": "npm serve --prefix packages/api",
-    "prod:client": "npm start --prefix packages/client"
+    "dev": "concurrently -k -n \"client,api\" -c \"bgBlue,bgMagenta\" \"npm:dev --prefix client\" \"npm:dev --prefix api\"",
+    "dev:api": "npm dev --prefix api",
+    "dev:client": "npm dev --prefix client",
+    "prod": "concurrently -k -n \"client,api\" -c \"bgBlue,bgMagenta\" \"npm:serve --prefix client\" \"npm:start --prefix api\"",
+    "prod:api": "npm serve --prefix api",
+    "prod:client": "npm start --prefix client"
   },
   "repository": {
     "type": "git",
@@ -22,9 +22,6 @@
     "url": "https://github.com/reddign/community/issues"
   },
   "homepage": "https://github.com/reddign/community#readme",
-  "workspaces": [
-    "packages/*"
-  ],
   "devDependencies": {
     "concurrently": "^8.0.1",
     "lerna": "^6.6.1"

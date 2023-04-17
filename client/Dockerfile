@@ -2,7 +2,7 @@
 FROM --platform=linux/amd64 node:lts
 
 # Set working directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
