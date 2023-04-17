@@ -1,19 +1,37 @@
-//import styles from "./Communications.modules.css";
-import React, { Fragment } from "react";
-import styles from "./Communications.module.css";
+import React, { Fragment, useEffect, useState } from "react";
+import styles from "./Communications.module.css?inline";
 import ClickableTable from "../../../shared/components/ClickableTable";
+import communicationService from "@/services/communicationService";
 
 const Communications = () => {
-	const columns = [
-		{ title: "Name", field: "name" },
-		{ title: "Last Contact Date", field: "date" },
-		{ title: "Last Contact Office", field: "office" },
-	];
+	const [communications, setCommunications] = useState([]);
 
-	const data = [
-		{ name: "Alice", date: 30, office: "New York" },
-		{ name: "Bob", date: 25, office: "San Francisco" },
-		{ name: "Charlie", date: 35, office: "Elizabethtown" },
+	useEffect(() => {
+		const fetchCommunications = async () => {
+			let data = await communicationService.getAll();
+			console.log(data);
+
+			data = data.map((comm) => {
+				let org = comm.Organization;
+				if (!org) return comm;
+
+				return {
+					...comm,
+					orgName: org.name,
+
+				};
+			});
+
+			setCommunications(data);
+		};
+
+		fetchCommunications();
+	}, []);
+
+	const columns = [
+		{ title: "Organization Name", field: "orgName" },
+		{ title: "Note", field: "note" },
+		{ title: "Date", field: "date" },
 	];
 
 	const handleRowClick = (row) => {
@@ -22,11 +40,11 @@ const Communications = () => {
 	return (
 		<Fragment>
 			<div className={styles.content}>
-				<h1>Organizations</h1>
+				<h1>Communications</h1>
 				<ClickableTable
-					style={{width: "20px"}}
+					style={{ width: "20px" }}
 					columns={columns}
-					data={data}
+					data={communications}
 					onRowClick={handleRowClick}
 				></ClickableTable>
 			</div>

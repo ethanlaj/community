@@ -17,9 +17,9 @@ import Communications from "./dashboard/pages/communications/Communications";
 function App() {
 	return (
 		<Fragment>
-			<div className={styles.content}>
-				<ToastContainer />
-				<Router>
+			<ToastContainer />
+			<Router>
+				<div className={styles.content}>
 					<Sidebar />
 					<Routes>
 						<Route path="/" element={<Organizations />} />
@@ -30,8 +30,8 @@ function App() {
 						<Route path="/unauthorized" element={<Unauthorized />} />
 						<Route path="*" element={<UnexpectedError />} />
 					</Routes>
-				</Router>
-			</div>
+				</div>
+			</Router>
 		</Fragment>
 	);
 }
