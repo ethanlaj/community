@@ -30,7 +30,7 @@ const AddUsers = ({ form, data, errors, onChange }) => {
 	};
 
 	const handleDeleteUser = (userId) => {
-		const updatedUsers = data.filter((id) => id !== userId);
+		const updatedUsers = data.filter((user) => user.id !== userId);
 		onChange(updatedUsers);
 	};
 
@@ -39,7 +39,7 @@ const AddUsers = ({ form, data, errors, onChange }) => {
 			{!isChild && <h1>Add Users</h1>}
 			{form.renderSearch(
 				"user",
-				users.filter((c) => !data.includes(c.id)),
+				users.filter((c) => !data.find((user) => user.id === c.id)),
 				"id",
 				"name",
 				null,
@@ -58,13 +58,13 @@ const AddUsers = ({ form, data, errors, onChange }) => {
 						</tr>
 					</thead>
 					<tbody>
-						{data.map((userId) => (
-							<tr key={userId}>
-								<td>{users.find((c) => c.id === userId)?.name}</td>
+						{data.map((user) => (
+							<tr key={user.id}>
+								<td>{users.find((c) => c.id === user.id)?.name}</td>
 								<td>
 									<Button
 										variant="danger"
-										onClick={() => handleDeleteUser(userId)}
+										onClick={() => handleDeleteUser(user.id)}
 									>
 										Delete
 									</Button>

@@ -54,12 +54,12 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 		handleChange({ currentTarget: { id, value } });
 	};
 
-	const renderChildForm = (form, id, ChildFormComponent, childData, params) => (
+	const renderChildForm = (form, id, ChildFormComponent, childData, props) => (
 		<ChildFormComponent
 			form={form}
 			data={childData}
 			errors={errors}
-			{...params}
+			{...props}
 			onChange={(value) => handleDataChange(id, value)}
 		/>
 	);

@@ -28,7 +28,7 @@ const CreateOrganization = () => {
 			name: Joi.string().required().label("Location Name"),
 			address: Joi.string().required().label("Location Address"),
 		}),
-		contacts: Joi.array().items(Joi.number().label("Contact")).label("Organization").required(),
+		contacts: Joi.array().items(Joi.object().label("Contact")).label("Organization").required(),
 	};
 
 	const doSubmit = async () => {

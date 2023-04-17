@@ -17,7 +17,7 @@ const EditableTable = ({ columns, data, error, onAdd, onUpdate }) => {
 	return (
 		<Fragment>
 			{error && <Alert variant="danger">{error}</Alert>}
-			<Table striped bordered>
+			<Table className="mb-1" striped bordered>
 				<thead>
 					<tr>
 						{columns.map((column, index) => (
@@ -35,25 +35,21 @@ const EditableTable = ({ columns, data, error, onAdd, onUpdate }) => {
 										type="text"
 										value={row[column.field]}
 										onChange={(e) =>
-											handleUpdate(
-												rowIndex,
-												column,
-												e.target.value
-											)
+											handleUpdate(rowIndex, column, e.target.value)
 										}
 									/>
 								</td>
 							))}
 							<td>
-								<Button onClick={() => handleDelete(rowIndex)}>
-									Delete
-								</Button>
+								<Button onClick={() => handleDelete(rowIndex)}>Delete</Button>
 							</td>
 						</tr>
 					))}
 				</tbody>
 			</Table>
-			<Button onClick={onAdd}>Add Row</Button>
+			<Button className="mb-2" onClick={onAdd}>
+				Add Row
+			</Button>
 		</Fragment>
 	);
 };

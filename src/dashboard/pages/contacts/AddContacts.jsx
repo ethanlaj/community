@@ -2,24 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Alert, Button, Table } from "react-bootstrap";
 import contactService from "@/services/contactService";
 
-const AddContacts = ({ form, data, errors, onChange }) => {
+const AddContacts = ({ form, data, errors, onChange, organizationId }) => {
 	const isChild = form !== undefined;
 	const [contacts, setContacts] = useState([]);
 
 	useEffect(() => {
 		const fetchContacts = async () => {
-			const contactsResult = await contactService.getAll();
+			const contactsResult = await (organizationId
+				? contactService.getAllByOrgId(organizationId)
+				: contactService.getAll());
 			setContacts(contactsResult);
 		};
 		fetchContacts();
-	}, []);
+	}, [organizationId]);
 
 	const handleAddContact = (id, value) => {
 		onChange([...data, value]);
 	};
 
 	const handleDeleteContact = (contactId) => {
-		const updatedContacts = data.filter((id) => id !== contactId);
+		const updatedContacts = data.filter((contact) => contact.id !== contactId);
 		onChange(updatedContacts);
 	};
 
@@ -28,7 +30,7 @@ const AddContacts = ({ form, data, errors, onChange }) => {
 			{!isChild && <h1>Add Contacts</h1>}
 			{form.renderSearch(
 				"contact",
-				contacts.filter((c) => !data.includes(c.id)),
+				contacts.filter((c) => !data.find((d) => d.id === c.id)),
 				"id",
 				"name",
 				null,
@@ -37,9 +39,7 @@ const AddContacts = ({ form, data, errors, onChange }) => {
 				"Search Contacts"
 			)}
 
-			{errors.contacts && (
-				<Alert variant="danger">{errors.contacts}</Alert>
-			)}
+			{errors.contacts && <Alert variant="danger">{errors.contacts}</Alert>}
 			{data.length > 0 && (
 				<Table striped bordered>
 					<thead>
@@ -49,20 +49,13 @@ const AddContacts = ({ form, data, errors, onChange }) => {
 						</tr>
 					</thead>
 					<tbody>
-						{data.map((contactId) => (
-							<tr key={contactId}>
-								<td>
-									{
-										contacts.find((c) => c.id === contactId)
-											?.name
-									}
-								</td>
+						{data.map((contact) => (
+							<tr key={contact.id}>
+								<td>{contacts.find((c) => c.id === contact.id)?.name}</td>
 								<td>
 									<Button
 										variant="danger"
-										onClick={() =>
-											handleDeleteContact(contactId)
-										}
+										onClick={() => handleDeleteContact(contact.id)}
 									>
 										Delete
 									</Button>

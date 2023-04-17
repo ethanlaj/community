@@ -11,13 +11,13 @@ const Organizations = () => {
 			let data = await organizationService.getAll();
 
 			data = data.map((org) => {
-				let comm = org.Communication;
+				let comm = org.Communications[0];
 				if (!comm) return org;
 
 				return {
 					...org,
 					lastComDate: comm.date,
-					lastComOffice: comm.User.Office,
+					lastComOffice: "Unknown",
 				};
 			});
 

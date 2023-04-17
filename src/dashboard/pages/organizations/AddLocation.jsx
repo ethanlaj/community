@@ -1,29 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Alert } from "react-bootstrap";
-//import locationService from "@/services/locationService";
+import locationService from "@/services/locationService";
 
-const AddLocation = ({ form, errors, onChange }) => {
+const AddLocation = ({ form, errors, onChange, organizationId }) => {
 	const isChild = form !== undefined;
 	const [locations, setLocation] = useState([]);
 
 	useEffect(() => {
 		const fetchLocation = async () => {
-			//const locationsResult = await locationService.getAll();
-			const locationsResult = [
-				{
-					id: 1,
-					name: "Main Branch",
-				},
-				{
-					id: 2,
-					name: "Sub Branch",
-				},
-			];
+			const locationsResult = await (organizationId
+				? locationService.getAllByOrgId(organizationId)
+				: locationService.getAll());
 
 			setLocation(locationsResult);
 		};
+
 		fetchLocation();
-	}, []);
+	}, [organizationId]);
 
 	const handleChange = (id, value) => {
 		onChange(value);

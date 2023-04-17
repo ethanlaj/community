@@ -22,13 +22,17 @@ const ReactiveSearch = ({
 	const searchListRef = useRef();
 	const searchInputRef = useRef();
 
+	useEffect(() => {
+		setSelectedItem("");
+	}, [items]);
+
 	const handleChange = (event) => {
 		setSearchTerm(event.target.value);
 	};
 
 	const handleItemClick = (item) => {
 		setSelectedItem(item);
-		handleItemChange(_.get(item, idPath));
+		handleItemChange(item);
 		setSearchTerm("");
 		setShowSearchBox(false);
 
@@ -61,8 +65,7 @@ const ReactiveSearch = ({
 			const newIndex =
 				focusedItemIndex === -1
 					? 0
-					: (focusedItemIndex + (event.shiftKey ? -1 : 1)) %
-					  filteredItems.length;
+					: (focusedItemIndex + (event.shiftKey ? -1 : 1)) % filteredItems.length;
 
 			setFocusedItemIndex(newIndex);
 
@@ -100,18 +103,11 @@ const ReactiveSearch = ({
 		<Form.Group className="mb-3" controlId={id}>
 			{headerLabel && <Form.Label>{headerLabel}</Form.Label>}
 			<div className={styles.searchContainer} ref={searchContainerRef}>
-				<div
-					className={styles.labelContainer}
-					onClick={handleLabelClick}
-				>
+				<div className={styles.labelContainer} onClick={handleLabelClick}>
 					<span>{displayLabel}</span>
 					<span className={styles.dropdownArrow} />
 				</div>
-				<button
-					type="button"
-					className={styles.refreshButton}
-					onClick={handleRefreshClick}
-				>
+				<button type="button" className={styles.refreshButton} onClick={handleRefreshClick}>
 					Refresh
 				</button>
 				{showSearchBox && (
@@ -131,9 +127,7 @@ const ReactiveSearch = ({
 									key={_.get(item, idPath)}
 									tabIndex="0"
 									className={`${styles.searchListItem} ${
-										index === focusedItemIndex
-											? styles.focusedItem
-											: ""
+										index === focusedItemIndex ? styles.focusedItem : ""
 									}`}
 									onClick={() => handleItemClick(item)}
 								>

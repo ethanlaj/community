@@ -29,11 +29,11 @@ html {
   min-height: 100vh;
 }
 
-@media (max-width: 767.98px) {
+/* @media (max-width: 767.98px) {
   .content {
     margin-left: 0;
   }
-}
+} */
 h1 {
   text-align: center;
   margin-bottom: 30px;

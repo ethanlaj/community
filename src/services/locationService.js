@@ -2,9 +2,9 @@ import http from "./httpService";
 import config from "../config.json";
 
 const apiUrl = config.apiUrl;
-const apiEndpoint = apiUrl + "/contacts";
+const apiEndpoint = apiUrl + "/locations";
 
-class ContactService {
+class LocationService {
 	http = http.create();
 
 	async getAll() {
@@ -22,16 +22,13 @@ class ContactService {
 		return response.data;
 	}
 
-	async create(contact, organizations) {
-		const response = await http.post(apiEndpoint, {
-			contact: contact,
-			organizations: organizations,
-		});
+	async create(location) {
+		const response = await http.post(apiEndpoint, location);
 		return response.data;
 	}
 
-	async update(id, updatedContact) {
-		const response = await http.put(`${apiEndpoint}/${id}`, updatedContact);
+	async update(id, updatedLocation) {
+		const response = await http.put(`${apiEndpoint}/${id}`, updatedLocation);
 		return response.data;
 	}
 
@@ -41,5 +38,5 @@ class ContactService {
 	}
 }
 
-const contactService = new ContactService();
-export default contactService;
+const locationService = new LocationService();
+export default locationService;
