@@ -1,23 +1,44 @@
-# Build stage
-FROM --platform=linux/amd64 node:lts
+# Build client
+FROM --platform=linux/amd64 node:lts AS client-build
 
-# Set working directory
-WORKDIR /app
+WORKDIR /app/client
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+COPY packages/client/package*.json ./
+RUN npm ci
 
-# Install dependencies
-RUN npm i
-
-# Copy the source code
-COPY . .
-
-# Build the app for production
+COPY packages/client/ ./
 RUN npm run build
 
-# Expose the port your app will run on (default is 3000)
-EXPOSE 3000
+# Build api
+FROM --platform=linux/amd64 node:lts AS api-build
 
-# Start the Vite production serve
-CMD ["npm", "run", "serve"]
+WORKDIR /app/api
+
+COPY packages/api/package*.json ./
+RUN npm ci --only=production
+
+COPY packages/api/ ./
+
+# Final image
+FROM --platform=linux/amd64 node:lts
+
+# Client setup
+WORKDIR /app/client
+
+COPY --from=client-build /app/client/build ./build
+COPY --from=client-build /app/client/package*.json ./
+
+# API setup
+WORKDIR /app/api
+
+COPY --from=api-build /app/api/node_modules ./node_modules
+COPY --from=api-build /app/api ./
+
+# Expose the ports your apps will run on
+EXPOSE 3000
+EXPOSE 3001
+
+# Start both applications using concurrently
+RUN npm install -g concurrently
+
+CMD ["concurrently", "npm:start --prefix /app/client", "npm:start --prefix /app/api"]
