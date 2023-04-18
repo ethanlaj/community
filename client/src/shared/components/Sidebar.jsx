@@ -1,8 +1,14 @@
-import React from "react";
+import React,{useState, useCallback} from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./Sidebar.module.css";
 
-const Sidebar = ({ activeKey, onSelect }) => {
+
+const Sidebar = () => {
+	const [isExpanded, setIsExpanded] = useState({ org: false, comm: false });
+	const handleExpandClick = (section) => {
+		setIsExpanded({ ...isExpanded, [section]: !isExpanded[section] });
+	  };
+	
 	return (
 		<div className={styles.sidebar}>
 			<ul className={styles.nav}>
@@ -12,14 +18,38 @@ const Sidebar = ({ activeKey, onSelect }) => {
 					</NavLink>
 				</li>
 				<li className={styles.navItem}>
-					<NavLink to="/" exact activeClassName={styles.activeNavLink}>
-            Organizations
-					</NavLink>
+					<div onClick={() => handleExpandClick("org")}>
+						<NavLink to="/organizations" activeClassName={styles.activeNavLink}>
+              Organizations
+						</NavLink>
+						<span className={isExpanded.org ? styles.arrowUp : styles.arrowDown} />
+					</div>
+					{isExpanded.org && (
+						<ul className={styles.subNav}>
+							<li className={styles.subNavItem}>
+								<NavLink to="/create-organization" activeClassName={styles.activeNavLink}>
+                  - Create
+								</NavLink>
+							</li>
+						</ul>
+					)}
 				</li>
 				<li className={styles.navItem}>
-					<NavLink to="/contacts" activeClassName={styles.activeNavLink}>
-            Contacts
-					</NavLink>
+					<div onClick={() => handleExpandClick("comm")}>
+						<NavLink to="/communications" activeClassName={styles.activeNavLink}>
+              Communications
+						</NavLink>
+						<span className={isExpanded.comm ? styles.arrowUp : styles.arrowDown} />
+					</div>
+					{isExpanded.comm && (
+						<ul className={styles.subNav}>
+							<li className={styles.subNavItem}>
+								<NavLink to="/create-communication" activeClassName={styles.activeNavLink}>
+                  - Create
+								</NavLink>
+							</li>
+						</ul>
+					)}
 				</li>
 				<li className={styles.navItem}>
 					<NavLink to="/communications" activeClassName={styles.activeNavLink}>

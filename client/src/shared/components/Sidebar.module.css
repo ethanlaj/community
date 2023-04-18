@@ -48,3 +48,47 @@ body{
 .navItem a:hover {
   color: #000;
 }
+.subNav {
+  list-style-type: none;
+  padding-left: 10px;
+}
+
+.subNavItem {
+  margin-bottom: 10px;
+}
+
+.subNavItem a {
+  color: #3e3e3e;
+  text-decoration: none;
+  font-size:15px;
+}
+
+.subNavItem a:hover {
+  color: white;
+}
+
+.subNavItem a.activeNavLink {
+  color: white;
+  font-weight: bold;
+}
+.arrowDown {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 10px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #ccc;
+  cursor: pointer;
+}
+
+.arrowUp {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 10px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid #ccc;
+  cursor: pointer;
+}
