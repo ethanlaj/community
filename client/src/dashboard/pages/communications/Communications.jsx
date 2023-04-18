@@ -18,7 +18,6 @@ const Communications = () => {
 				return {
 					...comm,
 					orgName: org.name,
-
 				};
 			});
 
@@ -29,7 +28,7 @@ const Communications = () => {
 	}, []);
 
 	const columns = [
-		{ title: "Organization Name", field: "orgName" },
+		{ title: "Name", field: "orgName" },
 		{ title: "Note", field: "note" },
 		{ title: "Date", field: "date" },
 	];
