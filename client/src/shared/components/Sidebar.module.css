@@ -22,7 +22,6 @@ body{
 }
 
 .navItem {
- 
   margin-bottom: 10px;
   font-size:20px;
   margin:10px;
@@ -53,9 +52,6 @@ body{
   padding-left: 10px;
 }
 
-.subNavItem {
-  margin-bottom: 10px;
-}
 
 .subNavItem a {
   color: #3e3e3e;

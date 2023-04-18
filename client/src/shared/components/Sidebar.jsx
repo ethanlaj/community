@@ -4,7 +4,7 @@ import styles from "./Sidebar.module.css";
 
 
 const Sidebar = () => {
-	const [isExpanded, setIsExpanded] = useState({ org: false, comm: false });
+	const [isExpanded, setIsExpanded] = useState({ org: false, comm: false, cont:false });
 	const handleExpandClick = (section) => {
 		setIsExpanded({ ...isExpanded, [section]: !isExpanded[section] });
 	  };
@@ -35,8 +35,25 @@ const Sidebar = () => {
 					)}
 				</li>
 				<li className={styles.navItem}>
+					<div onClick={() => handleExpandClick("cont")}>
+						<NavLink to="/contacts" activeclassname={styles.activeNavLink}>
+              Contacts
+						</NavLink>
+						<span className={isExpanded.cont ? styles.arrowUp : styles.arrowDown} />
+					</div>
+					{isExpanded.cont && (
+						<ul className={styles.subNav}>
+							<li className={styles.subNavItem}>
+								<NavLink to="/contacts/create" activeclassname={styles.activeNavLink}>
+                  - Create
+								</NavLink>
+							</li>
+						</ul>
+					)}
+				</li>
+				<li className={styles.navItem}>
 					<div onClick={() => handleExpandClick("comm")}>
-						<NavLink to="/communications" activeclassname={styles.activeNavLink}>
+						<NavLink to="/contacts" activeclassname={styles.activeNavLink}>
               Communications
 						</NavLink>
 						<span className={isExpanded.comm ? styles.arrowUp : styles.arrowDown} />
@@ -50,11 +67,6 @@ const Sidebar = () => {
 							</li>
 						</ul>
 					)}
-				</li>
-				<li className={styles.navItem}>
-					<NavLink to="/communications" activeclassname={styles.activeNavLink}>
-            Communications
-					</NavLink>
 				</li>
 			</ul>
 		</div>
