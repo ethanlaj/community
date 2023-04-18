@@ -53,7 +53,7 @@ const Sidebar = () => {
 				</li>
 				<li className={styles.navItem}>
 					<div onClick={() => handleExpandClick("comm")}>
-						<NavLink to="/contacts" activeclassname={styles.activeNavLink}>
+						<NavLink to="/communications" activeclassname={styles.activeNavLink}>
               Communications
 						</NavLink>
 						<span className={isExpanded.comm ? styles.arrowUp : styles.arrowDown} />
