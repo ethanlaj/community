@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Alert, Form } from "react-bootstrap";
+import { ArrowClockwise } from "react-bootstrap-icons";
 import _ from "lodash";
 import styles from "./ReactiveSearch.module.css";
 
@@ -104,8 +105,12 @@ const ReactiveSearch = ({
 					<span>{displayLabel}</span>
 					<span className={styles.dropdownArrow} />
 				</div>
-				<button type="button" className={styles.refreshButton} onClick={handleRefreshClick}>
-					Refresh
+				<button
+					type="button"
+					className={`btn btn-secondary ${styles.refreshButton}`}
+					onClick={handleRefreshClick}
+				>
+					<ArrowClockwise></ArrowClockwise>
 				</button>
 				{showSearchBox && (
 					<div className={styles.searchBox}>
