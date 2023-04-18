@@ -34,7 +34,7 @@ env:
     AWS_REGION: us-east-1
     ECR_REPOSITORY_API: community-api
     ECR_REPOSITORY_CLIENT: community-client
-    ECS_SERVICE: community-service-1
+    ECS_SERVICE: community-cluster-service-2
     ECS_CLUSTER: community-cluster
     ECS_TASK_DEFINITION: task-def.json
 
