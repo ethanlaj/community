@@ -23,10 +23,11 @@ function App() {
 					<Sidebar />
 					<Routes>
 						<Route path="/" element={<Organizations />} />
-						<Route path="/create-organization" element={<CreateOrganization />} />
+						<Route path="/organizations/create" element={<CreateOrganization />} />
+						<Route path="/organizations" element={<Organizations />} />
 						<Route path="/contacts" element={<Contacts/>}/>
 						<Route path="/communications" element={<Communications/>}/>
-						<Route path="/create-communication" element={<CreateCommunication />} />
+						<Route path="/communications/create" element={<CreateCommunication />} />
 						<Route path="/unauthorized" element={<Unauthorized />} />
 						<Route path="*" element={<UnexpectedError />} />
 					</Routes>

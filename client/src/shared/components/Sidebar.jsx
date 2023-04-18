@@ -1,4 +1,4 @@
-import React,{useState, useCallback} from "react";
+import React,{useState} from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./Sidebar.module.css";
 
@@ -13,13 +13,13 @@ const Sidebar = () => {
 		<div className={styles.sidebar}>
 			<ul className={styles.nav}>
 				<li className={styles.navItem}>
-					<NavLink to="/admin" activeClassName={styles.activeNavLink}>
+					<NavLink to="/admin" activeclassname={styles.activeNavLink}>
             Admin
 					</NavLink>
 				</li>
 				<li className={styles.navItem}>
 					<div onClick={() => handleExpandClick("org")}>
-						<NavLink to="/organizations" activeClassName={styles.activeNavLink}>
+						<NavLink to="/organizations" activeclassname={styles.activeNavLink}>
               Organizations
 						</NavLink>
 						<span className={isExpanded.org ? styles.arrowUp : styles.arrowDown} />
@@ -27,7 +27,7 @@ const Sidebar = () => {
 					{isExpanded.org && (
 						<ul className={styles.subNav}>
 							<li className={styles.subNavItem}>
-								<NavLink to="/create-organization" activeClassName={styles.activeNavLink}>
+								<NavLink to="/organizations/create" activeclassname={styles.activeNavLink}>
                   - Create
 								</NavLink>
 							</li>
@@ -36,7 +36,7 @@ const Sidebar = () => {
 				</li>
 				<li className={styles.navItem}>
 					<div onClick={() => handleExpandClick("comm")}>
-						<NavLink to="/communications" activeClassName={styles.activeNavLink}>
+						<NavLink to="/communications" activeclassname={styles.activeNavLink}>
               Communications
 						</NavLink>
 						<span className={isExpanded.comm ? styles.arrowUp : styles.arrowDown} />
@@ -44,7 +44,7 @@ const Sidebar = () => {
 					{isExpanded.comm && (
 						<ul className={styles.subNav}>
 							<li className={styles.subNavItem}>
-								<NavLink to="/create-communication" activeClassName={styles.activeNavLink}>
+								<NavLink to="/communications/create" activeclassname={styles.activeNavLink}>
                   - Create
 								</NavLink>
 							</li>
@@ -52,7 +52,7 @@ const Sidebar = () => {
 					)}
 				</li>
 				<li className={styles.navItem}>
-					<NavLink to="/communications" activeClassName={styles.activeNavLink}>
+					<NavLink to="/communications" activeclassname={styles.activeNavLink}>
             Communications
 					</NavLink>
 				</li>
