@@ -5,12 +5,14 @@ const AddOrganization = ({ form, onChange }) => {
 	const isChild = form !== undefined;
 	const [organizations, setOrganization] = useState([]);
 
-	useEffect(() => {
-		const fetchOrganization = async () => {
-			const organizationsResult = await organizationService.getAll();
+	const fetchOrganization = async () => {
+		const organizationsResult = await organizationService.getAll();
 
-			setOrganization(organizationsResult);
-		};
+		setOrganization(organizationsResult);
+		if (form.data.organization) handleChange(null);
+	};
+
+	useEffect(() => {
 		fetchOrganization();
 	}, []);
 
@@ -29,7 +31,8 @@ const AddOrganization = ({ form, onChange }) => {
 				null,
 				handleChange,
 				false,
-				"Search Organizations"
+				"Search Organizations",
+				fetchOrganization
 			)}
 		</div>
 	);

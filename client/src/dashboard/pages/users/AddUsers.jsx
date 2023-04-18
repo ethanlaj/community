@@ -6,22 +6,23 @@ const AddUsers = ({ form, data, errors, onChange }) => {
 	const isChild = form !== undefined;
 	const [users, setUsers] = useState([]);
 
-	useEffect(() => {
-		const fetchUsers = async () => {
-			//const usersResult = await userService.getAll();
-			const usersResult = [
-				{
-					id: 1,
-					name: "User 1",
-				},
-				{
-					id: 2,
-					name: "User 2",
-				},
-			];
+	const fetchUsers = async () => {
+		//const usersResult = await userService.getAll();
+		const usersResult = [
+			{
+				id: 1,
+				name: "User 1",
+			},
+			{
+				id: 2,
+				name: "User 2",
+			},
+		];
 
-			setUsers(usersResult);
-		};
+		setUsers(usersResult);
+	};
+
+	useEffect(() => {
 		fetchUsers();
 	}, []);
 
@@ -45,7 +46,8 @@ const AddUsers = ({ form, data, errors, onChange }) => {
 				null,
 				handleAddUser,
 				true,
-				"Search Users"
+				"Search Users",
+				fetchUsers
 			)}
 
 			{errors.users && <Alert variant="danger">{errors.users}</Alert>}

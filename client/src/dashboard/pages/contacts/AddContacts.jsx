@@ -6,13 +6,14 @@ const AddContacts = ({ form, data, errors, onChange, organizationId }) => {
 	const isChild = form !== undefined;
 	const [contacts, setContacts] = useState([]);
 
+	const fetchContacts = async () => {
+		const contactsResult = await (organizationId
+			? contactService.getAllByOrgId(organizationId)
+			: contactService.getAll());
+		setContacts(contactsResult);
+	};
+
 	useEffect(() => {
-		const fetchContacts = async () => {
-			const contactsResult = await (organizationId
-				? contactService.getAllByOrgId(organizationId)
-				: contactService.getAll());
-			setContacts(contactsResult);
-		};
 		fetchContacts();
 	}, [organizationId]);
 
@@ -36,7 +37,8 @@ const AddContacts = ({ form, data, errors, onChange, organizationId }) => {
 				null,
 				handleAddContact,
 				true,
-				"Search Contacts"
+				"Search Contacts",
+				fetchContacts
 			)}
 
 			{errors.contacts && <Alert variant="danger">{errors.contacts}</Alert>}

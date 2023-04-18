@@ -6,15 +6,16 @@ const AddLocation = ({ form, errors, onChange, organizationId }) => {
 	const isChild = form !== undefined;
 	const [locations, setLocation] = useState([]);
 
+	const fetchLocation = async () => {
+		const locationsResult = await (organizationId
+			? locationService.getAllByOrgId(organizationId)
+			: locationService.getAll());
+
+		setLocation(locationsResult);
+		handleChange(null);
+	};
+
 	useEffect(() => {
-		const fetchLocation = async () => {
-			const locationsResult = await (organizationId
-				? locationService.getAllByOrgId(organizationId)
-				: locationService.getAll());
-
-			setLocation(locationsResult);
-		};
-
 		fetchLocation();
 	}, [organizationId]);
 
@@ -33,7 +34,8 @@ const AddLocation = ({ form, errors, onChange, organizationId }) => {
 				null,
 				handleChange,
 				false,
-				"Search Locations"
+				"Search Locations",
+				fetchLocation
 			)}
 
 			{errors.locations && <Alert variant="danger">{errors.locations}</Alert>}

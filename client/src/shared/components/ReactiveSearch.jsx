@@ -12,6 +12,7 @@ const ReactiveSearch = ({
 	idPath = "",
 	valuePath = "",
 	error,
+	onRefresh: handleRefreshClick,
 	onChange: handleItemChange,
 }) => {
 	const [selectedItem, setSelectedItem] = useState("");
@@ -52,10 +53,6 @@ const ReactiveSearch = ({
 
 	const handleCreateNewClick = () => {
 		window.open("https://example.com/new");
-	};
-
-	const handleRefreshClick = () => {
-		alert("Refresh button clicked!");
 	};
 
 	const handleInputKeyDown = (event) => {

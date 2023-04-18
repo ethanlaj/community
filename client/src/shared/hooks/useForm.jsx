@@ -93,7 +93,8 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 		headerLabel,
 		handleChange,
 		resetOnSelect = false,
-		selectionLabel = "Select item"
+		selectionLabel = "Select item",
+		onRefresh
 	) => (
 		<ReactiveSearch
 			items={items}
@@ -107,6 +108,7 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 			onChange={(value) =>
 				handleChange ? handleChange(id, value) : handleDataChange(id, value)
 			}
+			onRefresh={onRefresh}
 		/>
 	);
 
@@ -134,6 +136,7 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
 	);
 
 	return {
+		data,
 		handleSubmit,
 		handleChange,
 		renderChildForm,
