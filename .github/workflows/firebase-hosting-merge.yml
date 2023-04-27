@@ -42,7 +42,5 @@ jobs:
               run: |
                   cd api
                   npm install -g firebase-tools
-                  npm run deploy
+                  firebase deploy --only functions --project community-9eef4 --token ${{ secrets.FIREBASE_TOKEN }}
                   cd ..
-              env:
-                  FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_COMMUNITY_9EEF4 }}
