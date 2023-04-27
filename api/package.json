@@ -3,18 +3,27 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon",
-    "start": "node ./bin/www"
+    "dev": "firebase emulators:start --only functions",
+    "logs": "firebase functions:log"
   },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
     "express": "~4.16.1",
+    "firebase-admin": "^11.5.0",
+    "firebase-functions": "^4.3.1",
     "morgan": "~1.9.1",
     "mysql2": "^3.2.0",
     "sequelize": "^6.6.5",
     "sequelize-auto": "^0.8.8"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.0.0"
   }
 }

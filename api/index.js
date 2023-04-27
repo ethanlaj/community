@@ -3,6 +3,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
+const functions = require("firebase-functions");
 
 const database = require("./database");
 const errorHandler = require("./errorHandler");
@@ -39,4 +40,4 @@ app.use("/communications", communicationsRouter);
 
 app.use(errorHandler);
 
-module.exports = app;
+exports.api = functions.https.onRequest(app);

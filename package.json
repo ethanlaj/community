@@ -4,12 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently -k -n \"client,api\" -c \"bgBlue,bgMagenta\" \"npm:dev --prefix client\" \"npm:dev --prefix api\"",
-    "dev:api": "npm dev --prefix api",
-    "dev:client": "npm dev --prefix client",
-    "prod": "concurrently -k -n \"client,api\" -c \"bgBlue,bgMagenta\" \"npm:serve --prefix client\" \"npm:start --prefix api\"",
-    "prod:api": "npm serve --prefix api",
-    "prod:client": "npm start --prefix client"
+    "dev": "concurrently -k -n \"API,Client\" -c \"blue,magenta\" \"npm run dev --prefix api\" \"npm run dev --prefix client\""
   },
   "repository": {
     "type": "git",
