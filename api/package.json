@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "firebase emulators:start --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "deploy": "firebase deploy --only functions"
   },
   "engines": {
     "node": "16"
