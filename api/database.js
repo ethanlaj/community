@@ -1,11 +1,5 @@
-const functions = require("firebase-functions");
 const dotenv = require("dotenv");
 dotenv.config();
-
-const dbConnectionString =
-	process.env.NODE_ENV === "production"
-		? functions.config().database.url
-		: process.env.DB_CONNECTION_STRING;
 
 const { Sequelize } = require("sequelize");
 const {
@@ -18,7 +12,7 @@ const {
 } = require("./models");
 
 // create database connection
-const sequelize = new Sequelize(dbConnectionString, {
+const sequelize = new Sequelize(process.env.DB_CONNECTION_STRING, {
 	dialect: "mysql",
 	logging: false, // set to true to log SQL queries
 });

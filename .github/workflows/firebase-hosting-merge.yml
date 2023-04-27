@@ -17,12 +17,6 @@ jobs:
               with:
                   node-version: 16
 
-            - name: Install dependencies and build API
-              run: |
-                  cd api
-                  npm ci
-                  cd ..
-
             - name: Install dependencies and build Client
               run: |
                   cd client
@@ -37,11 +31,3 @@ jobs:
                   firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_COMMUNITY_9EEF4 }}"
                   channelId: live
                   projectId: community-9eef4
-
-            - name: Deploy to Firebase Functions
-              run: |
-                  cd api
-                  npm install -g firebase-tools
-                  firebase functions:config:set database.url="${{ secrets.DB_CONNECTION_STRING }}" --token ${{ secrets.FIREBASE_TOKEN }}
-                  firebase deploy --only functions --project community-9eef4 --token ${{ secrets.FIREBASE_TOKEN }}
-                  cd ..

@@ -1,7 +1,4 @@
 {
-  "functions": {
-    "source": "api"
-  },
   "hosting": {
     "public": "client/dist",
     "ignore": [
@@ -11,21 +8,9 @@
     ],
     "rewrites": [
       {
-        "source": "/api/**",
-        "function": "api"
-      },
-      {
         "source": "**",
         "destination": "/index.html"
       }
     ]
-  },
-  "emulators": {
-    "functions": {
-      "port": 3001
-    },
-    "hosting": {
-      "port": 3000
-    }
   }
 }
