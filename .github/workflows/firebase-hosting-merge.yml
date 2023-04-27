@@ -42,6 +42,7 @@ jobs:
               run: |
                   cd api
                   npm install -g firebase-tools
+                  firebase functions:config:set database.url="${{ secrets.DB_CONNECTION_STRING }}"
                   firebase deploy --only functions --project community-9eef4 --token ${{ secrets.FIREBASE_TOKEN }}
                   cd ..
               env:
