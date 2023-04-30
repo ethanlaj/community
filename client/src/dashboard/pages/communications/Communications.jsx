@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import styles from "./Communications.module.css?inline";
 import ClickableTable from "../../../shared/components/ClickableTable";
 import communicationService from "@/services/communicationService";
@@ -9,7 +10,6 @@ const Communications = () => {
 	useEffect(() => {
 		const fetchCommunications = async () => {
 			let data = await communicationService.getAll();
-			console.log(data);
 
 			data = data.map((comm) => {
 				let org = comm.Organization;
@@ -34,8 +34,25 @@ const Communications = () => {
 	];
 
 	const handleRowClick = (row) => {
-		alert("You clicked on " + row.name);
+		alert("You clicked on " + row.orgName);
 	};
+
+	const deleteModalRenderer = (row) => {
+		return <>Are you sure you want to delete the communication with {row.orgName}?</>;
+	};
+
+	const handleRowDelete = async (row) => {
+		let originalComs = [...communications];
+		try {
+			setCommunications([...communications].filter((cont) => cont.id !== row.id));
+			await communicationService.delete(row.id);
+
+			toast.success("Communication deleted successfully");
+		} catch {
+			setCommunications(originalComs);
+		}
+	};
+
 	return (
 		<Fragment>
 			<div className={styles.content}>
@@ -45,6 +62,8 @@ const Communications = () => {
 					columns={columns}
 					data={communications}
 					onRowClick={handleRowClick}
+					onRowDelete={handleRowDelete}
+					deleteModalRenderer={deleteModalRenderer}
 				></ClickableTable>
 			</div>
 		</Fragment>

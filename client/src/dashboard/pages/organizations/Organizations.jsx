@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import styles from "./Organizations.module.css?inline";
 import ClickableTable from "../../../shared/components/ClickableTable";
 import organizationService from "@/services/organizationService";
@@ -36,6 +37,19 @@ const Organizations = () => {
 	const handleRowClick = (row) => {
 		alert("You clicked on " + row.name);
 	};
+
+	const handleRowDelete = async (row) => {
+		let originalOrgs = [...organizations];
+		try {
+			setOrganizations([...organizations].filter((cont) => cont.id !== row.id));
+			await organizationService.delete(row.id);
+
+			toast.success("Organization deleted successfully");
+		} catch {
+			setOrganizations(originalOrgs);
+		}
+	};
+
 	return (
 		<Fragment>
 			<div className={styles.content}>
@@ -45,6 +59,7 @@ const Organizations = () => {
 					columns={columns}
 					data={organizations}
 					onRowClick={handleRowClick}
+					onRowDelete={handleRowDelete}
 				></ClickableTable>
 			</div>
 		</Fragment>

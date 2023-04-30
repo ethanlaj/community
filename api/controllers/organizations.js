@@ -7,7 +7,16 @@ const errorHandler = require("../errorHandler");
 router.get("/", errorHandler(async (req, res) => {
 	try {
 		const organizations = await Organization.findAll({
-			include: [Contact, OrganizationLocation, { model: Communication, include: [Contact] }],
+			include: [
+				Contact,
+				OrganizationLocation,
+				{
+					model: Communication,
+					include: [Contact],
+					separate: true,
+					order: [["createdAt", "DESC"]],
+				},
+			],
 		});
 
 		res.json(organizations);

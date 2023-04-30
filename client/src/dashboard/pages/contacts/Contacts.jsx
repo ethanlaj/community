@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import styles from "./Contacts.module.css?inline";
 import ClickableTable from "../../../shared/components/ClickableTable";
 import contactService from "@/services/contactService";
@@ -34,6 +35,19 @@ const Contacts = () => {
 	const handleRowClick = (row) => {
 		alert("You clicked on " + row.name);
 	};
+
+	const handleRowDelete = async (row) => {
+		let originalContacts = [...contacts];
+		try {
+			setContacts([...contacts].filter((cont) => cont.id !== row.id));
+			await contactService.delete(row.id);
+
+			toast.success("Contact deleted successfully");
+		} catch {
+			setContacts(originalContacts);
+		}
+	};
+
 	return (
 		<Fragment>
 			<div className={styles.content}>
@@ -43,6 +57,7 @@ const Contacts = () => {
 					columns={columns}
 					data={contacts}
 					onRowClick={handleRowClick}
+					onRowDelete={handleRowDelete}
 				></ClickableTable>
 			</div>
 		</Fragment>

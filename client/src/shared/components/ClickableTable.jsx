@@ -1,7 +1,28 @@
-import React from "react";
-import { Table } from "react-bootstrap";
+import React, { useContext } from "react";
+import styles from "./ClickableTable.module.css";
+import { Table, Button } from "react-bootstrap";
+import { ModalContext } from "./ModalContext";
 
-const ClickableTable = ({ columns, data, onRowClick }) => {
+const ClickableTable = ({ columns, data, onRowClick, onRowDelete, deleteModalRenderer }) => {
+	const { openModal } = useContext(ModalContext);
+
+	function handleDeleteClick(e, row) {
+		e.stopPropagation();
+
+		const title = "Confirm Deletion";
+		const content = `Are you sure you want to delete ${row.name}?`;
+
+		openModal(
+			{
+				title,
+				content,
+				ContentComponent: deleteModalRenderer ? () => deleteModalRenderer(row) : null,
+				confirmVariant: "danger",
+			},
+			() => onRowDelete(row)
+		);
+	}
+
 	return (
 		<Table striped bordered hover>
 			<thead>
@@ -9,6 +30,7 @@ const ClickableTable = ({ columns, data, onRowClick }) => {
 					{columns.map((column, index) => (
 						<th key={index}>{column.title}</th>
 					))}
+					{onRowDelete && <th></th>}
 				</tr>
 			</thead>
 			<tbody>
@@ -17,6 +39,13 @@ const ClickableTable = ({ columns, data, onRowClick }) => {
 						{columns.map((column, colIndex) => (
 							<td key={colIndex}>{row[column.field]}</td>
 						))}
+						{onRowDelete && (
+							<td className={styles.deleteColumn}>
+								<Button variant="danger" onClick={(e) => handleDeleteClick(e, row)}>
+									Delete
+								</Button>
+							</td>
+						)}
 					</tr>
 				))}
 			</tbody>

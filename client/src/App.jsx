@@ -1,5 +1,4 @@
 import React from "react";
-import { Fragment } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import { ToastContainer } from "react-toastify";
@@ -15,10 +14,11 @@ import CreateCommunication from "./dashboard/pages/communications/CreateCommunic
 import Organizations from "./dashboard/pages/organizations/Organizations";
 import Contacts from "./dashboard/pages/contacts/Contacts";
 import Communications from "./dashboard/pages/communications/Communications";
+import { ModalProvider } from "./shared/components/ModalContext";
 
 function App() {
 	return (
-		<Fragment>
+		<ModalProvider>
 			<ToastContainer />
 			<Router>
 				<div className={styles.content}>
@@ -40,7 +40,7 @@ function App() {
 					</ErrorBoundary>
 				</div>
 			</Router>
-		</Fragment>
+		</ModalProvider>
 	);
 }
 
