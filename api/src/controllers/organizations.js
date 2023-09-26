@@ -1,10 +1,10 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { Organization, Contact, OrganizationLocation, Communication } = require("../database");
-const errorHandler = require("../errorHandler");
+const { Organization, Contact, OrganizationLocation, Communication } = require('../database');
+const errorHandler = require('../errorHandler');
 
 // GET all organizations
-router.get("/", errorHandler(async (req, res) => {
+router.get('/', errorHandler(async (req, res) => {
 	try {
 		const organizations = await Organization.findAll({
 			include: [
@@ -14,7 +14,7 @@ router.get("/", errorHandler(async (req, res) => {
 					model: Communication,
 					include: [Contact],
 					separate: true,
-					order: [["createdAt", "DESC"]],
+					order: [['createdAt', 'DESC']],
 				},
 			],
 		});
@@ -26,7 +26,7 @@ router.get("/", errorHandler(async (req, res) => {
 }));
 
 // GET an organization by ID
-router.get("/:id", errorHandler(async (req, res) => {
+router.get('/:id', errorHandler(async (req, res) => {
 	const id = req.params.id;
 	try {
 		const organization = await Organization.findByPk(id, {
@@ -34,7 +34,7 @@ router.get("/:id", errorHandler(async (req, res) => {
 		});
 
 		if (!organization)
-			return res.status(404).send("Organization not found");
+			return res.status(404).send('Organization not found');
 
 		res.json(organization);
 	} catch (error) {
@@ -43,14 +43,13 @@ router.get("/:id", errorHandler(async (req, res) => {
 }));
 
 // POST a new organization
-router.post("/", errorHandler(async (req, res) => {
+router.post('/', errorHandler(async (req, res) => {
 	const organizationData = req.body;
 	try {
 		const newOrganization = await Organization.create(organizationData);
 
-		let result;
 		if (req.body.locations)
-			result = await OrganizationLocation.bulkCreate(
+			await OrganizationLocation.bulkCreate(
 				req.body.locations.map((location) => ({
 					...location,
 					organizationId: newOrganization.id,
@@ -64,13 +63,13 @@ router.post("/", errorHandler(async (req, res) => {
 }));
 
 // PUT (update) an organization by ID
-router.put("/:id", errorHandler(async (req, res) => {
+router.put('/:id', errorHandler(async (req, res) => {
 	const id = req.params.id;
 	const organizationData = req.body;
 	try {
 		const organization = await Organization.findByPk(id);
 		if (!organization)
-			return res.status(404).send("Organization not found");
+			return res.status(404).send('Organization not found');
 
 		if (req.body.locations) {
 			// Delete locations that were removed
@@ -110,12 +109,12 @@ router.put("/:id", errorHandler(async (req, res) => {
 }));
 
 // DELETE an organization by ID
-router.delete("/:id", errorHandler(async (req, res) => {
+router.delete('/:id', errorHandler(async (req, res) => {
 	const id = req.params.id;
 	try {
 		const organization = await Organization.findByPk(id);
 		if (!organization)
-			return res.status(404).send("Organization not found");
+			return res.status(404).send('Organization not found');
 
 		await organization.destroy();
 		res.sendStatus(200);

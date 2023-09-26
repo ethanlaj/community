@@ -1,3 +1,3 @@
-import Organizations from "./Organizations";
+import Organizations from './Organizations';
 
 export default Organizations;
