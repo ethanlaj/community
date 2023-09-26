@@ -1,10 +1,10 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { Op } = require("sequelize");
-const { Contact, Organization } = require("../database");
-const errorHandler = require("../errorHandler");
+const { Op } = require('sequelize');
+const { Contact, Organization } = require('../database');
+const errorHandler = require('../errorHandler');
 
-router.get("/", errorHandler(async (req, res) => {
+router.get('/', errorHandler(async (req, res) => {
 	let orgId = req.query.orgId;
 
 	try {
@@ -22,7 +22,7 @@ router.get("/", errorHandler(async (req, res) => {
 	}
 }));
 
-router.get("/:id", errorHandler(async (req, res) => {
+router.get('/:id', errorHandler(async (req, res) => {
 	const { id } = req.params;
 	try {
 		const contact = await Contact.findByPk(id, {
@@ -30,7 +30,7 @@ router.get("/:id", errorHandler(async (req, res) => {
 		});
 
 		if (!contact) {
-			res.status(404).json({ message: "Contact not found" });
+			res.status(404).json({ message: 'Contact not found' });
 		} else {
 			res.status(200).json(contact);
 		}
@@ -39,7 +39,7 @@ router.get("/:id", errorHandler(async (req, res) => {
 	}
 }));
 
-router.post("/", errorHandler(async (req, res) => {
+router.post('/', errorHandler(async (req, res) => {
 	const { name, email, phone } = req.body;
 	const { organizations } = req.body;
 	try {
@@ -67,14 +67,14 @@ router.post("/", errorHandler(async (req, res) => {
 	}
 }));
 
-router.put("/:id", errorHandler(async (req, res) => {
+router.put('/:id', errorHandler(async (req, res) => {
 	const { id } = req.params;
 	const { name, email, phone } = req.body;
 
 	try {
 		const contact = await Contact.findByPk(id);
 		if (!contact)
-			return res.status(404).json({ message: "Contact not found" });
+			return res.status(404).json({ message: 'Contact not found' });
 
 		contact.name = name || contact.name;
 		contact.email = email || contact.email;
@@ -99,12 +99,12 @@ router.put("/:id", errorHandler(async (req, res) => {
 	}
 }));
 
-router.delete("/:id", errorHandler(async (req, res) => {
+router.delete('/:id', errorHandler(async (req, res) => {
 	const { id } = req.params;
 	try {
 		const contact = await Contact.findByPk(id);
 		if (!contact)
-			return res.status(404).json({ message: "Contact not found" });
+			return res.status(404).json({ message: 'Contact not found' });
 
 		await contact.destroy();
 		res.status(204).json();
