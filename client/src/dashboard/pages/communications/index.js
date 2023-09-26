@@ -1,3 +1,3 @@
-import Communications from "./Communications";
+import Communications from './Communications';
 
 export default Communications;
