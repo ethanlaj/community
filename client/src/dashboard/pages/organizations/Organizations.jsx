@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import styles from './Organizations.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
-import * as organizationService from '@/services/organizationService';
+import organizationService from '@/services/organizationService';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);

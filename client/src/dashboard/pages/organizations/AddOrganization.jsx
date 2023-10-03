@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import * as organizationService from '@/services/organizationService';
+import organizationService from '@/services/organizationService';
 
 function AddOrganization({ form, onChange }) {
   const isChild = form !== undefined;

@@ -4,7 +4,7 @@ import config from '../config.js';
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/contacts`;
 
-class ContactService {
+export default class ContactService {
   static http = http.create();
 
   static async getAll() {
@@ -40,6 +40,3 @@ class ContactService {
     return response.data;
   }
 }
-
-const contactService = new ContactService();
-export default contactService;
