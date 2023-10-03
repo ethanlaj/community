@@ -5,7 +5,7 @@ import useForm from '@/shared/hooks/useForm';
 import styles from './CreateOrganization.module.css';
 import CreateLocation from '@/dashboard/pages/organizations/CreateLocation';
 import AddContacts from '@/dashboard/pages/contacts/AddContacts';
-import organizationService from '@/services/organizationService';
+import * as organizationService from '@/services/organizationService';
 
 function CreateOrganization() {
   const navigate = useNavigate();
