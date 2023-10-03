@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable default-param-last */
 import Joi from 'joi';
 import Input from '../components/Input';
 import ReactiveSearch from '../components/ReactiveSearch';
@@ -91,11 +93,10 @@ const useForm = (data, setData, errors, setErrors, schema, doSubmit) => {
     keyPath,
     valuePath,
     headerLabel,
-    // eslint-disable-next-line no-shadow
     handleChange,
-    onRefresh,
     resetOnSelect = false,
     selectionLabel = 'Select item',
+    onRefresh,
   ) => (
     <ReactiveSearch
       items={items}
