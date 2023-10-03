@@ -4,7 +4,7 @@ import config from '../config.js';
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/locations`;
 
-class LocationService {
+export default class LocationService {
   static http = http.create();
 
   static async getAll() {
@@ -37,6 +37,3 @@ class LocationService {
     return response.data;
   }
 }
-
-const locationService = new LocationService();
-export default locationService;

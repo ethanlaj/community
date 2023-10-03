@@ -4,7 +4,7 @@ import config from '../config.js';
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/communications`;
 
-class CommunicationService {
+export default class CommunicationService {
   static http = http.create();
 
   static async getAll() {
@@ -32,6 +32,3 @@ class CommunicationService {
     return response.data;
   }
 }
-
-const communicationService = new CommunicationService();
-export default communicationService;
