@@ -40,6 +40,7 @@ function Communications() {
   const deleteModalRenderer = (row) => (
     <>
       Are you sure you want to delete the communication with
+      {' '}
       {row.orgName}
       ?
     </>
