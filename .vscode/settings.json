@@ -1,4 +1,5 @@
 {
+	"eslint.workingDirectories": ["client", "api"],
 	"[javascriptreact]": {
 		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
 	},
