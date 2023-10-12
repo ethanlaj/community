@@ -1,18 +1,15 @@
 module.exports = {
   root: true,
-  parser: '@babel/eslint-parser',
-  parserOptions: {
-    requireConfigFile: false,
-    babelOptions: {
-      presets: ['@babel/preset-env', '@babel/preset-react'],
-    },
-  },
-  plugins: ['import'],
-  extends: ['airbnb'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['import', '@typescript-eslint'],
+  extends: [
+    'airbnb',
+    'plugin:@typescript-eslint/recommended',
+  ],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-uses-react': 'off',
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', 'tsx'] }],
     'react/jsx-uses-vars': 'error',
     'react/require-default-props': 'off',
     'import/no-unresolved': 'off',
