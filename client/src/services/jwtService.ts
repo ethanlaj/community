@@ -7,7 +7,7 @@ export function getJwt() {
   return localStorage.getItem('token');
 }
 
-export function setJwt(jwt) {
+export function setJwt(jwt: string) {
   http.setJwt(jwt);
 }
 
@@ -18,7 +18,7 @@ export function logout() {
 export function getCurrentUser() {
   try {
     const jwt = getJwt();
-    return jwtDecode(jwt);
+    return jwtDecode(jwt as string);
   } catch (ex) {
     return null;
   }
@@ -29,6 +29,9 @@ export function getCurrentUser() {
 // }
 
 const functions = {
-  getJwt, setJwt, logout, getCurrentUser,
+  getJwt,
+  setJwt,
+  logout,
+  getCurrentUser,
 };
 export default functions;

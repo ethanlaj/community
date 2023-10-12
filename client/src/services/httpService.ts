@@ -13,15 +13,15 @@ axios.interceptors.response.use(null, (error) => {
   return Promise.reject(error);
 });
 
-// function setJwt(jwt) {
-// axios.defaults.headers.common["x-auth-token"] = jwt;
-// localStorage.setItem("token", jwt);
-// }
+function setJwt(jwt: string) {
+  axios.defaults.headers.common['x-auth-token'] = jwt;
+  localStorage.setItem('token', jwt);
+}
 
-// function unsetJwt() {
-// axios.defaults.headers.common["x-auth-token"] = null;
-// localStorage.removeItem("token");
-// }
+function unsetJwt() {
+  axios.defaults.headers.common['x-auth-token'] = null;
+  localStorage.removeItem('token');
+}
 
 const functions = {
   get: axios.get,
@@ -29,5 +29,7 @@ const functions = {
   put: axios.put,
   delete: axios.delete,
   create: axios.create,
+  setJwt,
+  unsetJwt,
 };
 export default functions;
