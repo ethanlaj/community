@@ -1,5 +1,5 @@
-import http from './httpService';
-import config from '../config.js';
+import http from "./httpService";
+import config from "../config.js";
 
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/communications`;
@@ -12,22 +12,25 @@ export default class CommunicationService {
     return response.data;
   }
 
-  static async getById(id) {
+  static async getById(id: number) {
     const response = await http.get(`${apiEndpoint}/${id}`);
     return response.data;
   }
 
-  static async create(communication) {
+  static async create(communication: string) {
     const response = await http.post(apiEndpoint, communication);
     return response.data;
   }
 
-  static async update(id, updatedCommunication) {
-    const response = await http.put(`${apiEndpoint}/${id}`, updatedCommunication);
+  static async update(id: number, updatedCommunication: string) {
+    const response = await http.put(
+      `${apiEndpoint}/${id}`,
+      updatedCommunication
+    );
     return response.data;
   }
 
-  static async delete(id) {
+  static async delete(id: number) {
     const response = await http.delete(`${apiEndpoint}/${id}`);
     return response.data;
   }
