@@ -1,5 +1,7 @@
 # Tasks and Requirements
 
+Note: These tasks are only the initial tasks that were created at the beginning of the project. They are not up to date. For up to date tasks, please refer to the [Trello board (invite-only)](https://trello.com/b/Xv6cbIvZ/community).
+
 ## Requirements:
 
 ### Client Requests
