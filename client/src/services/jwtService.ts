@@ -1,13 +1,13 @@
-import jwtDecode from "jwt-decode";
-import http from "./httpService";
+import jwtDecode from 'jwt-decode';
+import http from './httpService';
 
 http.setJwt(getJwt());
 
 export function getJwt() {
-  return localStorage.getItem("token");
+  return localStorage.getItem('token');
 }
 
-export function setJwt(jwt: any) {
+export function setJwt(jwt: string) {
   http.setJwt(jwt);
 }
 

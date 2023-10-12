@@ -1,5 +1,5 @@
-import http from "./httpService";
-import config from "../config.js";
+import http from './httpService';
+import config from '../config.js';
 
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/organizations`;
@@ -25,7 +25,7 @@ export default class OrganizationService {
   static update = async (id: number, updatedOrganization: string) => {
     const response = await http.put(
       `${apiEndpoint}/${id}`,
-      updatedOrganization
+      updatedOrganization,
     );
     return response.data;
   };

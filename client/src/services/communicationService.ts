@@ -1,5 +1,5 @@
-import http from "./httpService";
-import config from "../config.ts";
+import http from './httpService';
+import config from '../config.ts';
 
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/communications`;
@@ -25,7 +25,7 @@ export default class CommunicationService {
   static async update(id: number, updatedCommunication: string) {
     const response = await http.put(
       `${apiEndpoint}/${id}`,
-      updatedCommunication
+      updatedCommunication,
     );
     return response.data;
   }

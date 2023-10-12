@@ -1,27 +1,26 @@
-import axios from "axios";
-import { toast } from "react-toastify";
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 axios.interceptors.response.use(null, (error) => {
-  const expectedError =
-    error.response &&
-    error.response.status >= 400 &&
-    error.response.status < 500;
+  const expectedError = error.response
+    && error.response.status >= 400
+    && error.response.status < 500;
 
   if (!expectedError) {
-    toast.error("An unexpected error occurrred.");
+    toast.error('An unexpected error occurrred.');
   }
 
   return Promise.reject(error);
 });
 
-function setJwt(jwt: any) {
-  axios.defaults.headers.common["x-auth-token"] = jwt;
-  localStorage.setItem("token", jwt);
+function setJwt(jwt: string) {
+  axios.defaults.headers.common['x-auth-token'] = jwt;
+  localStorage.setItem('token', jwt);
 }
 
 function unsetJwt() {
-  axios.defaults.headers.common["x-auth-token"] = null;
-  localStorage.removeItem("token");
+  axios.defaults.headers.common['x-auth-token'] = null;
+  localStorage.removeItem('token');
 }
 
 const functions = {
