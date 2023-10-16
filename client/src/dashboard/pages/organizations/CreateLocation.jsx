@@ -36,13 +36,13 @@ function CreateLocation({
   // const form = useForm(data, setData, errors, setErrors, schema, doSubmit);
   return (
     <div>
-      {form.renderEditableTable(
+      {form.renderEditableTable({
         columns,
-        data,
-        errors.locations,
-        handleUpdateLocations,
-        handleAddLocation,
-      )}
+        tableData: data,
+        tableError: errors.locations,
+        onUpdate: handleUpdateLocations,
+        onAdd: handleAddLocation,
+      })}
     </div>
   );
 }

@@ -31,17 +31,17 @@ function AddContacts({
   return (
     <div>
       {!isChild && <h1>Add Contacts</h1>}
-      {form.renderSearch(
-        'contact',
-        contacts.filter((c) => !data.find((d) => d.id === c.id)),
-        'id',
-        'name',
-        null,
-        handleAddContact,
-        true,
-        'Search Contacts',
-        fetchContacts,
-      )}
+      {form.renderSearch({
+        id: 'contact',
+        items: contacts.filter((c) => !data.find((d) => d.id === c.id)),
+        keyPath: 'id',
+        valuePath: 'name',
+        headerLabel: null,
+        handleChange: handleAddContact,
+        resetOnSelect: true,
+        selectionLabel: 'Search Contacts',
+        onRefresh: fetchContacts,
+    })}
 
       {errors.contacts && <Alert variant="danger">{errors.contacts}</Alert>}
       {data.length > 0 && (
