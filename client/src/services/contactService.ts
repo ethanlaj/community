@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import http from './httpService';
 import config from '../config';
 
