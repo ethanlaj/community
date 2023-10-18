@@ -32,6 +32,8 @@ module.exports = {
     'max-len': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'no-restricted-syntax': 'off',
+    'linebreak-style': 'off',
+
     quotes: ['error', 'single'],
     indent: ['error', 2],
   },

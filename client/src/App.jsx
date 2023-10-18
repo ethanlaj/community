@@ -14,6 +14,7 @@ import Organizations from './dashboard/pages/organizations/Organizations';
 import Contacts from './dashboard/pages/contacts/Contacts';
 import Communications from './dashboard/pages/communications/Communications';
 import { ModalProvider } from './shared/components/ModalContext';
+import CreateContacts from './dashboard/pages/contacts/CreateContacts';
 
 function App() {
   return (
@@ -28,11 +29,9 @@ function App() {
               <Route path="/organizations/create" element={<CreateOrganization />} />
               <Route path="/organizations" element={<Organizations />} />
               <Route path="/contacts" element={<Contacts />} />
+              <Route path="/contacts/create" element={<CreateContacts />} />
               <Route path="/communications" element={<Communications />} />
-              <Route
-                path="/communications/create"
-                element={<CreateCommunication />}
-              />
+              <Route path="/communications/create" element={<CreateCommunication />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
