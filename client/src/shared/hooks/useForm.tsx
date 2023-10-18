@@ -5,23 +5,24 @@ import Input from "../components/Input";
 import ReactiveSearch from "../components/ReactiveSearch";
 import EditableTable from "../components/EditableTable";
 import Select from "../components/Select";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { UseFormProps, UseFormReturn, Errors, ValidatePropertyProps, EditableTableProps, RenderSelectOption, RenderInputProps, RenderSearchProps } from "@/types/inputTypes";
 
 function useForm<T extends object>({
-	data,
-	setData,
-	errors,
-	setErrors,
+	fields,
 	schema,
 	doSubmit,
 }: UseFormProps<T>): UseFormReturn<T> {
+	const [data, setData]	= useState<T>(fields);
+
+	const [errors, setErrors] = useState<Errors<T>>({});
+
 	const validate = (): Errors<T> => {
 		const options = { abortEarly: false };
 		const { error } = schema.validate(data, options);
-		if (!error) return {} as Errors<T>;
+		if (!error) return {};
 
-		const currentErrors: Errors<T> = {} as Errors<T>;
+		const currentErrors: Errors<T> = {};
 
 		for (const item of error.details as Joi.ValidationErrorItem[]) {
 			const propertyName = item.path[0] as keyof T;
@@ -45,31 +46,37 @@ function useForm<T extends object>({
 	const handleSubmit = (e: SubmitEvent) => {
 		e.preventDefault();
 
-		const newErrors = validate() as Errors<T>;
+		const newErrors = validate();
 		setErrors(newErrors);
-    console.log(newErrors)
 		if (Object.keys(newErrors).length > 0) return;
 
 		doSubmit();
 	};
 
 	const handleChange = ({ currentTarget: input }: ChangeEvent<HTMLInputElement>) => {
-		const currentErrors = { ...errors };
+		setData((prevData) => {
+			const newData = { ...prevData };
 
-		const errorMessage = validateProperty({ id: input.id, value: input.value });
+			const id = input.id as keyof T;
+			if (id in newData) {
+					newData[id] = input.value as unknown as T[keyof T];
+			}
 
-		const id = input.id as keyof T;
+			return newData;
+		});
 
-		if (errorMessage) currentErrors[id] = errorMessage;
-		else delete currentErrors[id];
+		setErrors((prevErrors) => {
+        const currentErrors = { ...prevErrors };
 
-		const newData = { ...data };
-		if (id in newData) {
-			newData[id] = input.value as unknown as T[keyof T];
-		}
+        const errorMessage = validateProperty({ id: input.id, value: input.value });
 
-		setData(newData);
-		setErrors(currentErrors);
+        const id = input.id as keyof T;
+
+        if (errorMessage) currentErrors[id] = errorMessage;
+        else delete currentErrors[id];
+
+        return currentErrors;
+    });
 	};
 
 	const handleDataChange = (id: string, value: string) => {
@@ -112,7 +119,7 @@ function useForm<T extends object>({
 	}
 
 	const renderButton = (label: string) => {
-		const isDisabled = Object.keys(errors).length > 0;
+		const isDisabled = Object.keys(validate()).length > 0;
 
 		return (
 			<button
@@ -178,6 +185,7 @@ function useForm<T extends object>({
 
 	return {
 		data,
+		setData,
 		handleSubmit,
 		handleChange,
 		renderChildForm,

@@ -1,19 +1,17 @@
 import Joi from "joi";
 import { ChangeEvent } from "react";
 
-export type Errors<T> = Record<keyof T, string>;
+export type Errors<T> = Partial<Record<keyof T, string>>;
 
 export interface UseFormProps<T> {
-	data: T;
-	setData: (data: T) => void;
-	errors: Errors<T>;
-	setErrors: (errors: Errors<T>) => void;
+	fields: T;
 	schema: Joi.Schema;
 	doSubmit: () => void;
 }
 
 export interface UseFormReturn<T> {
 	data: T;
+	setData: (data: T) => void;
 	handleSubmit: (event: SubmitEvent) => void;
 	handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	renderChildForm: (form: UseFormReturn<T>, id: string, ChildFormComponent: React.ComponentType<any>, childData: any, props?: any) => JSX.Element;

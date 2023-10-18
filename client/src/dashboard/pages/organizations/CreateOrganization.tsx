@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Joi from 'joi';
 import useForm from '@/shared/hooks/useForm';
@@ -6,7 +5,6 @@ import styles from './CreateOrganization.module.css';
 import CreateLocation from '@/dashboard/pages/organizations/CreateLocation';
 import AddContacts from '@/dashboard/pages/contacts/AddContacts';
 import organizationService from '@/services/organizationService';
-import { generateTopLevelErrors } from '@/shared/createErrorsObject';
 
 interface FormProps {
   name: string;
@@ -24,7 +22,7 @@ interface FormProps {
 function CreateOrganization() {
   const navigate = useNavigate();
 
-  const [data, setData] = useState<FormProps>({
+  const fields: FormProps = {
     name: '',
     locations: [
       {
@@ -33,8 +31,7 @@ function CreateOrganization() {
       },
     ],
     contacts: [],
-  });
-  const [errors, setErrors] = useState(generateTopLevelErrors(data));
+  };
 
   const schema = Joi.object({
     name: Joi.string().required().label('Organization Name'),
@@ -47,9 +44,9 @@ function CreateOrganization() {
 
   const doSubmit = async () => {
     try {
-      console.log('Submit to api', { ...data });
+      console.log('Submit to api', { ...form.data });
 
-      await organizationService.create({ ...data });
+      await organizationService.create({ ...form.data });
 
       navigate('/', { replace: true });
     } catch (ex: any) {
@@ -57,7 +54,7 @@ function CreateOrganization() {
     }
   };
 
-  const form = useForm<FormProps>({data, setData, errors, setErrors, schema, doSubmit});
+  const form = useForm<FormProps>({ fields, schema, doSubmit });
 
   return (
     <div>
@@ -65,9 +62,9 @@ function CreateOrganization() {
       <form className={styles.formContainer}>
         {form.renderInput({ id: 'name', label: 'Name'})}
         <h3>Add Locations</h3>
-        {form.renderChildForm(form, 'locations', CreateLocation, data.locations)}
+        {form.renderChildForm(form, 'locations', CreateLocation, form.data.locations)}
         <h3>Add Contacts</h3>
-        {form.renderChildForm(form, 'contacts', AddContacts, data.contacts)}
+        {form.renderChildForm(form, 'contacts', AddContacts, form.data.contacts)}
         {form.renderButton('Create')}
       </form>
     </div>

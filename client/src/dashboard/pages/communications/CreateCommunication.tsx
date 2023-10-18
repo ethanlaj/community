@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Joi from 'joi';
 import useForm from '@/shared/hooks/useForm';
@@ -9,27 +9,44 @@ import AddLocation from '@/dashboard/pages/organizations/AddLocation';
 import AddOrganization from '@/dashboard/pages/organizations/AddOrganization';
 import communicationService from '@/services/communicationService';
 
+interface FormProps {
+  date: string;
+  contacts: {
+    name: string;
+    email: string;
+    phone: string;
+  }[];
+  users: {
+    name: string;
+    email: string;
+    phone: string;
+  }[];
+  note: string;
+  location: {
+    id: string,
+    name: string;
+    address: string;
+  } | null;
+  organization: {
+    id: string;
+    name: string;
+  } | null;
+}
+
 function CreateCommunication() {
   const navigate = useNavigate();
   const now = new Date();
   const timeZoneOffset = now.getTimezoneOffset();
   const nowLocal = new Date(now.getTime() - timeZoneOffset * 60 * 1000);
 
-  const [data, setData] = useState({
+  const fields = {
     date: nowLocal.toISOString().substr(0, 10),
     contacts: [],
     users: [],
     note: '',
     location: null,
     organization: null,
-  });
-  const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    setData({
-      ...data, location: null, contacts: [], users: [],
-    });
-  }, [data.organization]);
+  };
 
   const schema = Joi.object({
     date: Joi.date().required().label('Date'),
@@ -42,16 +59,22 @@ function CreateCommunication() {
 
   const doSubmit = async () => {
     try {
-      console.log('Submit to api', { ...data, locationId: data.location?.id });
+      console.log('Submit to api', { ...form.data, locationId: form.data.location?.id });
 
-      await communicationService.create({ ...data, locationId: data.location?.id });
+      await communicationService.create({ ...form.data, locationId: form.data.location?.id });
       navigate('/communications', { replace: true });
     } catch (ex) {
       console.error(ex);
     }
   };
 
-  const form = useForm({ data, setData, errors, setErrors, schema, doSubmit });
+  const form = useForm<FormProps>({ fields, schema, doSubmit });
+
+  useEffect(() => {
+    form.setData({
+      ...form.data, location: null, contacts: [], users: [],
+    });
+  }, [form.data.organization]);
   
   return (
     <div>
@@ -65,28 +88,28 @@ function CreateCommunication() {
           form,
           'organization',
           AddOrganization,
-          data.organization,
-          { organizationId: data.organization },
+          form.data.organization,
+          { organizationId: form.data.organization },
         )}
 
-        {data.organization && (
+        {form.data.organization && (
           <div>
             <h3>Location</h3>
-            {form.renderChildForm(form, 'location', AddLocation, data.location, {
-              organizationId: data.organization.id,
+            {form.renderChildForm(form, 'location', AddLocation, form.data.location, {
+              organizationId: form.data.organization.id,
             })}
 
             <h3>Add Contacts</h3>
             <p>Which organization members were a part of this communication?</p>
-            {form.renderChildForm(form, 'contacts', AddContacts, data.contacts, {
-              organizationId: data.organization.id,
+            {form.renderChildForm(form, 'contacts', AddContacts, form.data.contacts, {
+              organizationId: form.data.organization.id,
             })}
 
             <h3>Add Users</h3>
             <p>
               Which Elizabethtown College staff were a part of this communication?
             </p>
-            {form.renderChildForm(form, 'users', AddUsers, data.users)}
+            {form.renderChildForm(form, 'users', AddUsers, form.data.users)}
           </div>
         )}
 
