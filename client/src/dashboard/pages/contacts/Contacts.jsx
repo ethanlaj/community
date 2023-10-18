@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import styles from './Contacts.module.css?inline';
