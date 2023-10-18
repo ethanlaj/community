@@ -31,14 +31,14 @@ function CreateCommunication() {
     });
   }, [data.organization]);
 
-  const schema = {
+  const schema = Joi.object({
     date: Joi.date().required().label('Date'),
     contacts: Joi.array().items(Joi.object().label('Contact')).required(),
     users: Joi.array().items(Joi.object().label('User')).required(),
     note: Joi.string().allow('').label('Note'),
     location: Joi.object().allow(null).label('Location'),
     organization: Joi.object().required(),
-  };
+  });
 
   const doSubmit = async () => {
     try {
@@ -51,14 +51,14 @@ function CreateCommunication() {
     }
   };
 
-  const form = useForm(data, setData, errors, setErrors, schema, doSubmit);
-
+  const form = useForm({ data, setData, errors, setErrors, schema, doSubmit });
+  
   return (
     <div>
       <h1>Create Communication</h1>
       <form className={`${styles.formContainer}`}>
-        {form.renderInput('date', 'Date', null, 'date')}
-        {form.renderInput('note', 'Note', null, 'textarea')}
+        {form.renderInput({ id: 'date', label: 'Date', type: 'date' })}
+        {form.renderInput({ id: 'note', label: 'Note', type: 'textarea' })}
 
         <h3>Organization</h3>
         {form.renderChildForm(

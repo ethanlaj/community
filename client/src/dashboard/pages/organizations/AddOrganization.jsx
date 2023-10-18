@@ -16,24 +16,22 @@ function AddOrganization({ form, onChange }) {
     fetchOrganization();
   }, []);
 
-  const handleChange = (id, value) => {
+  const handleChange = (_id, value) => {
     onChange(value);
   };
 
   return (
     <div>
       {!isChild && <h1>Add Organization</h1>}
-      {form.renderSearch(
-        'organization',
-        organizations,
-        'id',
-        'name',
-        null,
+      {form.renderSearch({
+        id: 'organization',
+        items: organizations,
+        keyPath: 'id',
+        valuePath: 'name',
         handleChange,
-        false,
-        'Search Organizations',
-        fetchOrganization,
-      )}
+        selectionLabel: 'Search Organizations',
+        onRefresh: fetchOrganization,
+      })}
     </div>
   );
 }

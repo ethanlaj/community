@@ -28,17 +28,15 @@ function AddLocation({
   return (
     <div>
       {!isChild && <h1>Add Location</h1>}
-      {form.renderSearch(
-        'location',
-        locations,
-        'id',
-        'name',
-        null,
+      {form.renderSearch({
+        id: 'location',
+        items: locations,
+        keyPath: 'id',
+        valuePath: 'name',
         handleChange,
-        false,
-        'Search Locations',
-        fetchLocation,
-      )}
+        selectionLabel: 'Search Locations',
+        onRefresh: fetchLocation,
+      })}
 
       {errors.locations && <Alert variant="danger">{errors.locations}</Alert>}
     </div>

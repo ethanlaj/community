@@ -6,29 +6,7 @@ import ReactiveSearch from "../components/ReactiveSearch";
 import EditableTable from "../components/EditableTable";
 import Select from "../components/Select";
 import { ChangeEvent } from "react";
-
-type Errors<T> = Record<keyof T, string>;
-
-interface UseFormProps<T> {
-	data: T;
-	setData: (data: T) => void;
-	errors: Errors<T>;
-	setErrors: (errors: Errors<T>) => void;
-	schema: Joi.Schema;
-	doSubmit: () => void;
-}
-
-interface UseFormReturn<T> {
-	data: T;
-	handleSubmit: (event: SubmitEvent) => void;
-	handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
-	renderChildForm: (form: UseFormReturn<T>, id: string, ChildFormComponent: React.ComponentType<any>, childData: any, props?: any) => JSX.Element;
-	renderEditableTable: (props: EditableTableProps<T>) => JSX.Element;
-	renderButton: (label: string) => JSX.Element;
-	renderSearch: (props: RenderSearchProps) => JSX.Element;
-	renderSelect: (id: keyof T, label: string, options: RenderSelectOption[]) => JSX.Element;
-	renderInput: (id: keyof T, label: string, placeholder?: string, type?: string) => JSX.Element;
-}
+import { UseFormProps, UseFormReturn, Errors, ValidatePropertyProps, EditableTableProps, RenderSelectOption, RenderInputProps, RenderSearchProps } from "@/types/inputTypes";
 
 function useForm<T extends object>({
 	data,
@@ -186,7 +164,7 @@ function useForm<T extends object>({
 		/>
 	);
 
-	const renderInput = (id: keyof T, label: string, placeholder: string = "", type: string = "text") => (
+	const renderInput = ({ id, label, placeholder = "", type = "text" }: RenderInputProps<T>) => (
 		<Input
 			name={id}
 			label={label}

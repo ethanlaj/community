@@ -63,7 +63,7 @@ function CreateOrganization() {
     <div>
       <h1>Create Organization</h1>
       <form className={styles.formContainer}>
-        {form.renderInput('name', 'Name')}
+        {form.renderInput({ id: 'name', label: 'Name'})}
         <h3>Add Locations</h3>
         {form.renderChildForm(form, 'locations', CreateLocation, data.locations)}
         <h3>Add Contacts</h3>
