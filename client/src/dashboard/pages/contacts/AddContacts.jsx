@@ -41,7 +41,7 @@ function AddContacts({
         resetOnSelect: true,
         selectionLabel: 'Search Contacts',
         onRefresh: fetchContacts,
-    })}
+      })}
 
       {errors.contacts && <Alert variant="danger">{errors.contacts}</Alert>}
       {data.length > 0 && (

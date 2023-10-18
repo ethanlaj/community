@@ -75,7 +75,7 @@ function CreateCommunication() {
       ...form.data, location: null, contacts: [], users: [],
     });
   }, [form.data.organization]);
-  
+
   return (
     <div>
       <h1>Create Communication</h1>
