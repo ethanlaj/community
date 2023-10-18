@@ -29,6 +29,8 @@ module.exports = {
     'jsx-a11y/no-noninteractive-element-interactions': 'off',
     'jsx-a11y/no-noninteractive-tabindex': 'off',
     'jsx-a11y/control-has-associated-label': 'off',
+    'linebreak-style': 'off',
+
     quotes: ['error', 'single'],
     indent: ['error', 2],
   },
