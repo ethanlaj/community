@@ -40,17 +40,16 @@ function AddUsers({
   return (
     <div>
       {!isChild && <h1>Add Users</h1>}
-      {form.renderSearch(
-        'user',
-        users.filter((c) => !data.find((user) => user.id === c.id)),
-        'id',
-        'name',
-        null,
-        handleAddUser,
-        true,
-        'Search Users',
-        fetchUsers,
-      )}
+      {form.renderSearch({
+        id: 'user',
+        items: users.filter((c) => !data.find((user) => user.id === c.id)),
+        keyPath: 'id',
+        valuePath: 'name',
+        handleChange: handleAddUser,
+        resetOnSelect: true,
+        selectionLabel: 'Search Users',
+        onRefresh: fetchUsers,
+      })}
 
       {errors.users && <Alert variant="danger">{errors.users}</Alert>}
       {data.length > 0 && (

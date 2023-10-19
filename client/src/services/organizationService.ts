@@ -1,8 +1,21 @@
 import http from './httpService';
-import config from '../config.js';
+import config from '../config';
 
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/organizations`;
+
+interface Organization {
+  name: string;
+  locations: {
+    name: string;
+    address: string;
+  }[];
+  contacts: {
+    name: string;
+    email: string;
+    phone: string;
+  }[];
+}
 
 export default class OrganizationService {
   static http = http.create();
@@ -17,7 +30,7 @@ export default class OrganizationService {
     return response.data;
   };
 
-  static create = async (organization: string) => {
+  static create = async (organization: Organization) => {
     const response = await http.post(apiEndpoint, organization);
     return response.data;
   };

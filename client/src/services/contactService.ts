@@ -1,5 +1,5 @@
 import http from './httpService';
-import config from '../config.js';
+import config from '../config';
 
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/contacts`;
