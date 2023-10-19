@@ -40,8 +40,11 @@ router.get('/:id', errorHandler(async (req, res) => {
 }));
 
 router.post('/', errorHandler(async (req, res) => {
-	const { name, email, phone } = req.body;
-	const { organizations } = req.body;
+	//const { contact, organization } = req.body;
+	//const { name, email, phone, } = contact;
+	
+
+/*
 	try {
 		const newContact = await Contact.create({
 			name,
@@ -49,22 +52,27 @@ router.post('/', errorHandler(async (req, res) => {
 			phone,
 		});
 
-		if (organizations && organizations.length > 0) {
+		if (organization.length > 0) {
+			console.log('Org Setting');
 			const orgs = await Organization.findAll({
 				where: {
 					id: {
-						[Op.in]: organizations,
+						[Op.in]: organization,
 					},
 				},
 			});
 
-			await newContact.setOrganizations(orgs);
+			await newContact.setOrganization(orgs);
+			
+		}else{
+			console.log('No Org Setting');
 		}
 
 		res.status(201).json(newContact);
 	} catch (error) {
 		res.status(500).send(error.message);
 	}
+	*/
 }));
 
 router.put('/:id', errorHandler(async (req, res) => {
