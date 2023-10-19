@@ -12,6 +12,7 @@ const contactsRouter = require('./controllers/contacts');
 const organizationsRouter = require('./controllers/organizations');
 const locationsRouter = require('./controllers/locations');
 const communicationsRouter = require('./controllers/communications');
+const usersRouter = require('./controllers/users');
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use('/contacts', contactsRouter);
 app.use('/organizations', organizationsRouter);
 app.use('/locations', locationsRouter);
 app.use('/communications', communicationsRouter);
+app.use('/users', usersRouter);
 
 app.use(errorHandler);
 
