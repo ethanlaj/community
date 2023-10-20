@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Joi, { number } from 'joi';
+import Joi from 'joi';
 import ContactService from '@/services/contactService'
 import AddLocation from '@/dashboard/pages/organizations/AddLocation';
 import useForm from '@/shared/hooks/useForm';
@@ -14,21 +15,18 @@ interface CreateContactDTO {
   locationIds: number[];
 }
 
-interface Location{
-    id: number;
-    name: string;
-    address: string;
-}
-
-interface Organization{
-    id: number;
-    name: string;
-    locations: Location[];
-}
-
 interface FormProps {
-  organizations: Organization[];
  
+  organizations: {
+    id: number;
+    orgName: string;
+    locations: {
+      id: number;
+      locName: string;
+      address: string;
+    }[] | null;
+
+  }[] | null;
   name: string;
   email: string;
   phone: string;
@@ -37,6 +35,9 @@ interface FormProps {
 
 function CreateContacts() {
   const navigate = useNavigate();
+  const now = new Date();
+  const timeZoneOffset = now.getTimezoneOffset();
+  const nowLocal = new Date(now.getTime() - timeZoneOffset * 60 * 1000);
 
   const fields: FormProps = {
       name: '',
@@ -46,20 +47,23 @@ function CreateContacts() {
       organizations: [],
 };
 
+//  const [errors, setErrors] = useState({});
+
   const schema = Joi.object({
-    name: Joi.string().label('Name').required(),
+    name: Joi.string().required().label('Name'),
+    date: Joi.date().required().label('Date'),
+    locations: Joi.object().required().label('Location'),
+    organizations: Joi.object().required().label('Organization'),
     email: Joi.string().email({ tlds: { allow: false } }).required().label('Email'),
     phone: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/)
+      // eslint-disable-next-line newline-per-chained-call
       .required().label('Phone'),
       //exten: Joi.string().length(5).pattern(/^[0-9*#]+$/).label('Extension'),
-    locations: Joi.array().items(Joi.object()).label('Location').required(),
-    organizations: Joi.array().items(Joi.object()).label('Organization').required(),
-    
   });
 
   const doSubmit = async () => {
     try {
-      const locationIds = form.data.organizations?form.data.organizations.map(location => location.id) : [];
+      const locationIds = form.data.organizations ? form.data.organizations.map(location => location.id) : [];
   
       const CreateContactDTO: CreateContactDTO = {
         name: form.data.name,
@@ -81,39 +85,30 @@ function CreateContacts() {
     }
   };
   
-  
 
   const form = useForm<FormProps>({ fields, schema, doSubmit });
-  
+
   return (
     <div>
       <h1>Create Contacts</h1>
       <form className={`${styles.formContainer}`}>
         {form.renderInput({id: 'name', label: 'Name'})}
         {form.renderInput({id: 'email', label: 'Email'})}
-        {form.renderInput({id: 'phone', label: 'Phone Number', type: 'number'})}
+        {form.renderInput({id: 'phone', label: 'Phone Number'})}
 
         <h3>Organization</h3>
-        {form.renderChildForm(
-          form,
-          'organizations',
-          AddOrganization,
-          form.data.organizations,
-          { organizationId: form.data.organizations },
-        )}
-        {form.data.organizations && (
-  <div>
-    <h3>Location</h3>
-    {form.renderChildForm(
-      form,
-      'locations',
-      AddLocation,
-      (form.data.organizations[0]?.locations),
-      {organizationId: form.data.organizations,}
-    )}
-  </div>
-)}
+        {form.renderChildForm(form, 'organization', AddOrganization, form.data.organizations, { organizationId: form.data.organizations })}
 
+        {form.data.organizations && (
+          <div>
+            <h3>Location</h3>
+            {form.renderChildForm(form, 'location', AddLocation,form.data.organizations
+  ?.flatMap(organization => organization.locations?.map(location => location?.locName))
+  ?.filter(name => name !== null) || [], {
+              organizationId: form.data.organizations.map(id=>id),
+            })}
+          </div>
+        )}
 
         {form.renderButton('Create')}
       </form>
