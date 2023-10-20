@@ -40,7 +40,6 @@ communicationsRouter.get('/:id', errorHandler(async (req: Request, res: Response
 // POST a new communication
 communicationsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
 	const communicationData = req.body;
-  // console.log(communicationData)
 
 	try {
 		const newCommunication = await Communications.create({
@@ -62,7 +61,6 @@ communicationsRouter.post('/', errorHandler(async (req: Request, res: Response) 
 
 		res.status(201).json(newCommunication);
 	} catch (error) {
-    // console.log(error)
 		res.status(500).send((error as Error).message);
 	}
 })
