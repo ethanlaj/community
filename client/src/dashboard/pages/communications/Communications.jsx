@@ -12,7 +12,7 @@ function Communications() {
       let data = await communicationService.getAll();
 
       data = data.map((comm) => {
-        const org = comm.Organization;
+        const org = comm.organization;
         if (!org) return comm;
 
         return {
