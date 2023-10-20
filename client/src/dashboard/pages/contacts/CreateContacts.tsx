@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Joi from 'joi';
 import ContactService from '@/services/contactService'
@@ -35,9 +34,6 @@ interface FormProps {
 
 function CreateContacts() {
   const navigate = useNavigate();
-  const now = new Date();
-  const timeZoneOffset = now.getTimezoneOffset();
-  const nowLocal = new Date(now.getTime() - timeZoneOffset * 60 * 1000);
 
   const fields: FormProps = {
       name: '',
@@ -47,16 +43,13 @@ function CreateContacts() {
       organizations: [],
 };
 
-//  const [errors, setErrors] = useState({});
-
   const schema = Joi.object({
-    name: Joi.string().required().label('Name'),
-    date: Joi.date().required().label('Date'),
-    locations: Joi.object().required().label('Location'),
-    organizations: Joi.object().required().label('Organization'),
+    name: Joi.string().label('Name').required(),
+    date: Joi.date().label('Date').required(),
+    locations: Joi.array().items(Joi.object().label('Location')).required(),
+    organizations: Joi.array().items(Joi.object().label('Organization')).required(),
     email: Joi.string().email({ tlds: { allow: false } }).required().label('Email'),
     phone: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/)
-      // eslint-disable-next-line newline-per-chained-call
       .required().label('Phone'),
       //exten: Joi.string().length(5).pattern(/^[0-9*#]+$/).label('Extension'),
   });
@@ -92,17 +85,17 @@ function CreateContacts() {
     <div>
       <h1>Create Contacts</h1>
       <form className={`${styles.formContainer}`}>
-        {form.renderInput({id: 'name', label: 'Name'})}
-        {form.renderInput({id: 'email', label: 'Email'})}
-        {form.renderInput({id: 'phone', label: 'Phone Number'})}
+        {form.renderInput({id: 'name', label: 'name'})}
+        {form.renderInput({id: 'email', label: 'name'})}
+        {form.renderInput({id: 'phone', label: 'phone'})}
 
         <h3>Organization</h3>
-        {form.renderChildForm(form, 'organization', AddOrganization, form.data.organizations, { organizationId: form.data.organizations })}
+        {form.renderChildForm(form, 'organizations', AddOrganization, form.data.organizations, { organizationId: form.data.organizations })}
 
         {form.data.organizations && (
           <div>
             <h3>Location</h3>
-            {form.renderChildForm(form, 'location', AddLocation,form.data.organizations
+            {form.renderChildForm(form, 'locations', AddLocation, form.data.organizations
   ?.flatMap(organization => organization.locations?.map(location => location?.locName))
   ?.filter(name => name !== null) || [], {
               organizationId: form.data.organizations.map(id=>id),
