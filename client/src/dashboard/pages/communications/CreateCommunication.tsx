@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import Joi from 'joi';
 import useForm from '@/shared/hooks/useForm';
 import styles from './CreateCommunication.module.css';
-import AddContacts from '@/dashboard/pages/contacts/AddContacts';
 import AddUsers from '@/dashboard/pages/users/AddUsers';
 // import AddLocation from '@/dashboard/pages/organizations/AddLocation';
 import CommunicationService from '@/services/communicationService';
 import { RenderSelectOption } from '@/types/inputTypes';
 import OrganizationService from '@/services/organizationService';
 import ContactService from '@/services/contactService';
-import AddOrganizationsAndContacts from './AddOrganizationsAndContacts';
+import AddContactsAndOrganizations from './AddContactsAndOrganizations';
 import { Contact } from '@/types/contact';
 import { Organization } from '@/types/organization';
 
@@ -60,11 +59,21 @@ function CreateCommunication() {
 
   const schema = Joi.object({
     date: Joi.date().required().label('Date'),
-    contacts: Joi.array().items(Joi.object().label('Contact')).required(),
-    users: Joi.array().items(Joi.object().label('User')).required(),
+    contacts: Joi.array()
+      .items(Joi.object().label('Contact'))
+      .label('Contacts')
+      .required(),
+    users: Joi.array()
+      .items(Joi.object().label('User'))
+      .label('Users')
+      .required(),
     note: Joi.string().allow('').label('Note'),
     location: Joi.object().allow(null).label('Location'),
-    organizations: Joi.array().items(Joi.object().label('Organization')).required(),
+    organizations: Joi.array()
+      .items(Joi.object().label('Organization'))
+      .label('Organizations')
+      .min(1)
+      .required(),
     type: Joi.string().allow('email', 'phone', 'in-person', 'mail').label('Type').required(),
   });
 
@@ -122,13 +131,18 @@ function CreateCommunication() {
         {form.renderSelect('type', 'Type', typeOptions)}
 
         <div>
-          <h3>Organizations and Contacts</h3>
-          <AddOrganizationsAndContacts
+          <h3>Contacts and Organizations</h3>
+          <p>
+            Which contacts were a part of this communication? Organizations will automatically be added for you.
+          </p>
+          <AddContactsAndOrganizations
             organizations={form.data.organizations}
             contacts={form.data.contacts}
             allContacts={allContacts}
             allOrganizations={allOrganizations}
             handleChange={form.handleDataChange}
+            organizationsError={form.errors.organizations}
+            contactsError={form.errors.contacts}
           />
 
           <h3>Location</h3>
@@ -136,12 +150,6 @@ function CreateCommunication() {
             // organizationId: form.data.organization.id,
             // organizations: allOrganizations,
           })} */}
-
-          <h3>Add Contacts</h3>
-          <p>Which organization members were a part of this communication?</p>
-          {form.renderChildForm(form, 'contacts', AddContacts, form.data.contacts, {
-            // organizationId: form.data.organization.id,
-          })}
 
           <h3>Add Users</h3>
           <p>
