@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Joi from 'joi';
 import ContactService from '@/services/contactService'
@@ -97,15 +96,20 @@ function CreateContacts() {
         {form.renderInput({id: 'phone', label: 'Phone Number'})}
 
         <h3>Organization</h3>
-        {form.renderChildForm(form, 'organization', AddOrganization, form.data.organizations, { organizationId: form.data.organizations })}
+        {form.renderChildForm(
+          form,
+          'organization',
+          AddOrganization,
+          form.data.organizations,
+          { organizationId: form.data.organizations })}
 
         {form.data.organizations && (
           <div>
             <h3>Location</h3>
             {form.renderChildForm(form, 'location', AddLocation,form.data.organizations
-  ?.flatMap(organization => organization.locations?.map(location => location?.locName))
-  ?.filter(name => name !== null) || [], {
-              organizationId: form.data.organizations.map(id=>id),
+                ?.flatMap(organization => organization.locations?.map(location => location?.locName))
+                ?.filter(name => name !== null) || [], {
+              organizationId: form.data.organizations,
             })}
           </div>
         )}
