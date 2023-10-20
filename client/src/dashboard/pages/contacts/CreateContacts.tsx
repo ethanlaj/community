@@ -34,9 +34,6 @@ interface FormProps {
 
 function CreateContacts() {
   const navigate = useNavigate();
-  const now = new Date();
-  const timeZoneOffset = now.getTimezoneOffset();
-  const nowLocal = new Date(now.getTime() - timeZoneOffset * 60 * 1000);
 
   const fields: FormProps = {
     name: '',
@@ -46,17 +43,15 @@ function CreateContacts() {
     organizations: [],
   };
 
-  //  const [errors, setErrors] = useState({});
-
   const schema = Joi.object({
-    name: Joi.string().required().label('Name'),
-    date: Joi.date().required().label('Date'),
-    locations: Joi.object().required().label('Location'),
-    organizations: Joi.object().required().label('Organization'),
+    name: Joi.string().label('Name').required(),
+    date: Joi.date().label('Date').required(),
+    locations: Joi.array().items(Joi.object().label('Location')).required(),
+    organizations: Joi.array().items(Joi.object().label('Organization')).required(),
     email: Joi.string().email({ tlds: { allow: false } }).required().label('Email'),
     phone: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/)
-      // eslint-disable-next-line newline-per-chained-call
-      .required().label('Phone'),
+      .required()
+      .label('Phone'),
     // exten: Joi.string().length(5).pattern(/^[0-9*#]+$/).label('Extension'),
   });
 
