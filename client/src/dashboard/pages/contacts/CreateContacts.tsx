@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import Joi from 'joi';
+import Joi, { number } from 'joi';
 import ContactService from '@/services/contactService'
 import AddLocation from '@/dashboard/pages/organizations/AddLocation';
 import useForm from '@/shared/hooks/useForm';
@@ -14,18 +14,21 @@ interface CreateContactDTO {
   locationIds: number[];
 }
 
-interface FormProps {
- 
-  organizations: {
+interface Location{
     id: number;
-    orgName: string;
-    locations: {
-      id: number;
-      locName: string;
-      address: string;
-    }[] | null;
+    name: string;
+    address: string;
+}
 
-  }[] | null;
+interface Organization{
+    id: number;
+    name: string;
+    locations: Location[];
+}
+
+interface FormProps {
+  organizations: Organization[];
+ 
   name: string;
   email: string;
   phone: string;
@@ -45,18 +48,18 @@ function CreateContacts() {
 
   const schema = Joi.object({
     name: Joi.string().label('Name').required(),
-    date: Joi.date().label('Date').required(),
-    locations: Joi.array().items(Joi.object().label('Location')).required(),
-    organizations: Joi.array().items(Joi.object().label('Organization')).required(),
     email: Joi.string().email({ tlds: { allow: false } }).required().label('Email'),
     phone: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/)
       .required().label('Phone'),
       //exten: Joi.string().length(5).pattern(/^[0-9*#]+$/).label('Extension'),
+    locations: Joi.array().items(Joi.object()).label('Location').required(),
+    organizations: Joi.array().items(Joi.object()).label('Organization').required(),
+    
   });
 
   const doSubmit = async () => {
     try {
-      const locationIds = form.data.organizations ? form.data.organizations.map(location => location.id) : [];
+      const locationIds = form.data.organizations?form.data.organizations.map(location => location.id) : [];
   
       const CreateContactDTO: CreateContactDTO = {
         name: form.data.name,
@@ -78,30 +81,39 @@ function CreateContacts() {
     }
   };
   
+  
 
   const form = useForm<FormProps>({ fields, schema, doSubmit });
-
+  
   return (
     <div>
       <h1>Create Contacts</h1>
       <form className={`${styles.formContainer}`}>
-        {form.renderInput({id: 'name', label: 'name'})}
-        {form.renderInput({id: 'email', label: 'name'})}
-        {form.renderInput({id: 'phone', label: 'phone'})}
+        {form.renderInput({id: 'name', label: 'Name'})}
+        {form.renderInput({id: 'email', label: 'Email'})}
+        {form.renderInput({id: 'phone', label: 'Phone Number', type: 'number'})}
 
         <h3>Organization</h3>
-        {form.renderChildForm(form, 'organizations', AddOrganization, form.data.organizations, { organizationId: form.data.organizations })}
-
-        {form.data.organizations && (
-          <div>
-            <h3>Location</h3>
-            {form.renderChildForm(form, 'locations', AddLocation, form.data.organizations
-  ?.flatMap(organization => organization.locations?.map(location => location?.locName))
-  ?.filter(name => name !== null) || [], {
-              organizationId: form.data.organizations.map(id=>id),
-            })}
-          </div>
+        {form.renderChildForm(
+          form,
+          'organizations',
+          AddOrganization,
+          form.data.organizations,
+          { organizationId: form.data.organizations },
         )}
+        {form.data.organizations && (
+  <div>
+    <h3>Location</h3>
+    {form.renderChildForm(
+      form,
+      'locations',
+      AddLocation,
+      (form.data.organizations[0]?.locations),
+      {organizationId: form.data.organizations,}
+    )}
+  </div>
+)}
+
 
         {form.renderButton('Create')}
       </form>
