@@ -4,8 +4,9 @@ import config from '../config';
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/communications`;
 
-interface Communication {
+interface CreateCommunicationDTO {
   date: string;
+  type: string;
   contactIds: number[];
   userIds: number[];
   note: string;
@@ -26,7 +27,7 @@ export default class CommunicationService {
     return response.data;
   }
 
-  static async create(communication: Communication) {
+  static async create(communication: CreateCommunicationDTO) {
     const response = await http.post(apiEndpoint, communication);
     return response.data;
   }

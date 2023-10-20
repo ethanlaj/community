@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Contact } from '@/types/contact';
 import { Organization } from '@/types/organization';
 import ReactiveSearchWithTable from './ReactiveSearchWithTable';
@@ -24,7 +25,7 @@ function AddContactsAndOrganizations({
 }: AddContactsAndOrganizationsProps) {
   const contactOptions = allContacts.filter((contact) => contacts.find((c) => c.id === contact.id) === undefined);
   const organizationOptions = allOrganizations.filter((organization) => organizations.find((o) => o.id === organization.id) === undefined);
-  const autoAddBlacklist: number[] = [];
+  const [autoAddBlacklist, setAutoAddBlacklist] = useState<number[]>([]);
 
   const handleOrganizationSelect = (organization: Organization) => {
     const newOrgs = [...organizations, organization];
@@ -34,12 +35,19 @@ function AddContactsAndOrganizations({
   const handleOrganizationDelete = (id: number) => {
     const newOrgs = organizations.filter((o) => o.id !== id);
     handleChange('organizations', newOrgs);
-    autoAddBlacklist.push(id);
+    setAutoAddBlacklist((prev) => [...prev, id]);
   };
 
   const handleContactSelect = (contact: Contact) => {
     const newContacts = [...contacts, contact];
     handleChange('contacts', newContacts);
+
+    // Only add new Organizations that haven't been removed by the user yet
+    const orgsToAdd = contact.organizations
+      .filter((org) => !autoAddBlacklist.includes(org.id))
+      .filter((org) => !organizations.find((o) => o.id === org.id));
+
+    handleChange('organizations', [...organizations, ...orgsToAdd]);
   };
 
   const handleContactDelete = (id: number) => {

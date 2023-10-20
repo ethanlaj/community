@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import styles from './Communications.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import communicationService from '@/services/communicationService';
 
@@ -59,7 +58,7 @@ function Communications() {
   };
 
   return (
-    <div className={styles.content}>
+    <div>
       <h1>Communications</h1>
       <ClickableTable
         style={{ width: '20px' }}

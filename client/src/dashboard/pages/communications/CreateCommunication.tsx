@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Joi from 'joi';
 import useForm from '@/shared/hooks/useForm';
-import styles from './CreateCommunication.module.css';
 import AddUsers from '@/dashboard/pages/users/AddUsers';
 import AddLocation from '@/dashboard/pages/organizations/AddLocation';
 import CommunicationService from '@/services/communicationService';
@@ -78,11 +77,12 @@ function CreateCommunication() {
   const doSubmit = async () => {
     try {
       const {
-        date, contacts, users, note, location, organizations,
+        date, contacts, users, note, location, organizations, type,
       } = form.data;
 
       const communication = {
         date,
+        type,
         note,
         locationId: location?.id,
         organizationIds: organizations?.map((o) => o.id),
@@ -123,7 +123,7 @@ function CreateCommunication() {
   return (
     <div>
       <h1>Create Communication</h1>
-      <form className={`${styles.formContainer}`}>
+      <form className="m-auto w-70p">
         {form.renderInput({ id: 'date', label: 'Date', type: 'date' })}
         {form.renderInput({ id: 'note', label: 'Note', type: 'textarea' })}
         {form.renderSelect('type', 'Type', typeOptions)}
@@ -145,7 +145,9 @@ function CreateCommunication() {
 
           <h3>Location</h3>
           {form.renderChildForm(form, 'location', AddLocation, form.data.location, {
-            organizationId: form.data.organizations.length === 1 ? form.data.organizations[0].id : undefined,
+            organizationId: form.data.organizations.length === 1
+              ? form.data.organizations[0].id
+              : undefined,
             organizations: allOrganizations,
           })}
 

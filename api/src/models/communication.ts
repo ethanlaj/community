@@ -15,6 +15,7 @@ import {
 	CommunicationContacts,
 	Users,
 	CommunicationUsers,
+	CommunicationOrganizations,
 } from '.';
 
 @Table({ tableName: 'Communications' })
@@ -27,6 +28,9 @@ export class Communications extends Model {
 	@Column
 		date!: Date;
 
+	@Column
+		type!: string;
+
 	@ForeignKey(() => Organizations)
 	@Column
 		organizationId?: number;
@@ -38,11 +42,11 @@ export class Communications extends Model {
 	@Column
 		note?: string;
 
-	@BelongsTo(() => Organizations, 'organizationId')
-		organization!: Organizations;
-
 	@BelongsTo(() => OrganizationLocations, 'locationId')
 		organizationLocation!: OrganizationLocations;
+
+	@BelongsToMany(() => Organizations, () => CommunicationOrganizations, 'CommunicationId', 'OrganizationId')
+		organizations!: Organizations[];
 
 	@BelongsToMany(() => Contacts, () => CommunicationContacts, 'CommunicationId', 'ContactId')
 		contacts!: Contacts[];
