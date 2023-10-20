@@ -148,7 +148,7 @@ function CreateCommunication() {
             organizationId: form.data.organizations.length === 1
               ? form.data.organizations[0].id
               : undefined,
-            organizations: allOrganizations,
+            organizations: form.data.organizations,
           })}
 
           <h3>Add Users</h3>

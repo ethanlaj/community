@@ -3,6 +3,7 @@ import { Alert } from 'react-bootstrap';
 import locationService from '@/services/locationService';
 import { UseFormReturn } from '@/types/inputTypes';
 import { Organization } from '@/types/organization';
+import { Location } from '@/types/location';
 
 interface FormProps {
   location: Location;
