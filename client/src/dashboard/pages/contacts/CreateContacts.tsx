@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Joi, { number } from 'joi';
 import ContactService from '@/services/contactService';
@@ -14,18 +15,6 @@ interface CreateContactDTO {
   locationIds: number[];
 }
 
-interface Location{
-    id: number;
-    name: string;
-    address: string;
-}
-
-interface Organization{
-    id: number;
-    name: string;
-    locations: Location[];
-}
-
 interface FormProps {
   organizations: Organization[];
 
@@ -37,6 +26,9 @@ interface FormProps {
 
 function CreateContacts() {
   const navigate = useNavigate();
+  const now = new Date();
+  const timeZoneOffset = now.getTimezoneOffset();
+  const nowLocal = new Date(now.getTime() - timeZoneOffset * 60 * 1000);
 
   const fields: FormProps = {
     name: '',
@@ -47,7 +39,10 @@ function CreateContacts() {
   };
 
   const schema = Joi.object({
-    name: Joi.string().label('Name').required(),
+    name: Joi.string().required().label('Name'),
+    date: Joi.date().required().label('Date'),
+    locations: Joi.object().required().label('Location'),
+    organizations: Joi.object().required().label('Organization'),
     email: Joi.string().email({ tlds: { allow: false } }).required().label('Email'),
     phone: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/)
       .required()
