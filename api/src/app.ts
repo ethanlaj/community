@@ -1,8 +1,11 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import path from 'path';
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const cors = require('cors');
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import cors from 'cors';
 
 import sequelize from './database';
 import errorHandler from './errorHandler';
@@ -39,4 +42,7 @@ app.use('/communications', communicationsRouter);
 
 app.use(errorHandler);
 
-module.exports = app;
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+	console.log(`Server listening on port ${PORT}`);
+});

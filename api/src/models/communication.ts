@@ -7,45 +7,46 @@ import {
 	ForeignKey,
 	BelongsTo,
 	BelongsToMany,
-  } from 'sequelize-typescript';
-  import Organizations  from './organization';
-  import OrganizationLocations  from './organizationLocation';
-  import  Contacts  from './contact';
-  import Users  from './user';
-  import  CommunicationContacts  from './communicationContact';
-  import  CommunicationUsers  from './communicationUser';
-  
-  @Table({ tableName: 'Communications' })
-  export default class Communications extends Model {
+} from 'sequelize-typescript';
+import {
+	Organizations,
+	OrganizationLocations,
+	Contacts,
+	CommunicationContacts,
+	Users,
+	CommunicationUsers,
+} from '.';
+
+@Table({ tableName: 'Communications' })
+export class Communications extends Model {
 	@PrimaryKey
 	@AutoIncrement
 	@Column
-	id!: number;
-  
+		id!: number;
+
 	@Column
-	date!: Date;
-  
+		date!: Date;
+
 	@ForeignKey(() => Organizations)
 	@Column
-	organizationId?: number;
-  
+		organizationId?: number;
+
 	@ForeignKey(() => OrganizationLocations)
 	@Column
-	locationId?: number;
-  
+		locationId?: number;
+
 	@Column
-	note?: string;
-  
+		note?: string;
+
 	@BelongsTo(() => Organizations, 'organizationId')
-	organization!: Organizations;
-  
+		organization!: Organizations;
+
 	@BelongsTo(() => OrganizationLocations, 'locationId')
-	organizationLocation!: OrganizationLocations;
-  
+		organizationLocation!: OrganizationLocations;
+
 	@BelongsToMany(() => Contacts, () => CommunicationContacts, 'CommunicationId', 'ContactId')
-	contacts!: Contacts[];
-  
+		contacts!: Contacts[];
+
 	@BelongsToMany(() => Users, () => CommunicationUsers, 'CommunicationId', 'UserId')
-	users!: Users[];
-  }
-  
+		users!: Users[];
+}
