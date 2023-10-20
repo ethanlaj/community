@@ -88,7 +88,7 @@ function useForm<T extends object>({
     });
   };
 
-  const handleDataChange = (id: string, value: string) => {
+  const handleDataChange = (id: string, value: any) => {
     const fakeChangeEvent = { currentTarget: { id, value } } as ChangeEvent<HTMLInputElement>;
     handleChange(fakeChangeEvent);
   };
@@ -197,6 +197,7 @@ function useForm<T extends object>({
     setData,
     handleSubmit,
     handleChange,
+    handleDataChange,
     renderChildForm,
     renderEditableTable,
     renderButton,

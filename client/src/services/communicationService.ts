@@ -6,22 +6,11 @@ const apiEndpoint = `${apiUrl}/communications`;
 
 interface Communication {
   date: string;
-  contacts: {
-    name: string;
-    email: string;
-    phone: string;
-  }[];
-  users: {
-    name: string;
-    email: string;
-    phone: string;
-  }[];
+  contactIds: number[];
+  userIds: number[];
   note: string;
-  locationId: string | undefined;
-  organization: {
-    id: string;
-    name: string;
-  } | null;
+  locationId: number | undefined;
+  organizationIds: number[];
 }
 
 export default class CommunicationService {
