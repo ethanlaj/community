@@ -13,27 +13,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-const organization_1 = __importDefault(require("./organization")); // Import your Organization model
-let OrganizationLocations = class OrganizationLocations extends sequelize_typescript_1.Model {
+const communication_1 = __importDefault(require("./communication"));
+const contact_1 = __importDefault(require("./contact"));
+let CommunicationContacts = class CommunicationContacts extends sequelize_typescript_1.Model {
 };
 __decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], OrganizationLocations.prototype, "address", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], OrganizationLocations.prototype, "name", void 0);
-__decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => organization_1.default),
+    sequelize_typescript_1.PrimaryKey,
+    (0, sequelize_typescript_1.ForeignKey)(() => communication_1.default),
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
-], OrganizationLocations.prototype, "organizationId", void 0);
+], CommunicationContacts.prototype, "CommunicationId", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => organization_1.default),
-    __metadata("design:type", organization_1.default)
-], OrganizationLocations.prototype, "organization", void 0);
-OrganizationLocations = __decorate([
-    (0, sequelize_typescript_1.Table)({ tableName: 'OrganizationLocations' })
-], OrganizationLocations);
-exports.default = OrganizationLocations;
+    sequelize_typescript_1.PrimaryKey,
+    (0, sequelize_typescript_1.ForeignKey)(() => contact_1.default),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], CommunicationContacts.prototype, "ContactId", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Date)
+], CommunicationContacts.prototype, "createdAt", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Date)
+], CommunicationContacts.prototype, "updatedAt", void 0);
+CommunicationContacts = __decorate([
+    (0, sequelize_typescript_1.Table)({ tableName: 'CommunicationContacts' })
+], CommunicationContacts);
+exports.default = CommunicationContacts;
