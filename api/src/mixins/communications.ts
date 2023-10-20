@@ -1,7 +1,13 @@
 import { CommunicationContacts, Communications } from '../models';
 
 export async function setContacts(communication: Communications, contactIds: number[]) {
-	const contactsToRemove = communication.contacts
+	const currentContacts = await CommunicationContacts.findAll({
+		where: {
+			CommunicationId: communication.id,
+		},
+	});
+	
+	const contactsToRemove = currentContacts
 		.map((contact) => contact.id)
 		.filter(id => !contactIds.includes(id));
   
