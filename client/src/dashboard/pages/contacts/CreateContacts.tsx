@@ -48,6 +48,9 @@ function CreateContacts() {
 
   const schema = Joi.object({
     name: Joi.string().label('Name').required(),
+    date: Joi.date().label('Date').required(),
+    locations: Joi.array().items(Joi.object().label('Location')).required(),
+    organizations: Joi.array().items(Joi.object().label('Organization')).required(),
     email: Joi.string().email({ tlds: { allow: false } }).required().label('Email'),
     phone: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/)
       .required().label('Phone'),
