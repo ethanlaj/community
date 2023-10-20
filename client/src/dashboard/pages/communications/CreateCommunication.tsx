@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Joi from 'joi';
 import useForm from '@/shared/hooks/useForm';
 import styles from './CreateCommunication.module.css';
 import AddUsers from '@/dashboard/pages/users/AddUsers';
-// import AddLocation from '@/dashboard/pages/organizations/AddLocation';
+import AddLocation from '@/dashboard/pages/organizations/AddLocation';
 import CommunicationService from '@/services/communicationService';
 import { RenderSelectOption } from '@/types/inputTypes';
 import OrganizationService from '@/services/organizationService';
@@ -12,6 +13,7 @@ import ContactService from '@/services/contactService';
 import AddContactsAndOrganizations from './AddContactsAndOrganizations';
 import { Contact } from '@/types/contact';
 import { Organization } from '@/types/organization';
+import { Location } from '@/types/location';
 
 interface FormProps {
   date: string;
@@ -24,11 +26,7 @@ interface FormProps {
     phone: string;
   }[];
   note: string;
-  location: {
-    id: number,
-    name: string;
-    address: string;
-  } | null;
+  location: Location | null;
   organizations: Organization[];
 }
 
@@ -95,7 +93,7 @@ function CreateCommunication() {
       await CommunicationService.create(communication);
       navigate('/communications', { replace: true });
     } catch (ex) {
-      console.error(ex);
+      toast.error('An unexpected error occurred.');
     }
   };
 
@@ -115,7 +113,7 @@ function CreateCommunication() {
         setAllOrganizations(allOrganizationsResponse);
         setAllContacts(allContactsResponse);
       } catch (ex) {
-        console.error(ex); // TODO: toast
+        toast.error('An unexpected error occurred.');
       }
     }
 
@@ -146,10 +144,10 @@ function CreateCommunication() {
           />
 
           <h3>Location</h3>
-          {/* {form.renderChildForm(form, 'location', AddLocation, form.data.location, {
-            // organizationId: form.data.organization.id,
-            // organizations: allOrganizations,
-          })} */}
+          {form.renderChildForm(form, 'location', AddLocation, form.data.location, {
+            organizationId: form.data.organizations.length === 1 ? form.data.organizations[0].id : undefined,
+            organizations: allOrganizations,
+          })}
 
           <h3>Add Users</h3>
           <p>

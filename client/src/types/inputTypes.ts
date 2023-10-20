@@ -46,7 +46,7 @@ export interface RenderSearchProps {
     keyPath: string;
     valuePath: string;
     headerLabel?: string;
-    handleChange?: (id: string, value: string) => void;
+    handleChange?: (id: string, value: any) => void;
     resetOnSelect?: boolean;
     selectionLabel?: string;
     onRefresh?: () => void;

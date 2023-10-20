@@ -1,10 +1,28 @@
 import { useState, useEffect } from 'react';
 import { Alert } from 'react-bootstrap';
 import locationService from '@/services/locationService';
+import { UseFormReturn } from '@/types/inputTypes';
+import { Organization } from '@/types/organization';
+
+interface FormProps {
+  location: Location;
+}
+
+interface AddLocationProps {
+  form: UseFormReturn<FormProps>;
+  errors: UseFormReturn<FormProps>['errors'];
+  onChange: (value: any) => void;
+  organizationId?: number;
+  organizations: Organization[];
+}
 
 function AddLocation({
-  form, errors, onChange, organizationId, organizations,
-}) {
+  form,
+  errors,
+  onChange: handleChange,
+  organizationId,
+  organizations,
+}: AddLocationProps) {
   const isChild = form !== undefined;
   const [organizationFilter, setOrganizationFilter] = useState(organizationId);
   const [locations, setLocation] = useState([]);
@@ -15,7 +33,6 @@ function AddLocation({
       : locationService.getAll());
 
     setLocation(locationsResult);
-    handleChange(null);
   };
 
   useEffect(() => {
@@ -23,9 +40,11 @@ function AddLocation({
     handleChange(null);
   }, [organizationFilter]);
 
-  const handleChange = (_id, value) => {
-    onChange(value);
-  };
+  useEffect(() => {
+    if (!organizationFilter) {
+      setOrganizationFilter(organizationId);
+    }
+  }, [organizationId]);
 
   return (
     <div>
@@ -35,7 +54,7 @@ function AddLocation({
         items: organizations,
         keyPath: 'id',
         valuePath: 'name',
-        handleChange: (_id, organization) => { setOrganizationFilter(organization.id); },
+        handleChange: (_id, organization: Organization) => { setOrganizationFilter(organization.id); },
         selectionLabel: 'Filter by Organization',
         onRefresh: fetchLocation,
       })}
@@ -45,12 +64,12 @@ function AddLocation({
         items: locations,
         keyPath: 'id',
         valuePath: 'name',
-        handleChange,
+        handleChange: (_id, location: Location) => { handleChange(location); },
         selectionLabel: 'Search Locations',
         onRefresh: fetchLocation,
       })}
 
-      {errors.locations && <Alert variant="danger">{errors.locations}</Alert>}
+      {errors.location && <Alert variant="danger">{errors.location}</Alert>}
     </div>
   );
 }

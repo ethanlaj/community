@@ -105,7 +105,7 @@ function useForm<T extends object>({
       data={childData}
       errors={errors}
       {...props}
-      onChange={(value: string) => handleDataChange(id, value)}
+      onChange={(value: any) => handleDataChange(id, value)}
     />
   );
 
