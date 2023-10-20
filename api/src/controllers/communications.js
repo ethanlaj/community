@@ -49,8 +49,6 @@ communicationsRouter.post('/', (0, errorHandler_1.default)((req, res) => __await
         if (communicationData.contacts && communicationData.contacts.length > 0) {
             for (const contact of communicationData.contacts) {
                 const contactId = contact.id;
-                console.log('contactId', contactId);
-                console.log('newCommunication.id', newCommunication.id);
                 yield communicationContact_1.default.create({
                     communicationId: newCommunication.id,
                     contactId: contactId,
