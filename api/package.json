@@ -4,9 +4,17 @@
 	"private": true,
 	"scripts": {
 		"dev": "nodemon",
-		"start": "node ./bin/www",
+		"start": "node dist/app.js",
 		"lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-		"fix": "npm run lint -- --fix"
+		"fix": "npm run lint -- --fix",
+		"build": "tsc"
+	},
+	"nodemonConfig": {
+		"watch": [
+			"src"
+		],
+		"ext": "ts,js,json",
+		"exec": "ts-node ./src/app.ts"
 	},
 	"dependencies": {
 		"cookie-parser": "~1.4.4",
@@ -16,10 +24,20 @@
 		"express": "^4.18.2",
 		"morgan": "~1.9.1",
 		"mysql2": "^3.2.0",
-		"sequelize": "^6.6.5",
-		"sequelize-auto": "^0.8.8"
+		"sequelize": "^6.33.0",
+		"sequelize-auto": "^0.8.8",
+		"sequelize-typescript": "^2.1.5"
 	},
 	"devDependencies": {
-		"eslint": "^8.50.0"
+		"@types/cookie-parser": "^1.4.5",
+		"@types/cors": "^2.8.15",
+		"@types/express": "^4.17.20",
+		"@types/morgan": "^1.9.7",
+		"@types/node": "^20.8.4",
+		"@typescript-eslint/eslint-plugin": "^6.7.5",
+		"@typescript-eslint/parser": "^6.7.5",
+		"eslint": "^8.50.0",
+		"ts-node": "^10.9.1",
+		"typescript": "^5.2.2"
 	}
 }
