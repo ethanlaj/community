@@ -26,7 +26,6 @@ contactsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
 
 contactsRouter.get('/:id', errorHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
-  console.log('id from params', id)
 
   try {
     const contact = await Contacts.findByPk(id, {
