@@ -1,8 +1,28 @@
 import http from './httpService';
-import config from '../config.ts';
+import config from '../config';
 
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/communications`;
+
+interface Communication {
+  date: string;
+  contacts: {
+    name: string;
+    email: string;
+    phone: string;
+  }[];
+  users: {
+    name: string;
+    email: string;
+    phone: string;
+  }[];
+  note: string;
+  locationId: string | undefined;
+  organization: {
+    id: string;
+    name: string;
+  } | null;
+}
 
 export default class CommunicationService {
   static http = http.create();
@@ -17,7 +37,7 @@ export default class CommunicationService {
     return response.data;
   }
 
-  static async create(communication: string) {
+  static async create(communication: Communication) {
     const response = await http.post(apiEndpoint, communication);
     return response.data;
   }
