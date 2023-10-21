@@ -22,4 +22,23 @@ usersRouter.post('/', errorHandler(async (req: Request, res: Response) => {
 	}
 }));
 
+// Delete a user by id
+usersRouter.delete('/:id', errorHandler(async (req: Request, res: Response) => {
+	const userId = req.params.id;
+	try {
+		const user = await Users.findByPk(userId);
+		if(!user) {
+			res.status(404).send('User not found');
+		}
+		else{
+			await user.destroy();
+			res.sendStatus(200);
+		}
+	}
+	catch(error) {
+		res.status(500).send((error as Error).message);
+	}
+}));
+
+
 export default usersRouter;
