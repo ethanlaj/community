@@ -19,6 +19,6 @@
   "homepage": "https://github.com/reddign/community#readme",
   "devDependencies": {
     "concurrently": "^8.0.1",
-    "lerna": "^6.6.1"
+    "lerna": "^7.4.1"
   }
 }
