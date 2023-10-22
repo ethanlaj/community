@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Run migrations
-RUN npm run db:migrate
+RUN npx sequelize db:migrate --env production
 
 EXPOSE 3001
 
