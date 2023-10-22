@@ -1,5 +1,5 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
-import { OrganizationLocations } from '../models';
+import { OrganizationLocations } from '../database/models';
 import errorHandler from '../errorHandler';
 import { FindOptions } from 'sequelize';
 

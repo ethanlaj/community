@@ -3,7 +3,7 @@ import {
 	Communications,
 	Organizations,
 	OrganizationLocations,
-} from '../models';
+} from '../database/models';
 import errorHandler from '../errorHandler';
 import { CreateCommunicationDTO } from '../types/CreateCommunicationDTO';
 import { setContacts, setOrganizations } from '../mixins/communications';
