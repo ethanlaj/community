@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ToastContainer } from 'react-toastify';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { MsalProvider } from '@azure/msal-react';
 import UnexpectedError from './shared/components/UnexpectedError';
 import NotFound from './shared/components/NotFound';
 import Unauthorized from './shared/components/Unauthorized';
@@ -14,31 +16,38 @@ import Organizations from './dashboard/pages/organizations/Organizations';
 import Contacts from './dashboard/pages/contacts/Contacts';
 import Communications from './dashboard/pages/communications/Communications';
 import { ModalProvider } from './shared/components/ModalContext';
+import ProtectedRoute from './shared/components/ProtectedRoute';
+import { msalConfig } from './config';
+
+const msalInstance = new PublicClientApplication(msalConfig);
 
 function App() {
   return (
     <ModalProvider>
       <ToastContainer />
-      <Router>
-        <div className={styles.content}>
-          <Sidebar />
-          <ErrorBoundary FallbackComponent={UnexpectedError}>
-            <Routes>
-              <Route path="/" element={<Organizations />} />
-              <Route path="/organizations/create" element={<CreateOrganization />} />
-              <Route path="/organizations" element={<Organizations />} />
-              <Route path="/contacts" element={<Contacts />} />
-              <Route path="/communications" element={<Communications />} />
-              <Route
-                path="/communications/create"
-                element={<CreateCommunication />}
-              />
-              <Route path="/unauthorized" element={<Unauthorized />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </ErrorBoundary>
-        </div>
-      </Router>
+      <MsalProvider instance={msalInstance}>
+        <Router>
+          <div className={styles.content}>
+            <Sidebar />
+            <ErrorBoundary FallbackComponent={UnexpectedError}>
+              <Routes>
+                <Route path="/" element={<Organizations />} />
+                <Route path="apple" element={<ProtectedRoute><div>Apple</div></ProtectedRoute>} />
+                <Route path="/organizations/create" element={<CreateOrganization />} />
+                <Route path="/organizations" element={<Organizations />} />
+                <Route path="/contacts" element={<Contacts />} />
+                <Route path="/communications" element={<Communications />} />
+                <Route
+                  path="/communications/create"
+                  element={<CreateCommunication />}
+                />
+                <Route path="/unauthorized" element={<Unauthorized />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </ErrorBoundary>
+          </div>
+        </Router>
+      </MsalProvider>
     </ModalProvider>
   );
 }
