@@ -11,9 +11,11 @@ export interface UseFormProps<T> {
 
 export interface UseFormReturn<T> {
     data: T;
+    errors: Errors<T>;
     setData: (data: T) => void;
     handleSubmit: (event: SubmitEvent) => void;
     handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    handleDataChange: (id: string, value: any) => void;
     renderChildForm: (form: UseFormReturn<T>, id: string, ChildFormComponent: React.ComponentType<any>, childData: any, props?: any) => JSX.Element;
     renderEditableTable: (props: EditableTableProps<T>) => JSX.Element;
     renderButton: (label: string) => JSX.Element;
@@ -44,7 +46,7 @@ export interface RenderSearchProps {
     keyPath: string;
     valuePath: string;
     headerLabel?: string;
-    handleChange?: (id: string, value: string) => void;
+    handleChange?: (id: string, value: any) => void;
     resetOnSelect?: boolean;
     selectionLabel?: string;
     onRefresh?: () => void;

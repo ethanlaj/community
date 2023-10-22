@@ -3,24 +3,14 @@ import { apiUrl } from '../config';
 
 const apiEndpoint = `${apiUrl}/communications`;
 
-interface Communication {
+interface CreateCommunicationDTO {
   date: string;
-  contacts: {
-    name: string;
-    email: string;
-    phone: string;
-  }[];
-  users: {
-    name: string;
-    email: string;
-    phone: string;
-  }[];
+  type: string;
+  contactIds: number[];
+  userIds: number[];
   note: string;
-  locationId: string | undefined;
-  organization: {
-    id: string;
-    name: string;
-  } | null;
+  locationId: number | undefined;
+  organizationIds: number[];
 }
 
 export default class CommunicationService {
@@ -36,7 +26,7 @@ export default class CommunicationService {
     return response.data;
   }
 
-  static async create(communication: Communication) {
+  static async create(communication: CreateCommunicationDTO) {
     const response = await http.post(apiEndpoint, communication);
     return response.data;
   }

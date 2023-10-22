@@ -7,3 +7,4 @@ export { Users } from './user';
 export { CommunicationContacts } from './communicationContact';
 export { CommunicationUsers } from './communicationUser';
 export { EtownOffices } from './etownOffice';
+export { CommunicationOrganizations } from './communicationOrganization';

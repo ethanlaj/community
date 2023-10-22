@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import { CommunicationContacts, CommunicationUsers, Communications, Contacts, EtownOffices, OrganizationLocations, Organizations, Users } from './models';
+import { CommunicationContacts, CommunicationUsers, Communications, Contacts, EtownOffices, OrganizationLocations, Organizations, Users, CommunicationOrganizations } from './models';
 
 const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
 
@@ -11,7 +11,7 @@ const sequelize = new Sequelize(DB_CONNECTION_STRING, {
 	dialect: 'mysql',
 	logging: false,
 	modelPaths: [__dirname + './models'],
-	models: [Contacts, Communications, Organizations, OrganizationLocations, Users, CommunicationContacts, CommunicationUsers, EtownOffices],
+	models: [Contacts, Communications, Organizations, OrganizationLocations, Users, CommunicationContacts, CommunicationUsers, EtownOffices, CommunicationOrganizations],
 });
 
 export default sequelize ; 

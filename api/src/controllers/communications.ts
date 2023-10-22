@@ -3,9 +3,10 @@ import {
 	Communications,
 	Organizations,
 	OrganizationLocations,
-	CommunicationContacts,
 } from '../models';
 import errorHandler from '../errorHandler';
+import { CreateCommunicationDTO } from '../types/CreateCommunicationDTO';
+import { setContacts, setOrganizations } from '../mixins/communications';
 
 const communicationsRouter: Router = express.Router();
 
@@ -39,24 +40,20 @@ communicationsRouter.get('/:id', errorHandler(async (req: Request, res: Response
 
 // POST a new communication
 communicationsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
-	const communicationData = req.body;
+	const communicationData = req.body as CreateCommunicationDTO;
 
 	try {
 		const newCommunication = await Communications.create({
 			...communicationData,
 			locationId: communicationData.locationId,
-			organizationId: communicationData.organization.id,
 		});
 
-		if (communicationData.contacts && communicationData.contacts.length > 0) {
-			for (const contact of communicationData.contacts) {
-				const contactId = contact.id;
+		if (communicationData.contactIds) {
+			await setContacts(newCommunication, communicationData.contactIds);
+		}
 
-				await CommunicationContacts.create({
-					CommunicationId: newCommunication.id,
-					ContactId: contactId,
-				});
-			}
+		if (communicationData.organizationIds) {
+			await setOrganizations(newCommunication, communicationData.organizationIds);
 		}
 
 		res.status(201).json(newCommunication);
