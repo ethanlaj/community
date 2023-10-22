@@ -16,10 +16,11 @@ COPY . .
 # Compile TypeScript to JavaScript
 RUN npm run build
 
-RUN echo "Database URL is: $DATABASE_URL"
+ARG DATABASE_URL
+ARG NODE_ENV
 
 # Run migrations
-RUN npx sequelize db:migrate --env production
+RUN npm run db:migrate
 
 EXPOSE 3001
 
