@@ -16,7 +16,7 @@ COPY . .
 # Compile TypeScript to JavaScript
 RUN npm run build
 
-ARG DATABASE_URL
+ARG DB_CONNECTION_STRING
 ARG NODE_ENV
 
 # Run migrations
