@@ -6,7 +6,7 @@ import {
 } from '../models';
 import errorHandler from '../errorHandler';
 import { CreateCommunicationDTO } from '../types/CreateCommunicationDTO';
-import { setContacts } from '../mixins/communications';
+import { setContacts, setOrganizations } from '../mixins/communications';
 
 const communicationsRouter: Router = express.Router();
 
@@ -50,6 +50,10 @@ communicationsRouter.post('/', errorHandler(async (req: Request, res: Response) 
 
 		if (communicationData.contactIds) {
 			await setContacts(newCommunication, communicationData.contactIds);
+		}
+
+		if (communicationData.organizationIds) {
+			await setOrganizations(newCommunication, communicationData.organizationIds);
 		}
 
 		res.status(201).json(newCommunication);

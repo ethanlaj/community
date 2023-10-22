@@ -31,10 +31,6 @@ export class Communications extends Model {
 	@Column
 		type!: string;
 
-	@ForeignKey(() => Organizations)
-	@Column
-		organizationId?: number;
-
 	@ForeignKey(() => OrganizationLocations)
 	@Column
 		locationId?: number;
@@ -45,8 +41,8 @@ export class Communications extends Model {
 	@BelongsTo(() => OrganizationLocations, 'locationId')
 		organizationLocation!: OrganizationLocations;
 
-	@BelongsToMany(() => Organizations, () => CommunicationOrganizations, 'CommunicationId', 'OrganizationId')
-		organizations!: Organizations[];
+	@BelongsToMany(() => Organizations, () => CommunicationOrganizations)
+		organizations?: Organizations[];
 
 	@BelongsToMany(() => Contacts, () => CommunicationContacts, 'CommunicationId', 'ContactId')
 		contacts!: Contacts[];

@@ -11,12 +11,12 @@ function Communications() {
       let data = await communicationService.getAll();
 
       data = data.map((comm) => {
-        const org = comm.organization;
-        if (!org) return comm;
+        const orgs = comm.organizations;
+        if (!orgs) return comm;
 
         return {
           ...comm,
-          orgName: org.name,
+          orgsNames: orgs.map((org) => org.name).join(', '),
         };
       });
 
@@ -27,7 +27,7 @@ function Communications() {
   }, []);
 
   const columns = [
-    { title: 'Name', field: 'orgName' },
+    { title: 'Name', field: 'orgsNames' },
     { title: 'Note', field: 'note' },
     { title: 'Date', field: 'date' },
   ];

@@ -1,4 +1,4 @@
-import { CommunicationContacts, Communications } from '../models';
+import { CommunicationContacts, CommunicationOrganizations, Communications } from '../models';
 
 export async function setContacts(communication: Communications, contactIds: number[]) {
 	const currentContacts = await CommunicationContacts.findAll({
@@ -27,4 +27,31 @@ export async function setContacts(communication: Communications, contactIds: num
 	
 	return await Promise.all([destroyPromise, createPromise]);
 }
+
+export async function setOrganizations(communication: Communications, organizationIds: number[]) {
+	const currentOrganizations = await CommunicationOrganizations.findAll({
+		where: {
+			CommunicationId: communication.id,
+		},
+	});
+	
+	const organizationsToRemove = currentOrganizations
+		.map((organization) => organization.id)
+		.filter(id => !organizationIds.includes(id));
   
+	const destroyPromise = CommunicationOrganizations.destroy({
+		where: {
+			CommunicationId: communication.id,
+			OrganizationId: organizationsToRemove,
+		},
+	});
+  
+	const newAssociations = organizationIds.map(organizationId => ({
+		CommunicationId: communication.id,
+		OrganizationId: organizationId,
+	}));
+
+	const createPromise = CommunicationOrganizations.bulkCreate(newAssociations);
+	
+	return await Promise.all([destroyPromise, createPromise]);
+}
