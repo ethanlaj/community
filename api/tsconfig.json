@@ -108,7 +108,7 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "src/config/database.js"  ],
   "exclude": [
     "node_modules"
   ],

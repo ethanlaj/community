@@ -88,7 +88,7 @@ function useForm<T extends object>({
     });
   };
 
-  const handleDataChange = (id: string, value: string) => {
+  const handleDataChange = (id: string, value: any) => {
     const fakeChangeEvent = { currentTarget: { id, value } } as ChangeEvent<HTMLInputElement>;
     handleChange(fakeChangeEvent);
   };
@@ -105,7 +105,7 @@ function useForm<T extends object>({
       data={childData}
       errors={errors}
       {...props}
-      onChange={(value: string) => handleDataChange(id, value)}
+      onChange={(value: any) => handleDataChange(id, value)}
     />
   );
 
@@ -194,9 +194,11 @@ function useForm<T extends object>({
 
   return {
     data,
+    errors,
     setData,
     handleSubmit,
     handleChange,
+    handleDataChange,
     renderChildForm,
     renderEditableTable,
     renderButton,

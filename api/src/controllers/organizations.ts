@@ -1,12 +1,12 @@
 import express, { Router, Request, Response } from 'express';
-import { Communications, Organizations, OrganizationLocations, Contacts } from '../models';
+import { Communications, Organizations, OrganizationLocations, Contacts } from '../database/models';
 
 import errorHandler from '../errorHandler';
 
 const organizationsRouter: Router = express.Router();
 
 // GET all organizations
-organizationsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
+organizationsRouter.get('/', errorHandler(async (_req: Request, res: Response) => {
 	try {
 		const organizations = await Organizations.findAll({
 			include: [
@@ -15,18 +15,16 @@ organizationsRouter.get('/', errorHandler(async (req: Request, res: Response) =>
 				{
 					model: Communications,
 					include: [Contacts],
-					separate: true,
-					order: [['createdAt', 'DESC']],
 				},
 			],
+			order: [['createdAt', 'DESC']],
 		});
 
 		res.json(organizations);
 	} catch (error) {
 		res.status(500).send((error as Error).message);
 	}
-})
-);
+}));
 
 // GET an organization by ID
 organizationsRouter.get('/:id', errorHandler(async (req: Request, res: Response): Promise<void> => {
