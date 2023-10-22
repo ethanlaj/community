@@ -1,10 +1,10 @@
 module.exports = {
 	development: {
-		use_env_variable: "LOCALDB_CONNECTION_STRING",
+		url: process.env.LOCALDB_CONNECTION_STRING,
 		dialect: 'mysql',
 	},
 	production: {
-		use_env_variable: "DB_CONNECTION_STRING",
+		url: process.env.DATABASE_URL,
 		dialect: 'mysql',
 	},
 };
