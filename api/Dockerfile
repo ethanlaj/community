@@ -16,6 +16,8 @@ COPY . .
 # Compile TypeScript to JavaScript
 RUN npm run build
 
+RUN echo "Database URL is: $DATABASE_URL"
+
 # Run migrations
 RUN npx sequelize db:migrate --env production
 
