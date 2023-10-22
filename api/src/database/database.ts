@@ -1,11 +1,16 @@
 import { Sequelize } from 'sequelize-typescript';
 import { CommunicationContacts, CommunicationUsers, Communications, Contacts, EtownOffices, OrganizationLocations, Organizations, Users, CommunicationOrganizations } from './models';
 
-const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
+const isProd = process.env.NODE_ENV === 'production';
+const DB_CONNECTION_STRING = isProd
+	? process.env.DB_CONNECTION_STRING
+	: process.env.LOCALDB_CONNECTION_STRING;
 
 if (!DB_CONNECTION_STRING) {
-	throw new Error('DB_CONNECTION_STRING is not defined in the environment variables.');
+	throw new Error(`${isProd ? 'DB_CONNECTION_STRING' : 'LOCALDB_CONNECTION_STRING'} is not defined in the environment variables.`);
 }
+
+console.log(`Connecting to ${isProd ? 'production' : 'local'} database`);
 
 const sequelize = new Sequelize(DB_CONNECTION_STRING, {
 	dialect: 'mysql',
@@ -14,4 +19,4 @@ const sequelize = new Sequelize(DB_CONNECTION_STRING, {
 	models: [Contacts, Communications, Organizations, OrganizationLocations, Users, CommunicationContacts, CommunicationUsers, EtownOffices, CommunicationOrganizations],
 });
 
-export default sequelize ; 
+export default sequelize; 

@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from 'express';
-import { Users } from '../models';
+import { Users } from '../database/models';
 import errorHandler from '../errorHandler';
 
 const usersRouter: Router = express.Router();
