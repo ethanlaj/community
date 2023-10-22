@@ -7,8 +7,6 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-ENV NODE_ENV=production
-
 # Install any dependencies
 RUN npm install
 
