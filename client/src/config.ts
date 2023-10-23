@@ -6,7 +6,7 @@ export const apiUrl = process.env.NODE_ENV === 'production'
 
 export const msalConfig: Configuration = {
   auth: {
-    clientId: '94952df3-5850-48b0-bdd7-62a983062134',
+    clientId: '512c2f12-2d32-48b1-b311-5752ab24c368',
     authority: 'https://login.microsoftonline.com/1d884f12-a0d7-42f0-8b15-3a91c853bcb5',
     redirectUri: 'http://localhost:3000',
   },
