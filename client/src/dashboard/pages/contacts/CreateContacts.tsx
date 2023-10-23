@@ -1,11 +1,19 @@
+/* eslint-disable newline-per-chained-call */
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Joi, { number } from 'joi';
-import ContactService from '@/services/contactService';
-import AddLocation from '@/dashboard/pages/organizations/AddLocation';
+import Joi from 'joi';
+import { toast } from 'react-toastify';
+import OrganizationService from '@/services/organizationService';
 import useForm from '@/shared/hooks/useForm';
-import AddOrganization from '@/dashboard/pages/organizations/AddOrganization';
-import styles from './Contacts.module.css';
+import { Organization } from '@/types/organization';
+import AddContactsInfoTable from './AddContactsInfoTable';
 
+export interface InfoForOrganization {
+  id: number,
+  name: string;
+  email: string,
+  phone: string,
+}
 interface CreateContactDTO {
   name: string,
   email: string,
@@ -14,59 +22,59 @@ interface CreateContactDTO {
   locationIds: number[];
 }
 
-interface FormProps {
-  organizations: Organization[];
-
+interface FormProps{
+    organizations: Organization[];
+    InfoForOrganization: InfoForOrganization[];
   name: string;
-  email: string;
-  phone: string;
-  exten: string;
 }
 
 function CreateContacts() {
   const navigate = useNavigate();
-  const now = new Date();
-  const timeZoneOffset = now.getTimezoneOffset();
-  const nowLocal = new Date(now.getTime() - timeZoneOffset * 60 * 1000);
 
-  const fields: FormProps = {
-    name: '',
-    email: '',
-    phone: '',
-    exten: '',
+  const [allOrganizations, setAllOrganizations] = useState<Organization[]>([]);
+
+  useEffect(() => {
+    // Fetch all data needed
+    async function fetchRequiredData() {
+      try {
+        const promises = [
+          OrganizationService.getAll(),
+        ];
+
+        const [allOrganizationsResponse] = await Promise.all(promises);
+
+        setAllOrganizations(allOrganizationsResponse);
+      } catch (ex) {
+        toast.error('An unexpected error occurred.');
+      }
+    }
+
+    fetchRequiredData();
+  }, []);
+
+  const fields = {
     organizations: [],
+    InfoForOrganization: [],
+    name: '',
+
   };
 
   const schema = Joi.object({
     name: Joi.string().required().label('Name'),
-    date: Joi.date().required().label('Date'),
-    locations: Joi.object().required().label('Location'),
-    organizations: Joi.object().required().label('Organization'),
-    email: Joi.string().email({ tlds: { allow: false } }).required().label('Email'),
-    phone: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/)
-      .required()
-      .label('Phone'),
-    // exten: Joi.string().length(5).pattern(/^[0-9*#]+$/).label('Extension'),
+    InfoPerOrganization: Joi.array().items({
+      emails: Joi.string().email({ tlds: { allow: false } }).label('Email'),
+      phones: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/).label('Phone'),
+    }).min(1),
   });
 
   const doSubmit = async () => {
     try {
-      const locationIds = form.data.organizations ? form.data.organizations.map((location) => location.id) : [];
-
-      const CreateContactDTO: CreateContactDTO = {
-        name: form.data.name,
-        email: form.data.email,
-        phone: form.data.phone,
-        exten: form.data.exten,
-        locationIds,
-      };
-
-      console.log('Submit to api', { CreateContactDTO });
+      console.log('Submit to api');
       console.log('ORG PASS DEFINATION');
-      console.log(fields.organizations);
 
       // Pass CreateContactDTO with the expected structure
-      await ContactService.create(CreateContactDTO);
+      // await ContactService.create();
+
       navigate('/contacts', { replace: true });
     } catch (ex) {
       console.error(ex);
@@ -76,36 +84,21 @@ function CreateContacts() {
   const form = useForm<FormProps>({ fields, schema, doSubmit });
 
   return (
-    <div>
-      <h1>Create Contacts</h1>
-      <form className={`${styles.formContainer}`}>
+    <>
+      <h1>Create Contact</h1>
+      <form className="m-auto w-70p">
         {form.renderInput({ id: 'name', label: 'Name' })}
-        {form.renderInput({ id: 'email', label: 'Email' })}
-        {form.renderInput({ id: 'phone', label: 'Phone Number' })}
-
-        <h3>Organization</h3>
-        {form.renderChildForm(
-          form,
-          'organization',
-          AddOrganization,
-          form.data.organizations,
-          { organizationId: form.data.organizations },
-        )}
-
-        {form.data.organizations && (
-          <div>
-            <h3>Location</h3>
-            {form.renderChildForm(form, 'location', AddLocation, form.data.organizations
-              ?.flatMap((organization) => organization.locations?.map((location) => location?.locName))
-              ?.filter((name) => name !== null) || [], {
-              organizationId: form.data.organizations,
-            })}
-          </div>
-        )}
-
-        {form.renderButton('Create')}
       </form>
-    </div>
+      <div className="m-auto w-80p center">
+        <AddContactsInfoTable
+          allOrganizations={allOrganizations}
+          organizations={form.data.InfoForOrganization}
+          form={form}
+          handleChange={form.handleDataChange}
+          organizationsError={form.errors.organizations}
+        />
+      </div>
+    </>
   );
 }
 
