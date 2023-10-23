@@ -1,4 +1,4 @@
-import { CommunicationContacts, CommunicationOrganizations, Communications } from '../models';
+import { CommunicationContacts, CommunicationOrganizations, Communications } from '../database/models';
 
 export async function setContacts(communication: Communications, contactIds: number[]) {
 	const currentContacts = await CommunicationContacts.findAll({

@@ -1,6 +1,6 @@
 import express, { Router, Request, Response } from 'express';
 import { Op } from 'sequelize';
-import { Contacts, Organizations } from '../models';
+import { Contacts, Organizations } from '../database/models';
 import errorHandler from '../errorHandler';
 
 const contactsRouter: Router = express.Router();

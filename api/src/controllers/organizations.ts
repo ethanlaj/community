@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from 'express';
-import { Communications, Organizations, OrganizationLocations, Contacts } from '../models';
+import { Communications, Organizations, OrganizationLocations, Contacts } from '../database/models';
 
 import errorHandler from '../errorHandler';
 

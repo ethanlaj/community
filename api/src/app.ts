@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
 
-import sequelize from './database';
+import sequelize from './database/database';
 import errorHandler from './errorHandler';
 
 import healthRouter from './controllers/health';
@@ -20,12 +20,12 @@ import usersRouter from './controllers/users';
 const app = express();
 
 sequelize
-	.sync({ force: false })
+	.authenticate()
 	.then(() => {
-		console.log('Database synced successfully.');
+		console.log('Database connected successfully.');
 	})
 	.catch((err) => {
-		console.error('Unable to sync database:', err);
+		console.error('Unable to connect to database:', err);
 	});
 
 app.use(cors());
