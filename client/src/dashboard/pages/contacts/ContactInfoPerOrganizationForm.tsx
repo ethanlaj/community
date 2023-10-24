@@ -4,44 +4,38 @@ import {
 } from 'react-bootstrap';
 import ReactiveSearch from '@/shared/components/ReactiveSearch';
 import { InfoForOrganization } from './CreateContacts';
+import { Column } from './AddContactsInfoTable';
 
-interface column{
-  title: string;
-  field: string;
-}
-interface ReactiveSearchWithTableProps {
+interface ContactInfoPerOrganizationFormProps {
   id: string;
-  columns: column[];
-  form: any;
+  columns: Column[];
   selectOrgsData: InfoForOrganization[];
   options: any[];
   selectionLabel: string;
   error: string | undefined;
-  LowerOrgsErrors: string | undefined;
+  lowerOrgsErrors: string | undefined;
   handleSelect: (value: any) => void;
   handleDelete: (id: number, rowIndex:number) => void;
   onUpdate: (row: any) => void;
 }
 
-function ReactiveSearchWithTable({
+function ContactInfoPerOrganizationForm({
   id,
   selectOrgsData,
   columns,
   selectionLabel,
-  form,
   error,
-  LowerOrgsErrors,
+  lowerOrgsErrors,
   options,
   handleSelect,
   handleDelete,
   onUpdate,
-}: ReactiveSearchWithTableProps) {
-  const handleUpdate = (rowIndex: number, column: column, newValue: string) => {
+}: ContactInfoPerOrganizationFormProps) {
+  const handleUpdate = (rowIndex: number, column: Column, newValue: string) => {
     const updatedData = selectOrgsData.map((row, index) => (index === rowIndex
       ? { ...row, [column.field]: newValue }
       : row));
     onUpdate(updatedData);
-    console.log(LowerOrgsErrors);
   };
 
   return (
@@ -58,11 +52,11 @@ function ReactiveSearchWithTable({
         error={error}
         onRefresh={undefined}
       />
-      {LowerOrgsErrors && <Alert variant="danger">{LowerOrgsErrors}</Alert>}
+      {lowerOrgsErrors && <Alert variant="danger">{lowerOrgsErrors}</Alert>}
       <Table striped bordered className="text-center">
         <thead>
           <tr>
-            {columns.map((column: column, index: number) => (
+            {columns.map((column: Column, index: number) => (
               <th className="w-25 text-center" key={index}>{column.title}</th>
             ))}
             <th>Actions</th>
@@ -94,4 +88,4 @@ function ReactiveSearchWithTable({
   );
 }
 
-export default ReactiveSearchWithTable;
+export default ContactInfoPerOrganizationForm;

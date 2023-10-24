@@ -29,7 +29,7 @@ interface CreateContactDTO {
 export interface FormProps{
   name: string;
   organizations: Organization[];
-  InfoPerOrganization: InfoForOrganization[];
+  infoPerOrganization: InfoForOrganization[];
 }
 
 function CreateContacts() {
@@ -59,13 +59,13 @@ function CreateContacts() {
   const fields: FormProps = {
     name: '',
     organizations: [],
-    InfoPerOrganization: [],
+    infoPerOrganization: [],
 
   };
 
   const schema = Joi.object({
     name: Joi.string().required().label('Name'),
-    InfoPerOrganization: Joi.array().items({
+    infoPerOrganization: Joi.array().items({
       id: Joi.number().allow(null, ''),
       name: Joi.string().required(),
       email: Joi.string().email({ tlds: { allow: false } }).allow(null, '').label('Email'),
@@ -82,7 +82,7 @@ function CreateContacts() {
     try {
       const ContactDTO: CreateContactDTO = {
         name: form.data.name,
-        organizations: { ...form.data.InfoPerOrganization },
+        organizations: { ...form.data.infoPerOrganization },
 
       };
 
@@ -108,11 +108,10 @@ function CreateContacts() {
       <div className="m-auto w-80p center">
         <AddContactsInfoTable
           allOrganizations={allOrganizations}
-          organizations={form.data.InfoPerOrganization}
-          form={form}
+          organizations={form.data.infoPerOrganization}
           handleChange={form.handleDataChange}
           organizationsError={form.errors.organizations}
-          LowerOrgsErrors={form.errors.InfoPerOrganization}
+          lowerOrgsErrors={form.errors.infoPerOrganization}
         />
       </div>
       <Button onClick={() => doSubmit()} className="hover:bg-yellow-600">Create</Button>

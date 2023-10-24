@@ -1,10 +1,10 @@
 import { Organization } from '@/types/organization';
-import ReactiveSearchWithTableWithEmailPhone from './ReactiveSearchWithTableWithEmailPhone';
+import ContactInfoPerOrganizationForm from './ContactInfoPerOrganizationForm';
 import { InfoForOrganization } from './CreateContacts';
 import { UseFormReturn } from '@/types/inputTypes';
 import { FormProps } from '@/dashboard/pages/contacts/CreateContacts';
 
-interface column{
+export interface Column{
   title: string;
   field: string;
 }
@@ -12,13 +12,12 @@ interface column{
 interface AddContactsInfoTableProps{
   allOrganizations: Organization[];
   organizations: InfoForOrganization[];
-  form: UseFormReturn<FormProps>;
   handleChange: (id: string, value: any) => void;
   organizationsError: string | undefined;
-  LowerOrgsErrors: string | undefined;
+  lowerOrgsErrors: string | undefined;
 }
 
-const columns: column[] = [
+const columns: Column[] = [
   { title: 'Organization', field: 'name' },
   { title: 'Email', field: 'email' },
   { title: 'Phone', field: 'phone' },
@@ -27,51 +26,45 @@ const columns: column[] = [
 function AddContactsInfoTable({
   allOrganizations,
   organizations,
-  form,
   handleChange,
   organizationsError,
-  LowerOrgsErrors,
-}:AddContactsInfoTableProps) {
+  lowerOrgsErrors,
+}: AddContactsInfoTableProps) {
   const organizationOptions = allOrganizations.filter((organization) => organizations.find((o) => o.id === organization.id) === undefined);
 
   const handleOrganizationSelect = (organization: InfoForOrganization) => {
-    console.log(organization);
     const newOrgs = [...organizations, organization];
-    console.log(newOrgs);
-    handleChange('InfoPerOrganization', newOrgs);
+
+    handleChange('infoPerOrganization', newOrgs);
   };
 
   const handleOrganizationDelete = (id: number, rowIndex:number) => {
     const newOrgs = organizations.filter((o) => o.id !== id);
-    console.log(newOrgs);
-    handleChange('InfoPerOrganization', newOrgs);
+
+    handleChange('infoPerOrganization', newOrgs);
     handleDelete(rowIndex);
   };
 
   const handleDelete = (rowIndex:number) => {
     const updatedData = organizations.filter((_, index) => index !== rowIndex);
-    console.log(updatedData);
-    handleChange('InfoPerOrganization', updatedData);
+
+    handleChange('infoPerOrganization', updatedData);
   };
 
   const handleUpdate = (orgs: InfoForOrganization) => {
-    console.log(orgs);
-    console.log(LowerOrgsErrors);
-    handleChange('InfoPerOrganization', orgs);
+    handleChange('infoPerOrganization', orgs);
   };
 
   return (
     <div>
-      <p>AddContactsInfoTable</p>
-      <ReactiveSearchWithTableWithEmailPhone
-        id="InfoPerOrganization"
-        selectOrgsData={form.data.InfoPerOrganization}
+      <ContactInfoPerOrganizationForm
+        id="infoPerOrganization"
+        selectOrgsData={organizations}
         columns={columns}
-        form={form}
         options={organizationOptions}
         selectionLabel="Select Organizations"
         error={organizationsError}
-        LowerOrgsErrors={LowerOrgsErrors}
+        lowerOrgsErrors={lowerOrgsErrors}
         handleSelect={handleOrganizationSelect}
         handleDelete={handleOrganizationDelete}
         onUpdate={handleUpdate}

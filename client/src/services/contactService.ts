@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 import http from './httpService';
 import config from '../config';
 
@@ -32,7 +31,6 @@ export default class ContactService {
   }
 
   static async create(createContactDTO: CreateContactDTO) {
-    console.log('Org Contact Service')
     const response = await http.post(apiEndpoint, {
       createContactDTO,
     });
