@@ -12,7 +12,6 @@ interface column{
 interface ReactiveSearchWithTableProps {
   id: string;
   columns: column[];
-  form: any;
   selectOrgsData: InfoForOrganization[];
   options: any[];
   selectionLabel: string;
@@ -28,7 +27,6 @@ function ReactiveSearchWithTable({
   selectOrgsData,
   columns,
   selectionLabel,
-  form,
   error,
   LowerOrgsErrors,
   options,

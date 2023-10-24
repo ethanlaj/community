@@ -35,28 +35,25 @@ function AddContactsInfoTable({
   const organizationOptions = allOrganizations.filter((organization) => organizations.find((o) => o.id === organization.id) === undefined);
 
   const handleOrganizationSelect = (organization: InfoForOrganization) => {
-    console.log(organization);
     const newOrgs = [...organizations, organization];
-    console.log(newOrgs);
+
     handleChange('InfoPerOrganization', newOrgs);
   };
 
   const handleOrganizationDelete = (id: number, rowIndex:number) => {
     const newOrgs = organizations.filter((o) => o.id !== id);
-    console.log(newOrgs);
+
     handleChange('InfoPerOrganization', newOrgs);
     handleDelete(rowIndex);
   };
 
   const handleDelete = (rowIndex:number) => {
     const updatedData = organizations.filter((_, index) => index !== rowIndex);
-    console.log(updatedData);
+
     handleChange('InfoPerOrganization', updatedData);
   };
 
   const handleUpdate = (orgs: InfoForOrganization) => {
-    console.log(orgs);
-    console.log(LowerOrgsErrors);
     handleChange('InfoPerOrganization', orgs);
   };
 
@@ -67,7 +64,6 @@ function AddContactsInfoTable({
         id="InfoPerOrganization"
         selectOrgsData={form.data.InfoPerOrganization}
         columns={columns}
-        form={form}
         options={organizationOptions}
         selectionLabel="Select Organizations"
         error={organizationsError}
