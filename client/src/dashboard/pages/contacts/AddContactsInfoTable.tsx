@@ -4,7 +4,7 @@ import { InfoForOrganization } from './CreateContacts';
 import { UseFormReturn } from '@/types/inputTypes';
 import { FormProps } from '@/dashboard/pages/contacts/CreateContacts';
 
-interface column{
+interface Column {
   title: string;
   field: string;
 }
