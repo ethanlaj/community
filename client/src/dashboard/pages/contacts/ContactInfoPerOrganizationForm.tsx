@@ -92,4 +92,4 @@ function ContactInfoPerOrganizationForm({
   );
 }
 
-export default ReactiveSearchWithTable;
+export default ContactInfoPerOrganizationForm;

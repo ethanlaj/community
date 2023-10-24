@@ -1,5 +1,5 @@
 import { Organization } from '@/types/organization';
-import ReactiveSearchWithTableWithEmailPhone from './ReactiveSearchWithTableWithEmailPhone';
+import ContactInfoPerOrganizationForm from './ContactInfoPerOrganizationForm';
 import { InfoForOrganization } from './CreateContacts';
 import { UseFormReturn } from '@/types/inputTypes';
 import { FormProps } from '@/dashboard/pages/contacts/CreateContacts';
@@ -59,9 +59,9 @@ function AddContactsInfoTable({
 
   return (
     <div>
-      <ReactiveSearchWithTableWithEmailPhone
+      <ContactInfoPerOrganizationForm
         id="InfoPerOrganization"
-        selectOrgsData={form.data.InfoPerOrganization}
+        selectOrgsData={form.data.infoPerOrganization}
         columns={columns}
         options={organizationOptions}
         selectionLabel="Select Organizations"

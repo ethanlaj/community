@@ -29,7 +29,7 @@ interface CreateContactDTO {
 export interface FormProps{
   name: string;
   organizations: Organization[];
-  InfoPerOrganization: InfoForOrganization[];
+  infoPerOrganization: InfoForOrganization[];
 }
 
 function CreateContacts() {
@@ -59,7 +59,7 @@ function CreateContacts() {
   const fields: FormProps = {
     name: '',
     organizations: [],
-    InfoPerOrganization: [],
+    infoPerOrganization: [],
 
   };
 
@@ -82,7 +82,7 @@ function CreateContacts() {
     try {
       const ContactDTO: CreateContactDTO = {
         name: form.data.name,
-        organizations: { ...form.data.InfoPerOrganization },
+        organizations: { ...form.data.infoPerOrganization },
 
       };
 
@@ -108,11 +108,11 @@ function CreateContacts() {
       <div className="m-auto w-80p center">
         <AddContactsInfoTable
           allOrganizations={allOrganizations}
-          organizations={form.data.InfoPerOrganization}
+          organizations={form.data.infoPerOrganization}
           form={form}
           handleChange={form.handleDataChange}
           organizationsError={form.errors.organizations}
-          lowerOrgsErrors={form.errors.InfoPerOrganization}
+          lowerOrgsErrors={form.errors.infoPerOrganization}
         />
       </div>
       <Button onClick={() => doSubmit()} className="hover:bg-yellow-600">Create</Button>
