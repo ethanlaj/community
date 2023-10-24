@@ -27,15 +27,15 @@ usersRouter.delete('/:id', errorHandler(async (req: Request, res: Response) => {
 	const userId = req.params.id;
 	try {
 		const user = await Users.findByPk(userId);
-		if(!user) {
+		if (!user) {
 			res.status(404).send('User not found');
 		}
-		else{
+		else {
 			await user.destroy();
 			res.sendStatus(200);
 		}
 	}
-	catch(error) {
+	catch (error) {
 		res.status(500).send((error as Error).message);
 	}
 }));
