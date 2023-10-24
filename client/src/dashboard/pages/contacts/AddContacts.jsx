@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 import { useState, useEffect } from 'react';
 import { Alert, Button, Table } from 'react-bootstrap';
 import contactService from '@/services/contactService';
