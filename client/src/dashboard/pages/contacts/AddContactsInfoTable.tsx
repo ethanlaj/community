@@ -1,8 +1,6 @@
 import { Organization } from '@/types/organization';
 import ContactInfoPerOrganizationForm from './ContactInfoPerOrganizationForm';
 import { InfoForOrganization } from './CreateContacts';
-import { UseFormReturn } from '@/types/inputTypes';
-import { FormProps } from '@/dashboard/pages/contacts/CreateContacts';
 
 export interface Column{
   title: string;
