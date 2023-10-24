@@ -15,7 +15,7 @@ interface AddContactsInfoTableProps{
   form: UseFormReturn<FormProps>;
   handleChange: (id: string, value: any) => void;
   organizationsError: string | undefined;
-  LowerOrgsErrors: string | undefined;
+  lowerOrgsErrors: string | undefined;
 }
 
 const columns: column[] = [
@@ -62,7 +62,6 @@ function AddContactsInfoTable({
 
   return (
     <div>
-      <p>AddContactsInfoTable</p>
       <ReactiveSearchWithTableWithEmailPhone
         id="InfoPerOrganization"
         selectOrgsData={form.data.InfoPerOrganization}
