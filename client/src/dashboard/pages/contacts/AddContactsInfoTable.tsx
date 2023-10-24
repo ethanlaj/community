@@ -31,7 +31,7 @@ function AddContactsInfoTable({
   handleChange,
   organizationsError,
   LowerOrgsErrors,
-}:AddContactsInfoTableProps) {
+}: AddContactsInfoTableProps) {
   const organizationOptions = allOrganizations.filter((organization) => organizations.find((o) => o.id === organization.id) === undefined);
 
   const handleOrganizationSelect = (organization: InfoForOrganization) => {
