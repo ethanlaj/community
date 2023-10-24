@@ -1,6 +1,14 @@
 import http from './httpService';
 import config from '../config';
 
+interface CreateContactDTO {
+  name: string,
+  email: string,
+  phone: string,
+  exten: string;
+  locationIds: number[];
+}
+
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/contacts`;
 
@@ -22,10 +30,9 @@ export default class ContactService {
     return response.data;
   }
 
-  static async create(contact: string, organizations: string) {
+  static async create(createContactDTO: CreateContactDTO) {
     const response = await http.post(apiEndpoint, {
-      contact,
-      organizations,
+      createContactDTO,
     });
     return response.data;
   }
