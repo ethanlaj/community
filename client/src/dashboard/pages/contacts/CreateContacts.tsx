@@ -112,7 +112,7 @@ function CreateContacts() {
           form={form}
           handleChange={form.handleDataChange}
           organizationsError={form.errors.organizations}
-          LowerOrgsErrors={form.errors.InfoPerOrganization}
+          lowerOrgsErrors={form.errors.InfoPerOrganization}
         />
       </div>
       <Button onClick={() => doSubmit()} className="hover:bg-yellow-600">Create</Button>

@@ -18,7 +18,7 @@ interface AddContactsInfoTableProps{
   lowerOrgsErrors: string | undefined;
 }
 
-const columns: column[] = [
+const columns: Column[] = [
   { title: 'Organization', field: 'name' },
   { title: 'Email', field: 'email' },
   { title: 'Phone', field: 'phone' },
@@ -30,7 +30,7 @@ function AddContactsInfoTable({
   form,
   handleChange,
   organizationsError,
-  LowerOrgsErrors,
+  lowerOrgsErrors,
 }: AddContactsInfoTableProps) {
   const organizationOptions = allOrganizations.filter((organization) => organizations.find((o) => o.id === organization.id) === undefined);
 
@@ -66,7 +66,7 @@ function AddContactsInfoTable({
         options={organizationOptions}
         selectionLabel="Select Organizations"
         error={organizationsError}
-        LowerOrgsErrors={LowerOrgsErrors}
+        LowerOrgsErrors={lowerOrgsErrors}
         handleSelect={handleOrganizationSelect}
         handleDelete={handleOrganizationDelete}
         onUpdate={handleUpdate}
