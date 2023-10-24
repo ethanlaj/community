@@ -22,7 +22,7 @@ interface ReactiveSearchWithTableProps {
   onUpdate: (row: any) => void;
 }
 
-function ReactiveSearchWithTable({
+function ContactInfoPerOrganizationForm({
   id,
   selectOrgsData,
   columns,
