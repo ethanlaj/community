@@ -4,7 +4,7 @@ import { InfoForOrganization } from './CreateContacts';
 import { UseFormReturn } from '@/types/inputTypes';
 import { FormProps } from '@/dashboard/pages/contacts/CreateContacts';
 
-interface column{
+interface Column {
   title: string;
   field: string;
 }
@@ -15,7 +15,7 @@ interface AddContactsInfoTableProps{
   form: UseFormReturn<FormProps>;
   handleChange: (id: string, value: any) => void;
   organizationsError: string | undefined;
-  LowerOrgsErrors: string | undefined;
+  lowerOrgsErrors: string | undefined;
 }
 
 const columns: column[] = [
@@ -31,7 +31,7 @@ function AddContactsInfoTable({
   handleChange,
   organizationsError,
   LowerOrgsErrors,
-}:AddContactsInfoTableProps) {
+}: AddContactsInfoTableProps) {
   const organizationOptions = allOrganizations.filter((organization) => organizations.find((o) => o.id === organization.id) === undefined);
 
   const handleOrganizationSelect = (organization: InfoForOrganization) => {
@@ -59,7 +59,6 @@ function AddContactsInfoTable({
 
   return (
     <div>
-      <p>AddContactsInfoTable</p>
       <ReactiveSearchWithTableWithEmailPhone
         id="InfoPerOrganization"
         selectOrgsData={form.data.InfoPerOrganization}
