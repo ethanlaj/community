@@ -1,6 +1,7 @@
 /* eslint-disable newline-per-chained-call */
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import Joi from 'joi';
 import { toast } from 'react-toastify';
 import OrganizationService from '@/services/organizationService';
@@ -11,21 +12,24 @@ import AddContactsInfoTable from './AddContactsInfoTable';
 export interface InfoForOrganization {
   id: number,
   name: string;
-  email: string,
-  phone: string,
+  email: string | undefined;
+  phone: string | undefined;
+  [key: string]: string | number| undefined;
 }
 interface CreateContactDTO {
   name: string,
-  email: string,
-  phone: string,
-  exten: string;
-  locationIds: number[];
+  organizations:{
+    id: number,
+    name: string;
+    email: string | undefined;
+    phone: string | undefined;
+  }[];
 }
 
-interface FormProps{
-    organizations: Organization[];
-    InfoForOrganization: InfoForOrganization[];
+export interface FormProps{
   name: string;
+  organizations: Organization[];
+  InfoPerOrganization: InfoForOrganization[];
 }
 
 function CreateContacts() {
@@ -52,25 +56,37 @@ function CreateContacts() {
     fetchRequiredData();
   }, []);
 
-  const fields = {
-    organizations: [],
-    InfoForOrganization: [],
+  const fields: FormProps = {
     name: '',
+    organizations: [],
+    InfoPerOrganization: [],
 
   };
 
   const schema = Joi.object({
     name: Joi.string().required().label('Name'),
     InfoPerOrganization: Joi.array().items({
-      emails: Joi.string().email({ tlds: { allow: false } }).label('Email'),
-      phones: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/).label('Phone'),
-    }).min(1),
-  });
+      id: Joi.number().allow(null, ''),
+      name: Joi.string().required(),
+      email: Joi.string().email({ tlds: { allow: false } }).allow(null, '').label('Email'),
+      phone: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/).allow(null, '').label('Phone Number'),
+      createdAt: Joi.any().allow(null),
+      updatedAt: Joi.any().allow(null),
+      contacts: Joi.any().allow(null),
+      organizationLocations: Joi.any().allow(null),
+      communications: Joi.any().allow(null),
+    }).min(1).label('Organizations'),
+  }).options({ allowUnknown: true });
 
   const doSubmit = async () => {
     try {
-      console.log('Submit to api');
-      console.log('ORG PASS DEFINATION');
+      const ContactDTO: CreateContactDTO = {
+        name: form.data.name,
+        organizations: { ...form.data.InfoPerOrganization },
+
+      };
+
+      console.log('Submit to api', ContactDTO);
 
       // Pass CreateContactDTO with the expected structure
       // await ContactService.create();
@@ -92,12 +108,14 @@ function CreateContacts() {
       <div className="m-auto w-80p center">
         <AddContactsInfoTable
           allOrganizations={allOrganizations}
-          organizations={form.data.InfoForOrganization}
+          organizations={form.data.InfoPerOrganization}
           form={form}
           handleChange={form.handleDataChange}
           organizationsError={form.errors.organizations}
+          LowerOrgsErrors={form.errors.InfoPerOrganization}
         />
       </div>
+      <Button onClick={() => doSubmit()} className="hover:bg-yellow-600">Create</Button>
     </>
   );
 }

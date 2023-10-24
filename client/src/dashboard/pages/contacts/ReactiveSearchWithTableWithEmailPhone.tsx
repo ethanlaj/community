@@ -1,30 +1,49 @@
-import { Button, Table } from 'react-bootstrap';
+/* eslint-disable no-shadow */
+import {
+  Table, Button, Form, Alert,
+} from 'react-bootstrap';
 import ReactiveSearch from '@/shared/components/ReactiveSearch';
-import Input from '@/shared/components/Input';
+import { InfoForOrganization } from './CreateContacts';
 
+interface column{
+  title: string;
+  field: string;
+}
 interface ReactiveSearchWithTableProps {
   id: string;
-  tableHeaderName: string;
-  selectedItems: any[];
+  columns: column[];
   form: any;
+  selectOrgsData: InfoForOrganization[];
   options: any[];
   selectionLabel: string;
   error: string | undefined;
+  LowerOrgsErrors: string | undefined;
   handleSelect: (value: any) => void;
-  handleDelete: (id: number) => void;
+  handleDelete: (id: number, rowIndex:number) => void;
+  onUpdate: (row: any) => void;
 }
 
 function ReactiveSearchWithTable({
   id,
-  selectedItems,
-  tableHeaderName,
+  selectOrgsData,
+  columns,
   selectionLabel,
   form,
   error,
+  LowerOrgsErrors,
   options,
   handleSelect,
   handleDelete,
+  onUpdate,
 }: ReactiveSearchWithTableProps) {
+  const handleUpdate = (rowIndex: number, column: column, newValue: string) => {
+    const updatedData = selectOrgsData.map((row, index) => (index === rowIndex
+      ? { ...row, [column.field]: newValue }
+      : row));
+    onUpdate(updatedData);
+    console.log(LowerOrgsErrors);
+  };
+
   return (
     <div className="center">
       <ReactiveSearch
@@ -39,32 +58,33 @@ function ReactiveSearchWithTable({
         error={error}
         onRefresh={undefined}
       />
+      {LowerOrgsErrors && <Alert variant="danger">{LowerOrgsErrors}</Alert>}
       <Table striped bordered className="text-center">
         <thead>
           <tr>
-            <th className="w-25 text-center">{tableHeaderName}</th>
-            <th className="w-25 text-center">Email</th>
-            <th className="w-25 text-center">Phone</th>
-            <th className="w-25 text-center">Actions</th>
+            {columns.map((column: column, index: number) => (
+              <th className="w-25 text-center" key={index}>{column.title}</th>
+            ))}
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {selectedItems.map((item) => (
-            <tr key={item.id}>
-              <td>{item.name}</td>
-              <td className="w-25">
-                {form.renderInput({ id: 'emails', placeholder: 'Email' })}
-              </td>
-              <td className="w-25">
-                {form.renderInput({ id: 'phones', placeholder: 'Phone' })}
-              </td>
-              <td className="w-25">
-                <Button
-                  variant="danger"
-                  onClick={() => handleDelete(item.id)}
-                >
-                  Delete
-                </Button>
+          {selectOrgsData.map((row: InfoForOrganization, rowIndex: number) => (
+            <tr key={rowIndex}>
+              {columns.map((column, colIndex) => (
+                <td key={colIndex} className="w-25 text-center">
+                  { colIndex === 0 && <div className="text-center">{row[column.field]}</div> }
+                  {colIndex > 0 && (
+                    <Form.Control
+                      type="text"
+                      value={row[column.field]}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleUpdate(rowIndex, column, e.target.value)}
+                    />
+                  )}
+                </td>
+              ))}
+              <td>
+                <Button onClick={() => handleDelete(selectOrgsData[rowIndex].id, rowIndex)} className="hover:bg-red-600">Delete</Button>
               </td>
             </tr>
           ))}
