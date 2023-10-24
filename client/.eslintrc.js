@@ -32,6 +32,7 @@ module.exports = {
     'max-len': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'no-restricted-syntax': 'off',
+    'linebreak-style': 'off',
     'object-curly-spacing': ['error', 'always'],
     'space-before-blocks': 'error',
     'keyword-spacing': 'error',
