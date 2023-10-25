@@ -11,7 +11,7 @@ import sequelize from './database/database';
 import errorHandler from './errorHandler';
 
 import healthRouter from './controllers/health';
-import contactsRouter from'./controllers/contacts';
+import contactsRouter from './controllers/contacts';
 import organizationsRouter from './controllers/organizations';
 import locationsRouter from './controllers/locations';
 import communicationsRouter from './controllers/communications';

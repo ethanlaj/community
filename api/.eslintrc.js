@@ -21,5 +21,9 @@ module.exports = {
 		quotes: ['error', 'single'],
 		semi: ['error', 'always'],
 		'@typescript-eslint/no-explicit-any': ['off'],
+		'object-curly-spacing': ['error', 'always'],
+		'space-before-blocks': 'error',
+		'keyword-spacing': 'error',
+		'arrow-spacing': 'error',
 	},
 };
