@@ -33,7 +33,7 @@ function App() {
               <Route path="/contacts/create" element={<CreateContacts />} />
               <Route path="/communications" element={<Communications />} />
               <Route path="/communications/create" element={<CreateCommunication />} />
-              <Route path="organization/:id" element={<Organization />} />
+              <Route path="/organization/:id" element={<Organization />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

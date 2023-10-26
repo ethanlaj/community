@@ -37,7 +37,7 @@ function Organizations() {
   ];
 
   const handleRowClick = (row) => {
-    navigate(`/organization/${row.id}`, { replace: true });
+    navigate(`/organization/${row.id}`);
   };
 
   const handleRowDelete = async (row) => {
