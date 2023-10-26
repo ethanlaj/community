@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { format } from 'date-fns';
 import styles from './Organization.module.css';
 import organizationService from '@/services/organizationService';
