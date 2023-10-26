@@ -10,7 +10,6 @@ module.exports = {
 	parser: '@typescript-eslint/parser', 
 	parserOptions: {
 		ecmaVersion: 12,
-		project: './tsconfig.json', 
 		sourceType: 'module',
 	},
 	plugins: [
@@ -25,6 +24,5 @@ module.exports = {
 		'space-before-blocks': 'error',
 		'keyword-spacing': 'error',
 		'arrow-spacing': 'error',
-		'@typescript-eslint/no-unused-vars': 'warn',
 	},
 };

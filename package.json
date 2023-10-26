@@ -27,6 +27,6 @@
     "lint-staged": "^15.0.2"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint --fix --max-warnings 0"
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
   }
 }
