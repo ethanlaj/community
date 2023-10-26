@@ -16,6 +16,7 @@ module.exports = {
     'import/no-duplicates': 'error',
     'import/no-named-as-default': 'error',
     'import/no-named-as-default-member': 'error',
+    'import/no-extraneous-dependencies': 'error',
     'import/extensions': 'off',
     'no-use-before-define': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
@@ -38,6 +39,7 @@ module.exports = {
     'arrow-spacing': 'error',
     quotes: ['error', 'single'],
     indent: ['error', 2],
+    '@typescript-eslint/no-unused-vars': 'warn',
   },
   env: {
     browser: true,
