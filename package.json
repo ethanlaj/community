@@ -19,19 +19,6 @@
   "homepage": "https://github.com/reddign/community#readme",
   "devDependencies": {
     "concurrently": "^8.0.1",
-    "husky": "^8.0.3",
-    "lerna": "^7.4.1",
-    "lint-staged": "^15.0.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
+    "lerna": "^7.4.1"
   }
 }
