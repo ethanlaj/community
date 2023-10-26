@@ -39,7 +39,6 @@ module.exports = {
     'arrow-spacing': 'error',
     quotes: ['error', 'single'],
     indent: ['error', 2],
-    '@typescript-eslint/no-unused-vars': 'warn',
   },
   env: {
     browser: true,

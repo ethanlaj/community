@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently -k -n \"API,Client\" -c \"blue,magenta\" \"npm run dev --prefix api\" \"npm run dev --prefix client\""
+    "dev": "concurrently -k -n \"API,Client\" -c \"blue,magenta\" \"npm run dev --prefix api\" \"npm run dev --prefix client\"",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,12 @@
   "devDependencies": {
     "concurrently": "^8.0.1",
     "lerna": "^7.4.1"
+  },
+  "dependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
   }
 }
