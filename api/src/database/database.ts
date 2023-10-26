@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import { CommunicationContacts, CommunicationUsers, Communications, Contacts, EtownOffices, OrganizationLocations, Organizations, Users, CommunicationOrganizations } from './models';
+import { CommunicationContacts, CommunicationUsers, Communications, Contacts, EtownOffices, OrganizationLocations, Organizations, Users, CommunicationOrganizations, OrganizationContacts } from './models';
 
 const isProd = process.env.NODE_ENV === 'production';
 const DB_CONNECTION_STRING = isProd
@@ -16,7 +16,7 @@ const sequelize = new Sequelize(DB_CONNECTION_STRING, {
 	dialect: 'mysql',
 	logging: false,
 	modelPaths: [__dirname + './models'],
-	models: [Contacts, Communications, Organizations, OrganizationLocations, Users, CommunicationContacts, CommunicationUsers, EtownOffices, CommunicationOrganizations],
+	models: [Contacts, Communications, Organizations, OrganizationLocations, Users, CommunicationContacts, CommunicationUsers, EtownOffices, CommunicationOrganizations, OrganizationContacts],
 });
 
 export default sequelize; 
