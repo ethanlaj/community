@@ -27,7 +27,7 @@ function Organization() {
     }
   }, [id]);
 
-  const handleRowClick = (row) => {
+  const handleRowClick = () => {
     // TODO: implement click functionality
   };
 
