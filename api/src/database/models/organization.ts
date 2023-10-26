@@ -8,7 +8,7 @@ import {
 	BelongsToMany,
 	HasMany,
 } from 'sequelize-typescript';
-import { CommunicationOrganizations, Communications, Contacts, OrganizationLocations } from '.';
+import { CommunicationOrganizations, Communications, Contacts, OrganizationContacts, OrganizationLocations } from '.';
 
 @Table({ tableName: 'Organizations' })
 export class Organizations extends Model {
@@ -20,7 +20,7 @@ export class Organizations extends Model {
 	@Column({ type: DataType.STRING, allowNull: false })
 	public name!: string;
 
-	@BelongsToMany(() => Contacts, 'ContactOrganizations', 'organizationId', 'contactId')
+	@BelongsToMany(() => Contacts, () => OrganizationContacts, 'organizationId', 'contactId')
 		contacts?: Contacts[];
 
 	@HasMany(() => OrganizationLocations, 'organizationId')
