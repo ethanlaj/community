@@ -31,7 +31,7 @@ organizationsRouter.get('/:id', errorHandler(async (req: Request, res: Response)
 	const id = req.params.id;
 	try {
 		const organization = await Organizations.findByPk(id, {
-			include: [Contacts, OrganizationLocations],
+			include: [Contacts, OrganizationLocations, Communications],
 		});
 
 		if (!organization) {
