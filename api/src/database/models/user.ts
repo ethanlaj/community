@@ -6,6 +6,7 @@ import {
 	AutoIncrement,
 	DataType,
 	ForeignKey,
+	BelongsTo,
 } from 'sequelize-typescript';
 import { EtownOffices } from '.';
 
@@ -22,4 +23,7 @@ export class Users extends Model {
 
 	@Column({ type: DataType.INTEGER, allowNull: false })
 	public permissionLevel!: number;
+
+	@BelongsTo(() => EtownOffices, 'officeId')
+		office!: EtownOffices;
 }
