@@ -31,7 +31,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "fix": "npm run lint -- --fix"
+    "fix": "npm run lint -- --fix",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
