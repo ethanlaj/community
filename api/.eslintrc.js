@@ -25,5 +25,6 @@ module.exports = {
 		'space-before-blocks': 'error',
 		'keyword-spacing': 'error',
 		'arrow-spacing': 'error',
+		'@typescript-eslint/no-unused-vars': 'warn',
 	},
 };
