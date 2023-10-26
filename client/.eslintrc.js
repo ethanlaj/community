@@ -33,7 +33,10 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'no-restricted-syntax': 'off',
     'linebreak-style': 'off',
-
+    'object-curly-spacing': ['error', 'always'],
+    'space-before-blocks': 'error',
+    'keyword-spacing': 'error',
+    'arrow-spacing': 'error',
     quotes: ['error', 'single'],
     indent: ['error', 2],
   },

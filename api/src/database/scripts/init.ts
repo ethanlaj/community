@@ -10,6 +10,9 @@ async function markMigrationsAsExecuted() {
 
 	for (const file of migrationFiles) {
 		await sequelize.query(
+			'CREATE TABLE IF NOT EXISTS SequelizeMeta (name VARCHAR(255) NOT NULL, PRIMARY KEY (name));'
+		);
+		await sequelize.query(
 			'INSERT IGNORE INTO SequelizeMeta (name) VALUES (?);',
 			{
 				replacements: [file],
