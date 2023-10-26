@@ -68,9 +68,9 @@ usersRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
 	const userId = req.params.id;
 	const userData = req.body;
 
-	try{
+	try {
 		const user = await Users.findByPk(userId);
-		if(!user){
+		if (!user) {
 			res.status(404).send('User not found');
 		}
 		else {
@@ -78,7 +78,7 @@ usersRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
 			res.status(201).json(user);
 		}
 	}
-	catch(error){
+	catch (error) {
 		res.status(500).send((error as Error).message);
 	}
 }));
