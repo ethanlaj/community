@@ -28,7 +28,7 @@ npm install
 npm run dev
 ```
 
-4. Open up the website.(http://localhost:3000) 
+4. Open up the website: http://localhost:3000 
 
 
 ## Credits
