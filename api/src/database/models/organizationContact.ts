@@ -7,7 +7,7 @@ import {
 	UpdatedAt,
 	ForeignKey,
 	DataType,
-	HasOne,
+	BelongsTo,
 } from 'sequelize-typescript';
 import { Contacts, Organizations } from '.';
 
@@ -37,10 +37,10 @@ export class OrganizationContacts extends Model {
 	@Column({ type: DataType.STRING(75), allowNull: true })
 		email?: string;
 
-	@HasOne(() => Organizations, 'id')
+	@BelongsTo(() => Organizations)
 		organization?: Organizations; 
 
-	@HasOne(() => Contacts, 'id')
+	@BelongsTo(() => Contacts, )
 		contact?: Contacts; 
 	
 }
