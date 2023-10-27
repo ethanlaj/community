@@ -1,4 +1,5 @@
 # Community
+https://community-9eef4.web.app/ 
 
 This web application's main purpose is to manage and store the communication from a college to companies and the people working for them.
 
@@ -7,7 +8,7 @@ Click the link for a breakdown of all features and client requests with directio
  [features](https://github.com/ethanlaj/community/blob/main/docs/Initial_Tasks_and_Requirements.md)
 
 ## Trello
-All tasks that are done and are currently being worked on with the contributor have been assigned. We also have other tasks that have not been started in Trello. This is an invitation only, so you will have to wait to be accepted before viewing. [Trello board (invite-only)](https://trello.com/b/Xv6cbIvZ/community) 
+All tasks that are done and are currently being worked on with the contributor have been assigned. We also have other tasks that have not been started in Trello.[Trello board (invite-only)](https://trello.com/b/Xv6cbIvZ/community) 
 
 ## Dependencies
 The following dependencies are required to build and run this project:
@@ -16,7 +17,7 @@ The following dependencies are required to build and run this project:
 
 ## Running on a Local Machine
 
-1. Then Following that, you will need to run this command in the entire folder, api folder, and client folder.
+1.  Run the following command in the root directory, api folder, and client folder.
 ```bash
 npm install
 ```
@@ -27,8 +28,8 @@ npm install
 npm run dev
 ```
 
-4. Open up the website. 
-[Community](https://community-9eef4.web.app/)
+4. Open up the website.(http://localhost:3000) 
+
 
 ## Credits
  Participants
