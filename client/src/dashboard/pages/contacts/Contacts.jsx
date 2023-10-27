@@ -30,6 +30,7 @@ function Contacts() {
     { title: 'Name', field: 'name' },
     { title: 'Email', field: 'email' },
     { title: 'Phone Number', field: 'phone' },
+    { title: 'Organization', field: 'organizationName' },
   ];
 
   const handleRowClick = (row) => {

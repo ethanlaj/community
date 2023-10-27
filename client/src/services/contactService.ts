@@ -1,13 +1,6 @@
 import http from './httpService';
 import config from '../config';
-
-interface CreateContactDTO {
-  name: string,
-  email: string,
-  phone: string,
-  exten: string;
-  locationIds: number[];
-}
+import { CreateContactDTO } from '@/types/contact';
 
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/contacts`;
@@ -31,9 +24,22 @@ export default class ContactService {
   }
 
   static async create(createContactDTO: CreateContactDTO) {
-    const response = await http.post(apiEndpoint, {
-      createContactDTO,
-    });
+    // Map the organizations to replace undefined emails and phones with empty strings
+    const mappedOrganizations = createContactDTO.organizations.map((org) => ({
+      id: org.id,
+      email: org.email || '', // Use an empty string if email is undefined
+      phone: org.phone || '', // Use an empty string if phone is undefined
+    }));
+
+    // Create a new DTO with mapped organizations
+    const updatedContactDTO: CreateContactDTO = {
+      name: createContactDTO.name,
+      organizations: mappedOrganizations,
+    };
+    const response = await http.post(
+      apiEndpoint,
+      updatedContactDTO,
+    );
     return response.data;
   }
 

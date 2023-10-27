@@ -6,6 +6,7 @@ import {
 	AutoIncrement,
 	DataType,
 	BelongsToMany,
+	HasMany
 } from 'sequelize-typescript';
 import { CommunicationContacts, OrganizationContacts, Organizations } from '.';
 
@@ -14,20 +15,18 @@ export class Contacts extends Model {
 	@PrimaryKey
 	@AutoIncrement
 	@Column(DataType.INTEGER)
-	public id!: number;
+		id!: number;
 
-	@Column({ type: DataType.STRING, allowNull: false })
-	public name!: string;
-
-	@Column({ type: DataType.STRING(15), allowNull: true })
-	public phone?: string;
-
-	@Column({ type: DataType.STRING(45), allowNull: true })
-	public email?: string;
+	@Column({ type: DataType.STRING(100), allowNull: false })
+		name!: string;
 
 	@BelongsToMany(() => Organizations, () => OrganizationContacts, 'contactId', 'organizationId')
 		organizations?: Organizations[];
 
 	@BelongsToMany(() => Contacts, () => CommunicationContacts)
 		contacts?: Contacts[];
+
+	@HasMany(() => OrganizationContacts, 'contactId')
+		organizationContacts?: OrganizationContacts[];
+
 }

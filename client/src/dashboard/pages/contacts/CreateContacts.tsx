@@ -1,29 +1,21 @@
 /* eslint-disable newline-per-chained-call */
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
 import Joi from 'joi';
 import { toast } from 'react-toastify';
 import OrganizationService from '@/services/organizationService';
 import useForm from '@/shared/hooks/useForm';
 import { Organization } from '@/types/organization';
 import AddContactsInfoTable from './AddContactsInfoTable';
+import { CreateContactDTO } from '@/types/contact';
+import ContactService from '@/services/contactService';
 
 export interface InfoForOrganization {
   id: number,
   name: string;
-  email: string | undefined;
-  phone: string | undefined;
+  email: string;
+  phone: string
   [key: string]: string | number| undefined;
-}
-interface CreateContactDTO {
-  name: string,
-  organizations:{
-    id: number,
-    name: string;
-    email: string | undefined;
-    phone: string | undefined;
-  }[];
 }
 
 export interface FormProps{
@@ -79,17 +71,25 @@ function CreateContacts() {
   }).options({ allowUnknown: true });
 
   const doSubmit = async () => {
+    const info = form.data.infoPerOrganization.map((infoPerOrg) => {
+      const { id, email, phone } = infoPerOrg;
+      return { id, email, phone };
+    });
+
     try {
       const ContactDTO: CreateContactDTO = {
         name: form.data.name,
-        organizations: { ...form.data.infoPerOrganization },
-
+        organizations: info.map((item) => ({
+          id: item.id,
+          email: item.email,
+          phone: item.phone,
+        })),
       };
 
       console.log('Submit to api', ContactDTO);
 
       // Pass CreateContactDTO with the expected structure
-      // await ContactService.create();
+      await ContactService.create(ContactDTO);
 
       navigate('/contacts', { replace: true });
     } catch (ex) {
@@ -114,7 +114,7 @@ function CreateContacts() {
           lowerOrgsErrors={form.errors.infoPerOrganization}
         />
       </div>
-      <Button onClick={() => doSubmit()} className="hover:bg-yellow-600">Create</Button>
+      {form.renderButton('Create')}
     </>
   );
 }

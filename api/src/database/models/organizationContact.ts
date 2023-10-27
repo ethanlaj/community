@@ -7,6 +7,7 @@ import {
 	UpdatedAt,
 	ForeignKey,
 	DataType,
+	HasOne,
 } from 'sequelize-typescript';
 import { Contacts, Organizations } from '.';
 
@@ -23,10 +24,23 @@ export class OrganizationContacts extends Model {
 	@PrimaryKey
 	@ForeignKey(() => Contacts)
 	@Column({ type: DataType.INTEGER, allowNull: false })
-		ContactId!: number;
+		contactId!: number;
 
 	@PrimaryKey
 	@ForeignKey(() => Organizations)
 	@Column({ type: DataType.INTEGER, allowNull: false })
-		OrganizationId!: number;
+		organizationId!: number;
+
+	@Column({ type: DataType.STRING(10), allowNull: true })
+		phone?: string;
+	
+	@Column({ type: DataType.STRING(75), allowNull: true })
+		email?: string;
+
+	@HasOne(() => Organizations, 'id')
+		organization?: Organizations; 
+
+	@HasOne(() => Contacts, 'id')
+		contact?: Contacts; 
+	
 }

@@ -28,4 +28,9 @@ export class Organizations extends Model {
 
 	@BelongsToMany(() => Communications, () => CommunicationOrganizations)
 		communications?: Communications[];
+
+	@HasMany(() => OrganizationContacts, 'organizationId')
+		organizationContacts?: OrganizationContacts[];
+
+	
 }
