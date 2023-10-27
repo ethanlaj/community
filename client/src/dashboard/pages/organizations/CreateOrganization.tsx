@@ -3,7 +3,6 @@ import Joi from 'joi';
 import useForm from '@/shared/hooks/useForm';
 import styles from './CreateOrganization.module.css';
 import CreateLocation from '@/dashboard/pages/organizations/CreateLocation';
-import AddContacts from '@/dashboard/pages/contacts/AddContacts';
 import organizationService from '@/services/organizationService';
 
 interface FormProps {
@@ -11,11 +10,6 @@ interface FormProps {
   locations: {
     name: string;
     address: string;
-  }[];
-  contacts: {
-    name: string;
-    email: string;
-    phone: string;
   }[];
 }
 
@@ -30,7 +24,6 @@ function CreateOrganization() {
         address: '',
       },
     ],
-    contacts: [],
   };
 
   const schema = Joi.object({
@@ -39,7 +32,6 @@ function CreateOrganization() {
       name: Joi.string().required().label('Location Name'),
       address: Joi.string().required().label('Location Address'),
     }),
-    contacts: Joi.array().items(Joi.object().label('Contact')).label('Organization').required(),
   });
 
   const doSubmit = async () => {
@@ -63,8 +55,6 @@ function CreateOrganization() {
         {form.renderInput({ id: 'name', label: 'Name' })}
         <h3>Add Locations</h3>
         {form.renderChildForm(form, 'locations', CreateLocation, form.data.locations)}
-        <h3>Add Contacts</h3>
-        {form.renderChildForm(form, 'contacts', AddContacts, form.data.contacts)}
         {form.renderButton('Create')}
       </form>
     </div>

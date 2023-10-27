@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import styles from './Organizations.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import organizationService from '@/services/organizationService';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -35,14 +37,14 @@ function Organizations() {
   ];
 
   const handleRowClick = (row) => {
-    alert(`You clicked on ${row.name}`);
+    navigate(`/organization/${row.id}`);
   };
 
   const handleRowDelete = async (row) => {
     const originalOrgs = [...organizations];
     try {
       setOrganizations([...organizations].filter((cont) => cont.id !== row.id));
-      await organizationService.delete(row.id);
+      await organizationService.deleteOrganization(row.id);
 
       toast.success('Organization deleted successfully');
     } catch {

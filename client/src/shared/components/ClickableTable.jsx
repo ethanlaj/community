@@ -39,7 +39,9 @@ function ClickableTable({
         {data.map((row, rowIndex) => (
           <tr key={rowIndex} onClick={() => onRowClick(row)}>
             {columns.map((column, colIndex) => (
-              <td key={colIndex}>{row[column.field]}</td>
+              <td key={colIndex}>
+                {column.render ? column.render(row) : row[column.field]}
+              </td>
             ))}
             {onRowDelete && (
               <td className={styles.deleteColumn}>
