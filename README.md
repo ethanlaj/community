@@ -8,7 +8,7 @@ Click the link for a breakdown of all features and client requests with directio
  [features](https://github.com/ethanlaj/community/blob/main/docs/Initial_Tasks_and_Requirements.md)
 
 ## Trello
-All tasks that are done and are currently being worked on with the contributor have been assigned. We also have other tasks that have not been started in Trello.[Trello board (invite-only)](https://trello.com/b/Xv6cbIvZ/community) 
+All tasks that are done and are currently being worked on with the contributor have been assigned. We also have other tasks that have not been started in Trello. [Trello board (invite-only)](https://trello.com/b/Xv6cbIvZ/community) 
 
 ## Dependencies
 The following dependencies are required to build and run this project:
