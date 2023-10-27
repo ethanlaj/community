@@ -27,6 +27,9 @@ npm install
 npm run dev
 ```
 
+4. Open up the website
+   - [Community](https://community-9eef4.web.app/)
+
 ## Credits
  Participants
 - Ethan Lajeunesse (Spring 2023 -> Current)
