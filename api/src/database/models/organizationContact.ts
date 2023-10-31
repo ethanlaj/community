@@ -23,10 +23,10 @@ export class OrganizationContacts extends Model {
 	@PrimaryKey
 	@ForeignKey(() => Contacts)
 	@Column({ type: DataType.INTEGER, allowNull: false })
-		ContactId!: number;
+		contactId!: number;
 
 	@PrimaryKey
 	@ForeignKey(() => Organizations)
 	@Column({ type: DataType.INTEGER, allowNull: false })
-		OrganizationId!: number;
+		organizationId!: number;
 }

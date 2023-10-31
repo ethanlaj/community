@@ -23,6 +23,7 @@ interface CreateOrganizationDTO {
     name: string;
     address: string;
   }[];
+  aliases: string[];
 }
 
 export default class OrganizationService {

@@ -18,6 +18,7 @@ organizationsRouter.get('/', errorHandler(async (_req: Request, res: Response) =
 					model: Communications,
 					include: [Contacts],
 				},
+				OrganizationAliases,
 			],
 			order: [['createdAt', 'DESC']],
 		});
