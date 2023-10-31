@@ -17,7 +17,7 @@ export interface UseFormReturn<T> {
     handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
     handleDataChange: (id: string, value: any) => void;
     renderChildForm: (form: UseFormReturn<T>, id: string, ChildFormComponent: React.ComponentType<any>, childData: any, props?: any) => JSX.Element;
-    renderEditableTable: (props: EditableTableProps<T>) => JSX.Element;
+    renderEditableTable: (props: EditableTableProps) => JSX.Element;
     renderButton: (label: string) => JSX.Element;
     renderSearch: (props: RenderSearchProps) => JSX.Element;
     renderSelect: (id: keyof T, label: string, options: RenderSelectOption[]) => JSX.Element;
@@ -29,15 +29,17 @@ export interface ValidatePropertyProps {
     value: string;
 }
 
-export interface EditableTableProps<T> {
-    columns: {
-        title: string;
-        field: string;
-    }[];
-    tableData: T;
+export interface EditableTableProps {
+    columns: EditableTableColumn[];
+    tableData?: any;
     tableError: string;
     onUpdate: (row: any) => void;
     onAdd: (row: any) => void;
+}
+
+export interface EditableTableColumn {
+    title: string;
+    field: string;
 }
 
 export interface RenderSearchProps {

@@ -115,12 +115,12 @@ function useForm<T extends object>({
     tableError,
     onUpdate,
     onAdd,
-  }: EditableTableProps<T>) {
+  }: EditableTableProps) {
     return (
       <EditableTable
         columns={columns}
-        data={tableData}
-        error={tableError}
+        tableData={tableData}
+        tableError={tableError}
         onUpdate={onUpdate}
         onAdd={onAdd}
       />

@@ -65,17 +65,12 @@ function CreateContacts() {
 
   const schema = Joi.object({
     name: Joi.string().required().label('Name'),
-    infoPerOrganization: Joi.array().items({
-      id: Joi.number().allow(null, ''),
-      name: Joi.string().required(),
-      email: Joi.string().email({ tlds: { allow: false } }).allow(null, '').label('Email'),
-      phone: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/).allow(null, '').label('Phone Number'),
-      createdAt: Joi.any().allow(null),
-      updatedAt: Joi.any().allow(null),
-      contacts: Joi.any().allow(null),
-      organizationLocations: Joi.any().allow(null),
-      communications: Joi.any().allow(null),
-    }).min(1).label('Organizations'),
+    infoPerOrganization: Joi.array().items(
+      Joi.object({
+        email: Joi.string().email({ tlds: { allow: false } }).allow(null, '').label('Email'),
+        phone: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/).allow(null, '').label('Phone Number'),
+      }).unknown(true),
+    ).min(1).label('Organizations'),
   }).options({ allowUnknown: true });
 
   const doSubmit = async () => {

@@ -90,11 +90,19 @@ function ReactiveSearch({
     if (showSearchBox) searchInputRef.current.focus();
   }, [showSearchBox]);
 
-  const filteredItems = items.filter(
-    (item) => _.get(item, valuePath)
-      ?.toLowerCase()
-      .includes(searchTerm.toLowerCase()),
-  );
+  const filteredItems = items.filter((item) => {
+    const mainValue = _.get(item, valuePath)?.toLowerCase();
+    if (mainValue.includes(searchTerm.toLowerCase())) {
+      return true;
+    }
+
+    // Check aliases for matches
+    if (item.aliases && item.aliases.length) {
+      return item.aliases.some((alias) => alias.alias.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
+
+    return false;
+  });
 
   const displayLabel = _.get(selectedItem, valuePath) || selectionLabel;
 
@@ -125,18 +133,29 @@ function ReactiveSearch({
               onKeyDown={handleInputKeyDown}
             />
             <ul className={styles.searchList} ref={searchListRef}>
-              {filteredItems.map((item, index) => (
-                <li
-                  key={_.get(item, idPath)}
-                  tabIndex="0"
-                  className={`${styles.searchListItem} ${
-                    index === focusedItemIndex ? styles.focusedItem : ''
-                  }`}
-                  onClick={() => handleItemClick(item)}
-                >
-                  {_.get(item, valuePath)}
-                </li>
-              ))}
+              {filteredItems.map((item, index) => {
+                let displayValue = _.get(item, valuePath);
+                if (searchTerm.length > 0) {
+                  const matchedAlias = item.aliases?.find((alias) => alias.alias.toLowerCase().includes(searchTerm.toLowerCase()));
+
+                  if (matchedAlias) {
+                    displayValue = `(${matchedAlias.alias}) ${displayValue}`;
+                  }
+                }
+
+                return (
+                  <li
+                    key={_.get(item, idPath)}
+                    tabIndex="0"
+                    className={`${styles.searchListItem} ${
+                      index === focusedItemIndex ? styles.focusedItem : ''
+                    }`}
+                    onClick={() => handleItemClick(item)}
+                  >
+                    {displayValue}
+                  </li>
+                );
+              })}
             </ul>
             <div
               className={`${styles.searchListItem} ${styles.createNew}`}
