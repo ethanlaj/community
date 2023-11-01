@@ -25,6 +25,7 @@ export class OrganizationContacts extends Model {
 	@ForeignKey(() => Contacts)
 	@Column({ type: DataType.INTEGER, allowNull: false })
 		contactId!: number;
+	contactId!: number;
 
 	@PrimaryKey
 	@ForeignKey(() => Organizations)
