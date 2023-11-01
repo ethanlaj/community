@@ -6,3 +6,9 @@ export interface CreateContactDTO {
       phone: string;
     }[];
   }
+  
+export interface deletedContactIdentifiers {
+  contactIdIncoming: number,
+  organizationIdIncoming: number,
+  }
+

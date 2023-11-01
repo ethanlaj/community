@@ -1,6 +1,6 @@
 import http from './httpService';
 import config from '../config';
-import { CreateContactDTO } from '@/types/contact';
+import { CreateContactDTO, deletedContactIdentifiers } from '@/types/contact';
 
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/contacts`;
@@ -48,8 +48,12 @@ export default class ContactService {
     return response.data;
   }
 
-  static async delete(id: number) {
-    const response = await http.delete(`${apiEndpoint}/${id}`);
+  static async delete(ContactIdentifiers: deletedContactIdentifiers) {
+    const { contactIdIncoming, organizationIdIncoming } = ContactIdentifiers;
+    const deleteEndpoint = `${apiEndpoint}/${contactIdIncoming}/${organizationIdIncoming}`;
+    console.log(deleteEndpoint);
+    console.log('Second');
+    const response = await http.delete(deleteEndpoint);
     return response.data;
   }
 }

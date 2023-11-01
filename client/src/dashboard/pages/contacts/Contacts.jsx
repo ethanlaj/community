@@ -31,6 +31,8 @@ function Contacts() {
     { title: 'Email', field: 'email' },
     { title: 'Phone Number', field: 'phone' },
     { title: 'Organization', field: 'organizationName' },
+    { title: 'OrgId', field: 'organizationId' },
+    { title: 'ConId', field: 'contactId' },
   ];
 
   const handleRowClick = (row) => {
@@ -39,9 +41,15 @@ function Contacts() {
 
   const handleRowDelete = async (row) => {
     const originalContacts = [...contacts];
+
     try {
-      setContacts([...contacts].filter((cont) => cont.id !== row.id));
-      await contactService.delete(row.id);
+      const deletedContactIdentifiers = {
+        contactIdIncoming: row.contactId,
+        organizationIdIncoming: row.organizationId,
+      };
+      setContacts([...contacts].filter((cont) => cont.contactId !== row.contactId || cont.organizationId !== row.organizationId));
+
+      await contactService.delete(deletedContactIdentifiers);
 
       toast.success('Contact deleted successfully');
     } catch {

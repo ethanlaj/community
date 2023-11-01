@@ -2,7 +2,7 @@ import express, { Router, Request, Response } from 'express';
 import { Op } from 'sequelize';
 import { Contacts, Organizations, OrganizationContacts } from '../database/models';
 import errorHandler from '../errorHandler';
-import { CreateContactDTO } from '../types/CreateContactDTO';
+import { CreateContactDTO, deletedContactIdentifiers } from '../types/ContactDTO';
 import { setOrganizations } from '../mixins/contacts';
 
 const contactsRouter: Router = express.Router();
@@ -35,7 +35,7 @@ contactsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
 			organizationId: result.organizationId,
 		}));
 	
-		console.log(contactResults);
+		//console.log(contactResults);
 		res.status(200).json(contactResults);
 	} catch (error) {
 		console.log(error);
@@ -122,21 +122,53 @@ contactsRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
 }));
 
 contactsRouter.delete('/:id', errorHandler(async (req: Request, res: Response) => {
+	console.log(req.params);
 	const { id } = req.params;
-
+	console.log(id);
+	const { contactIdIncoming, organizationIdIncoming } = constructContactIdentifiers(id);
+	console.log(contactIdIncoming +'FOR Org '+ organizationIdIncoming);
+	console.log('Start Remove');
 	try {
-		const contact = await Contacts.findByPk(id);
-		if (!contact) {
-			res.status(404).json({ message: 'Contact not found' });
-			return;
-		}
+		
+		OrganizationContacts.destroy({
+			where: {
+				contactId: contactIdIncoming,
+				organizationId: organizationIdIncoming,
+			},
+		});
+		console.log(OrganizationContacts);
+		await OrganizationContacts.destroy();
+		// Check if there are any organizationContacts associated with the contact
+		const organizationContactsCount = await OrganizationContacts.count({
+			where: {
+				contactId: contactIdIncoming,
+			},
+		});
 
-		await contact.destroy();
+		console.log('Number Contacts: '+organizationContactsCount);
+		if (organizationContactsCount === 0) {
+			// If no organization contacts are associated, delete the contact
+			
+			await Contacts.destroy({
+				where: {
+					contactIdIncoming,
+				},
+			});
+		}
 		res.status(204).json();
 	} catch (error) {
+		console.log('ERROR: ' + error);
 		res.status(500).send((error as Error).message);
 		return;
 	}
 }));
+
+function constructContactIdentifiers(id: string): deletedContactIdentifiers {
+	const [contactIdIncoming, organizationIdIncoming] = id.split('_'); // Assuming id is in the format "contactId_organizationId"
+	return {
+		contactIdIncoming: parseInt(contactIdIncoming, 10),
+		organizationIdIncoming: parseInt(organizationIdIncoming, 10),
+	};
+}
 
 export default contactsRouter;
