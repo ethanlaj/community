@@ -24,7 +24,6 @@ contactsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
 				
 			],
 		});
-		//console.log(results);
 	
 		const contactResults = results.map((result) => ({
 			name: result.contact? result.contact.name : null,
@@ -35,7 +34,7 @@ contactsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
 			organizationId: result.organizationId,
 		}));
 	
-		//console.log(contactResults);
+
 		res.status(200).json(contactResults);
 	} catch (error) {
 		console.log(error);
@@ -66,7 +65,6 @@ contactsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
 	const organizationIds = organizations.map(org => org.id);
 	const organizationEmails = organizations.map(org => org.email);
 	const organizationPhones = organizations.map(org => org.phone);
-	console.log(organizations);
 
 	try {
 		const newContact = await Contacts.create({
@@ -75,7 +73,7 @@ contactsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
 		if (organizations) {
 			await setOrganizations(newContact, organizationIds, organizationEmails, organizationPhones);
 		}
-		console.log(newContact);
+
 		res.status(201).json(newContact);
 	} catch (error) {
 		console.log(error);
@@ -121,32 +119,31 @@ contactsRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
 	}
 }));
 
-contactsRouter.delete('/:conid/:orgid', errorHandler(async (req: Request, res: Response) => {
-	console.log(req.params);
-	const { conid,orgid } = req.params;
+contactsRouter.delete('/:conId/:orgId', errorHandler(async (req: Request, res: Response) => {
+	
+	const { conId,orgId } = req.params;
 	try {
 		
 		await OrganizationContacts.destroy({
 			where: {
-				contactId: conid,
-				organizationId: orgid,
+				contactId: conId,
+				organizationId: orgId,
 			},
 		});
 
 		// Check if there are any organizationContacts associated with the contact
 		const organizationContactsCount = await OrganizationContacts.count({
 			where: {
-				contactId: conid,
+				contactId: conId,
 			},
 		});
 
-		console.log('Number Contacts: '+organizationContactsCount);
 		if (organizationContactsCount === 0) {
 			// If no organization contacts are associated, delete the contact
 			
 			await Contacts.destroy({
 				where: {
-					id:conid,
+					id:conId,
 				},
 			});
 		}

@@ -51,8 +51,6 @@ export default class ContactService {
   static async delete(ContactIdentifiers: deletedContactIdentifiers) {
     const { contactIdIncoming, organizationIdIncoming } = ContactIdentifiers;
     const deleteEndpoint = `${apiEndpoint}/${contactIdIncoming}/${organizationIdIncoming}`;
-    console.log(deleteEndpoint);
-    console.log('Second');
     const response = await http.delete(deleteEndpoint);
     return response.data;
   }

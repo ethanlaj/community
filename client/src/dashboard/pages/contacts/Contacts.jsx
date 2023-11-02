@@ -31,8 +31,8 @@ function Contacts() {
     { title: 'Email', field: 'email' },
     { title: 'Phone Number', field: 'phone' },
     { title: 'Organization', field: 'organizationName' },
-    { title: 'OrgId', field: 'organizationId' },
-    { title: 'ConId', field: 'contactId' },
+    // { title: 'OrgId', field: 'organizationId' },
+    // { title: 'ConId', field: 'contactId' },
   ];
 
   const handleRowClick = (row) => {
