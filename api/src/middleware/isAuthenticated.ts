@@ -32,20 +32,14 @@ const isAuthenticated = async (req: CRequest, res: Response, next: NextFunction)
 			return;
 		}
 
-		// Here 'decoded' is of type object | undefined, we need to handle the 'undefined' case
 		if (!decoded || typeof decoded === 'string') {
 			res.status(401).send({ msg: 'Unauthorized: Invalid token' });
 			return;
 		}
 
-		// Type guard to ensure 'decoded' has an 'upn' or 'email' field
-		console.log(decoded);
-		if ('preferred_username' in decoded) {
-			// Here you can cast 'decoded' to a more specific type if you have one
-			const userEmail = decoded.preferred_username;
-
-			// Attach the userEmail to the request object so it can be accessed downstream
-			req.userEmail = userEmail;
+		if ('upn' in decoded) {
+			const { upn } = decoded;
+			req.userEmail = upn;
 
 			next();
 		} else {
