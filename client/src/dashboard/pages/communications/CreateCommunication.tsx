@@ -76,7 +76,7 @@ function CreateCommunication() {
       .required(),
     type: Joi.string().allow('email', 'phone', 'in-person', 'mail').label('Type').required()
       .messages({
-        'string.empty': 'Please Select a type',
+        'string.empty': 'Please select a type',
       }),
   });
 
