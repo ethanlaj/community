@@ -24,7 +24,8 @@
   },
   "dependencies": {
     "husky": "^8.0.3",
-    "lint-staged": "^15.0.2"
+    "lint-staged": "^15.0.2",
+    "xlsx": "^0.18.5"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --fix"
