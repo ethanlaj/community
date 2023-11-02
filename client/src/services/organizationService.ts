@@ -16,6 +16,15 @@ interface Organization {
   }[];
 }
 
+interface CreateOrganizationDTO {
+  name: string;
+  locations: {
+    name: string;
+    address: string;
+  }[];
+  aliases: string[];
+}
+
 export default class OrganizationService {
   static http = http.create();
 
@@ -24,12 +33,12 @@ export default class OrganizationService {
     return response.data;
   };
 
-  static getById = async (id: number) => {
+  static getById = async (id: number): Promise<Organization> => {
     const response = await http.get(`${apiEndpoint}/${id}`);
     return response.data;
   };
 
-  static create = async (organization: Organization) => {
+  static create = async (organization: CreateOrganizationDTO) => {
     const response = await http.post(apiEndpoint, organization);
     return response.data;
   };

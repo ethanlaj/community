@@ -1,4 +1,5 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, DataType, HasMany } from 'sequelize-typescript';
+import { Users } from './user';
 
 @Table({ tableName: 'EtownOffices' })
 export class EtownOffices extends Model {
@@ -9,4 +10,7 @@ export class EtownOffices extends Model {
 
 	@Column({ type: DataType.STRING, allowNull: false })
 	public name!: string;
+
+	@HasMany(() => Users, 'officeId')
+		users?: Users[];
 }

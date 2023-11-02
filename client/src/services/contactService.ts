@@ -1,13 +1,6 @@
 import http from './httpService';
 import { apiUrl } from '../config';
-
-interface CreateContactDTO {
-  name: string,
-  email: string,
-  phone: string,
-  exten: string;
-  locationIds: number[];
-}
+import { CreateContactDTO, deletedContactIdentifiers } from '@/types/contact';
 
 const apiEndpoint = `${apiUrl}/contacts`;
 
@@ -30,9 +23,22 @@ export default class ContactService {
   }
 
   static async create(createContactDTO: CreateContactDTO) {
-    const response = await http.post(apiEndpoint, {
-      createContactDTO,
-    });
+    // Map the organizations to replace undefined emails and phones with empty strings
+    const mappedOrganizations = createContactDTO.organizations.map((org) => ({
+      id: org.id,
+      email: org.email || '', // Use an empty string if email is undefined
+      phone: org.phone || '', // Use an empty string if phone is undefined
+    }));
+
+    // Create a new DTO with mapped organizations
+    const updatedContactDTO: CreateContactDTO = {
+      name: createContactDTO.name,
+      organizations: mappedOrganizations,
+    };
+    const response = await http.post(
+      apiEndpoint,
+      updatedContactDTO,
+    );
     return response.data;
   }
 
@@ -41,8 +47,10 @@ export default class ContactService {
     return response.data;
   }
 
-  static async delete(id: number) {
-    const response = await http.delete(`${apiEndpoint}/${id}`);
+  static async delete(ContactIdentifiers: deletedContactIdentifiers) {
+    const { contactIdIncoming, organizationIdIncoming } = ContactIdentifiers;
+    const deleteEndpoint = `${apiEndpoint}/${contactIdIncoming}/${organizationIdIncoming}`;
+    const response = await http.delete(deleteEndpoint);
     return response.data;
   }
 }

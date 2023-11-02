@@ -7,3 +7,17 @@ export interface Contact {
     phone: string;
     organizations: Organization[];
 }
+
+export interface CreateContactDTO {
+    name: string,
+    organizations:{
+      id: number,
+      email: string | undefined;
+      phone: string | undefined;
+    }[];
+  }
+
+export interface deletedContactIdentifiers {
+  contactIdIncoming: number,
+  organizationIdIncoming: number,
+  }

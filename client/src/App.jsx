@@ -13,6 +13,7 @@ import styles from './App.module.css';
 import CreateOrganization from './dashboard/pages/organizations/CreateOrganization';
 import CreateCommunication from './dashboard/pages/communications/CreateCommunication';
 import Organizations from './dashboard/pages/organizations/Organizations';
+import Organization from './dashboard/pages/organization/Organization';
 import Contacts from './dashboard/pages/contacts/Contacts';
 import Communications from './dashboard/pages/communications/Communications';
 import { ModalProvider } from './shared/components/ModalContext';
@@ -39,10 +40,8 @@ function App() {
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="/contacts/create" element={<CreateContacts />} />
                 <Route path="/communications" element={<Communications />} />
-                <Route
-                  path="/communications/create"
-                  element={<CreateCommunication />}
-                />
+                <Route path="/communications/create" element={<CreateCommunication />} />
+                <Route path="/organization/:id" element={<Organization />} />
                 <Route path="/unauthorized" element={<Unauthorized />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

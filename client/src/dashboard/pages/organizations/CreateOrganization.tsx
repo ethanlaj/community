@@ -3,8 +3,8 @@ import Joi from 'joi';
 import useForm from '@/shared/hooks/useForm';
 import styles from './CreateOrganization.module.css';
 import CreateLocation from '@/dashboard/pages/organizations/CreateLocation';
-import AddContacts from '@/dashboard/pages/contacts/AddContacts';
 import organizationService from '@/services/organizationService';
+import AddUpdateAliases from '@/shared/components/AddUpdateAliases';
 
 interface FormProps {
   name: string;
@@ -12,11 +12,7 @@ interface FormProps {
     name: string;
     address: string;
   }[];
-  contacts: {
-    name: string;
-    email: string;
-    phone: string;
-  }[];
+  aliases: string[];
 }
 
 function CreateOrganization() {
@@ -30,7 +26,7 @@ function CreateOrganization() {
         address: '',
       },
     ],
-    contacts: [],
+    aliases: [],
   };
 
   const schema = Joi.object({
@@ -39,7 +35,10 @@ function CreateOrganization() {
       name: Joi.string().required().label('Location Name'),
       address: Joi.string().required().label('Location Address'),
     }),
-    contacts: Joi.array().items(Joi.object().label('Contact')).label('Organization').required(),
+    aliases: Joi.array().unique().items(Joi.string().label('Aliases'))
+      .messages({
+        'array.unique': 'Duplicate alias detected, please remove it.',
+      }),
   });
 
   const doSubmit = async () => {
@@ -61,11 +60,19 @@ function CreateOrganization() {
       <h1>Create Organization</h1>
       <form className={styles.formContainer}>
         {form.renderInput({ id: 'name', label: 'Name' })}
+
         <h3>Add Locations</h3>
         {form.renderChildForm(form, 'locations', CreateLocation, form.data.locations)}
-        <h3>Add Contacts</h3>
-        {form.renderChildForm(form, 'contacts', AddContacts, form.data.contacts)}
+
+        <h3>Add Aliases</h3>
+        <AddUpdateAliases
+          aliases={form.data.aliases}
+          handleChange={form.handleDataChange}
+          error={form.errors.aliases}
+        />
+
         {form.renderButton('Create')}
+
       </form>
     </div>
   );
