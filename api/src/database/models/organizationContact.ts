@@ -40,7 +40,7 @@ export class OrganizationContacts extends Model {
 	@BelongsTo(() => Organizations)
 		organization?: Organizations; 
 
-	@BelongsTo(() => Contacts, )
+	@BelongsTo(() => Contacts)
 		contact?: Contacts; 
 	
 }
