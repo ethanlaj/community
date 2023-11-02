@@ -55,7 +55,10 @@ function CreateCommunication() {
   };
 
   const schema = Joi.object({
-    date: Joi.date().required().label('Date'),
+    date: Joi.date().required().label('Date').max(now)
+      .messages({
+        'date.max': 'Date must be a non-future date.',
+      }),
     contacts: Joi.array()
       .items(Joi.object().label('Contact'))
       .label('Contacts')
@@ -71,7 +74,10 @@ function CreateCommunication() {
       .label('Organizations')
       .min(1)
       .required(),
-    type: Joi.string().allow('email', 'phone', 'in-person', 'mail').label('Type').required(),
+    type: Joi.string().allow('email', 'phone', 'in-person', 'mail').label('Type').required()
+      .messages({
+        'string.empty': 'Please Select a type',
+      }),
   });
 
   const doSubmit = async () => {
