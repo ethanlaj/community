@@ -7,6 +7,7 @@ import {
 	UpdatedAt,
 	ForeignKey,
 	DataType,
+	BelongsTo,
 } from 'sequelize-typescript';
 import { Contacts, Organizations } from '.';
 
@@ -29,4 +30,17 @@ export class OrganizationContacts extends Model {
 	@ForeignKey(() => Organizations)
 	@Column({ type: DataType.INTEGER, allowNull: false })
 		organizationId!: number;
+
+	@Column({ type: DataType.STRING(10), allowNull: true })
+		phone?: string;
+	
+	@Column({ type: DataType.STRING(75), allowNull: true })
+		email?: string;
+
+	@BelongsTo(() => Organizations)
+		organization?: Organizations; 
+
+	@BelongsTo(() => Contacts)
+		contact?: Contacts; 
+	
 }

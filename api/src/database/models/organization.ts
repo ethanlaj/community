@@ -32,4 +32,9 @@ export class Organizations extends Model {
 
 	@HasMany(() => OrganizationAliases)
 		aliases?: OrganizationAliases[];
+
+	@HasMany(() => OrganizationContacts, 'organizationId')
+		organizationContacts?: OrganizationContacts[];
+
+	
 }
