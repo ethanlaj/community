@@ -24,5 +24,6 @@ module.exports = {
 		'space-before-blocks': 'error',
 		'keyword-spacing': 'error',
 		'arrow-spacing': 'error',
+		'no-console': 'warn',
 	},
 };
