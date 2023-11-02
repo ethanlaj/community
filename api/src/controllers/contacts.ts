@@ -124,10 +124,6 @@ contactsRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
 contactsRouter.delete('/:conid/:orgid', errorHandler(async (req: Request, res: Response) => {
 	console.log(req.params);
 	const { conid,orgid } = req.params;
-	console.log(conid + '<ID> '+ orgid);
-
-	console.log(conid +' FOR Org '+ orgid);
-	console.log('Start Remove');
 	try {
 		
 		await OrganizationContacts.destroy({
@@ -136,9 +132,7 @@ contactsRouter.delete('/:conid/:orgid', errorHandler(async (req: Request, res: R
 				organizationId: orgid,
 			},
 		});
-		console.log('Orgs');
-		//await OrganizationContacts.destroy();
-		console.log('Destroyed');
+
 		// Check if there are any organizationContacts associated with the contact
 		const organizationContactsCount = await OrganizationContacts.count({
 			where: {
