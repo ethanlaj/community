@@ -26,7 +26,7 @@ function CreateOrganization() {
         address: '',
       },
     ],
-    aliases: [''],
+    aliases: [],
   };
 
   const schema = Joi.object({
