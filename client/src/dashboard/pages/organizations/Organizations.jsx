@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { FaFileExcel } from 'react-icons/fa';
 import exportToExcel from '../../../utils/excelExport';
 import styles from './Organizations.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import organizationService from '@/services/organizationService';
+import ExcelExportButton from '@/shared/components/ExcelExportButton';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
@@ -47,7 +47,7 @@ function Organizations() {
       });
       return exportRow;
     });
-    exportToExcel(dataToExport, 'Organizations', 'Organizations');
+    exportToExcel([{ name: 'Organizations', data: dataToExport }], 'Organizations');
   };
 
   const handleRowClick = (row) => {
@@ -76,13 +76,9 @@ function Organizations() {
         onRowClick={handleRowClick}
         onRowDelete={handleRowDelete}
       />
-      <button type="button" className="btn btn-success" onClick={handleExport}>
-        {' '}
-        <FaFileExcel />
-        {' '}
+      <ExcelExportButton onExport={handleExport}>
         Export
-
-      </button>
+      </ExcelExportButton>
     </div>
   );
 }

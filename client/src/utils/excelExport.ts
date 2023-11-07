@@ -1,9 +1,8 @@
 import * as XLSX from 'xlsx';
 
-// Define the shape of each sheet object
 type SheetData = {
   name: string;
-  data: any[]; // replace 'any' with a more specific type if possible
+  data: any[];
 };
 
 // Update the function parameter to use the SheetData array type
