@@ -7,6 +7,9 @@ import {
 	DataType,
 	BelongsToMany,
 	HasMany,
+	NotNull,
+	Default,
+	Max
 } from 'sequelize-typescript';
 import { CommunicationOrganizations, Communications, Contacts, OrganizationContacts, OrganizationLocations } from '.';
 import { OrganizationAliases } from './organizationAliases';
@@ -36,5 +39,11 @@ export class Organizations extends Model {
 	@HasMany(() => OrganizationContacts, 'organizationId')
 		organizationContacts?: OrganizationContacts[];
 
+		@NotNull
+		@Default(0)
+		@Max(3) 
+		@Column(DataType.TINYINT)
+			flag!: number;
+	
 	
 }
