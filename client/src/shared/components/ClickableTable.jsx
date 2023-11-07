@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import _ from 'lodash';
 import { Table, Button } from 'react-bootstrap';
 import styles from './ClickableTable.module.css';
 import { ModalContext } from './ModalContext';
@@ -40,7 +41,7 @@ function ClickableTable({
           <tr key={rowIndex} onClick={() => onRowClick(row)}>
             {columns.map((column, colIndex) => (
               <td key={colIndex}>
-                {column.render ? column.render(row) : row[column.field]}
+                {column.render ? column.render(row) : _.get(row, column.field)}
               </td>
             ))}
             {onRowDelete && (

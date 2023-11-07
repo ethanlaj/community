@@ -16,6 +16,8 @@ import Contacts from './dashboard/pages/contacts/Contacts';
 import Communications from './dashboard/pages/communications/Communications';
 import { ModalProvider } from './shared/components/ModalContext';
 import CreateContacts from './dashboard/pages/contacts/CreateContacts';
+import Admin from './dashboard/pages/admin/Admin';
+import AddUsers from './dashboard/pages/users/AddUsers';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <ErrorBoundary FallbackComponent={UnexpectedError}>
             <Routes>
               <Route path="/" element={<Organizations />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/add-user" element={<AddUsers />} />
               <Route path="/organizations/create" element={<CreateOrganization />} />
               <Route path="/organizations" element={<Organizations />} />
               <Route path="/contacts" element={<Contacts />} />
