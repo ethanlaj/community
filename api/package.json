@@ -49,5 +49,8 @@
 		"eslint": "^8.50.0",
 		"readline-sync": "^1.4.10",
 		"ts-node": "^10.9.1"
-	}
+	},
+	"lint-staged": {
+		"*.{js,jsx,ts,tsx}": "eslint --fix"
+	  }
 }
