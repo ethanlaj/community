@@ -1,7 +1,6 @@
 import http from './httpService';
-import config from '../config';
+import { apiUrl } from '../config';
 
-const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/organizations`;
 
 interface Organization {
