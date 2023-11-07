@@ -47,7 +47,7 @@ function CreateOrganization() {
 
       await organizationService.create({ ...form.data });
 
-      navigate('/', { replace: true });
+      navigate('/organizations', { replace: true });
     } catch (ex: any) {
       console.log(ex); // TODO: Toast
     }

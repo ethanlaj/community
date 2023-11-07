@@ -1,8 +1,7 @@
 import http from './httpService';
-import config from '../config';
+import { apiUrl } from '../config';
 import { CreateContactDTO, deletedContactIdentifiers } from '@/types/contact';
 
-const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/contacts`;
 
 export default class ContactService {
