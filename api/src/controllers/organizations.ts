@@ -2,6 +2,8 @@ import express, { Router, Request, Response } from 'express';
 import { Communications, Organizations, OrganizationLocations, Contacts } from '../database/models';
 
 import errorHandler from '../errorHandler';
+import { CreateOrganizationDTO } from '../types/CreateOrganizationDTO';
+import { OrganizationAliases } from '../database/models/organizationAliases';
 
 const organizationsRouter: Router = express.Router();
 
@@ -16,6 +18,7 @@ organizationsRouter.get('/', errorHandler(async (_req: Request, res: Response) =
 					model: Communications,
 					include: [Contacts],
 				},
+				OrganizationAliases,
 			],
 			order: [['createdAt', 'DESC']],
 		});
@@ -47,14 +50,24 @@ organizationsRouter.get('/:id', errorHandler(async (req: Request, res: Response)
 
 // POST a new organization
 organizationsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
-	const organizationData = req.body;
+	const { name, locations, aliases } = req.body as CreateOrganizationDTO;
 	try {
-		const newOrganization = await Organizations.create(organizationData);
+		const newOrganization = await Organizations.create({
+			name,
+		});
 
-		if (req.body.locations)
+		if (locations)
 			await OrganizationLocations.bulkCreate(
-				req.body.locations.map((location: any) => ({
+				locations.map((location: any) => ({
 					...location,
+					organizationId: newOrganization.id,
+				}))
+			);
+
+		if (aliases)
+			await OrganizationAliases.bulkCreate(
+				aliases.map((alias: string) => ({ 
+					alias,
 					organizationId: newOrganization.id,
 				}))
 			);

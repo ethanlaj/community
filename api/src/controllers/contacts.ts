@@ -1,24 +1,43 @@
 import express, { Router, Request, Response } from 'express';
 import { Op } from 'sequelize';
-import { Contacts, Organizations } from '../database/models';
+import { Contacts, Organizations, OrganizationContacts } from '../database/models';
 import errorHandler from '../errorHandler';
+import { CreateContactDTO } from '../types/ContactDTO';
+import { setOrganizations } from '../mixins/contacts';
 
 const contactsRouter: Router = express.Router();
 
 contactsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
-	const orgId = req.query.orgId as string | undefined;
 
 	try {
-		const contacts = await Contacts.findAll({
-			include: {
-				model: Organizations,
-				where: orgId ? { id: orgId } : {},
-				required: orgId ? true : false,
-			},
+		const results = await OrganizationContacts.findAll({
+			attributes: ['contactId','email', 'phone','organizationId'],
+			include: [
+				{
+					model: Organizations,
+					attributes: ['name'],
+				},
+				{
+					model: Contacts,
+					attributes: ['name'],
+				},
+				
+			],
 		});
+	
+		const contactResults = results.map((result) => ({
+			name: result.contact? result.contact.name : null,
+			email: result.email,
+			phone: result.phone,
+			organizationName: result.organization ? result.organization.name: null,
+			contactId: result.contactId,
+			organizationId: result.organizationId,
+		}));
+	
 
-		res.status(200).json(contacts);
+		res.status(200).json(contactResults);
 	} catch (error) {
+		console.log(error);
 		res.status(500).send((error as Error).message);
 	}
 }));
@@ -42,36 +61,33 @@ contactsRouter.get('/:id', errorHandler(async (req: Request, res: Response) => {
 }));
 
 contactsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
-	const { name, email, phone, organizations } = req.body;
+	const { name , organizations }  = req.body as CreateContactDTO;
+	const organizationIds = organizations.map(org => org.id);
+	const organizationEmails = organizations.map(org => org.email);
+	const organizationPhones = organizations.map(org => org.phone);
 
 	try {
 		const newContact = await Contacts.create({
 			name,
-			email,
-			phone,
 		});
-
-		if (organizations && organizations.length > 0) {
-			const orgs = await Organizations.findAll({
-				where: {
-					id: {
-						[Op.in]: organizations,
-					},
-				},
-			});
-
-			await newContact.$set('organizations', orgs);
+		if (organizations) {
+			await setOrganizations(newContact, organizationIds, organizationEmails, organizationPhones);
 		}
 
 		res.status(201).json(newContact);
 	} catch (error) {
+		console.log(error);
 		res.status(500).send((error as Error).message);
 	}
+	
 }));
 
 contactsRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
 	const { id } = req.params;
-	const { name, email, phone, organizations } = req.body;
+	const { name, organizations } = req.body;
+
+
+	//email, phone,
 
 	try {
 		const contact = await Contacts.findByPk(id);
@@ -81,8 +97,8 @@ contactsRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
 		}
 
 		contact.name = name || contact.name;
-		contact.email = email || contact.email;
-		contact.phone = phone || contact.phone;
+		// contact.email = email || contact.email;
+		// contact.phone = phone || contact.phone;
 		await contact.save();
 
 		if (organizations) {
@@ -103,19 +119,37 @@ contactsRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
 	}
 }));
 
-contactsRouter.delete('/:id', errorHandler(async (req: Request, res: Response) => {
-	const { id } = req.params;
-
+contactsRouter.delete('/:conId/:orgId', errorHandler(async (req: Request, res: Response) => {
+	
+	const { conId,orgId } = req.params;
 	try {
-		const contact = await Contacts.findByPk(id);
-		if (!contact) {
-			res.status(404).json({ message: 'Contact not found' });
-			return;
-		}
+		
+		await OrganizationContacts.destroy({
+			where: {
+				contactId: conId,
+				organizationId: orgId,
+			},
+		});
 
-		await contact.destroy();
+		// Check if there are any organizationContacts associated with the contact
+		const organizationContactsCount = await OrganizationContacts.count({
+			where: {
+				contactId: conId,
+			},
+		});
+
+		if (organizationContactsCount === 0) {
+			// If no organization contacts are associated, delete the contact
+			
+			await Contacts.destroy({
+				where: {
+					id:conId,
+				},
+			});
+		}
 		res.status(204).json();
 	} catch (error) {
+		console.log('ERROR: ' + error);
 		res.status(500).send((error as Error).message);
 		return;
 	}

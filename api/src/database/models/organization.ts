@@ -8,7 +8,8 @@ import {
 	BelongsToMany,
 	HasMany,
 } from 'sequelize-typescript';
-import { CommunicationOrganizations, Communications, Contacts, OrganizationLocations } from '.';
+import { CommunicationOrganizations, Communications, Contacts, OrganizationContacts, OrganizationLocations } from '.';
+import { OrganizationAliases } from './organizationAliases';
 
 @Table({ tableName: 'Organizations' })
 export class Organizations extends Model {
@@ -20,7 +21,7 @@ export class Organizations extends Model {
 	@Column({ type: DataType.STRING, allowNull: false })
 	public name!: string;
 
-	@BelongsToMany(() => Contacts, 'ContactOrganizations', 'organizationId', 'contactId')
+	@BelongsToMany(() => Contacts, () => OrganizationContacts, 'organizationId', 'contactId')
 		contacts?: Contacts[];
 
 	@HasMany(() => OrganizationLocations, 'organizationId')
@@ -28,4 +29,12 @@ export class Organizations extends Model {
 
 	@BelongsToMany(() => Communications, () => CommunicationOrganizations)
 		communications?: Communications[];
+
+	@HasMany(() => OrganizationAliases)
+		aliases?: OrganizationAliases[];
+
+	@HasMany(() => OrganizationContacts, 'organizationId')
+		organizationContacts?: OrganizationContacts[];
+
+	
 }
