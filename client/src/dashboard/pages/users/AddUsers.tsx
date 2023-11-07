@@ -6,18 +6,8 @@ import useForm from '@/shared/hooks/useForm';
 import styles from './AddUsers.module.css';
 import userService from '@/services/userService';
 import officeService from '@/services/officeService';
-
-interface EtownOffice {
-  id: number;
-  name: string;
-}
-
-interface FormProps {
-  office: EtownOffice|null;
-  permissionLevel: string;
-  email: string;
-  name: string;
-}
+import { User } from '@/types/user';
+import { EtownOffice } from '@/types/office';
 
 function AddUsers() {
   const navigate = useNavigate();
@@ -35,7 +25,7 @@ function AddUsers() {
     fetchRequiredData();
   }, []);
 
-  const fields: FormProps = {
+  const fields: User = {
     office: null,
     permissionLevel: '',
     email: '',
@@ -53,7 +43,7 @@ function AddUsers() {
   const doSubmit = async () => {
     console.log(form.data);
     try {
-      const newUser:FormProps = {
+      const newUser:User = {
         office: form.data.office,
         permissionLevel: form.data.permissionLevel,
         email: form.data.email,
@@ -69,7 +59,7 @@ function AddUsers() {
     }
   };
 
-  const form = useForm<FormProps>({ fields, schema, doSubmit });
+  const form = useForm<User>({ fields, schema, doSubmit });
 
   return (
     <div>
