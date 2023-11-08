@@ -6,7 +6,7 @@ import useForm from '@/shared/hooks/useForm';
 import styles from './AddUsers.module.css';
 import userService from '@/services/userService';
 import officeService from '@/services/officeService';
-import { User } from '@/types/user';
+import { User, UserDTO } from '@/types/user';
 import { EtownOffice } from '@/types/office';
 
 function AddUsers() {
@@ -43,8 +43,8 @@ function AddUsers() {
   const doSubmit = async () => {
     console.log(form.data);
     try {
-      const newUser:User = {
-        office: form.data.office,
+      const newUser:UserDTO = {
+        officeId: form.data.office?.id || 0,
         permissionLevel: form.data.permissionLevel,
         email: form.data.email,
         name: form.data.name,

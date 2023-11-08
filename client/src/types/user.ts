@@ -5,4 +5,11 @@ export interface User {
     permissionLevel: string;
     email: string;
     name: string;
-  }
+}
+
+export interface UserDTO{
+  officeId: number;
+  permissionLevel: string;
+  email: string;
+  name: string;
+}
