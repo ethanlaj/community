@@ -29,7 +29,7 @@ function Admin() {
   }, []);
 
   const handleRowClick = (row:any) => {
-    alert(`You clicked on ${row.id}`);
+    alert(`You clicked on ${row.name}`);
   };
 
   const handleRowDelete = async (row:any) => {

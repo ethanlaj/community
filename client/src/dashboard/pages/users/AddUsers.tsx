@@ -33,7 +33,7 @@ function AddUsers() {
   };
 
   const schema = Joi.object({
-    office: Joi.object().required().label('Office Id'),
+    office: Joi.object().required().label('Office'),
     // eslint-disable-next-line newline-per-chained-call
     permissionLevel: Joi.number().required().min(1).max(4).label('User Permission Level'),
     email: Joi.string().email({ tlds: { allow: false } }).label('Email'),
@@ -51,6 +51,7 @@ function AddUsers() {
       };
 
       console.log('Submit to api', newUser);
+
       await userService.create(newUser);
 
       navigate('/admin', { replace: true });

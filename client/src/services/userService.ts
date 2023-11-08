@@ -1,17 +1,6 @@
 import http from './httpService';
 import config from '../config';
-
-interface EtownOffice {
-  id: number;
-  name: string;
-}
-
-interface User {
-  office: EtownOffice|null;
-  permissionLevel: string;
-  email: string;
-  name: string;
-}
+import { User } from '@/types/user';
 
 const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/users`;
