@@ -30,8 +30,8 @@ function Contacts() {
     { title: 'Name', field: 'name' },
     { title: 'Email', field: 'email' },
     { title: 'Phone Number', field: 'phone' },
+    { title: 'Phone Extension', field: 'exten' },
     { title: 'Organization', field: 'organizationName' },
-    // { title: 'OrgId', field: 'organizationId' },
     // { title: 'ConId', field: 'contactId' },
   ];
 

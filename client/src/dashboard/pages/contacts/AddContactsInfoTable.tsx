@@ -19,6 +19,7 @@ const columns: Column[] = [
   { title: 'Organization', field: 'name' },
   { title: 'Email', field: 'email' },
   { title: 'Phone', field: 'phone' },
+  { title: 'Phone Extention', field: 'exten' },
 ];
 
 function AddContactsInfoTable({

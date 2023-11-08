@@ -65,13 +65,14 @@ contactsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
 	const organizationIds = organizations.map(org => org.id);
 	const organizationEmails = organizations.map(org => org.email);
 	const organizationPhones = organizations.map(org => org.phone);
+	const organizationExtens = organizations.map(org => org.extens);
 
 	try {
 		const newContact = await Contacts.create({
 			name,
 		});
 		if (organizations) {
-			await setOrganizations(newContact, organizationIds, organizationEmails, organizationPhones);
+			await setOrganizations(newContact, organizationIds, organizationEmails, organizationPhones, organizationExtens);
 		}
 
 		res.status(201).json(newContact);

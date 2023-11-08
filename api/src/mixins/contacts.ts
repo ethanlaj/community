@@ -1,6 +1,6 @@
 import { Contacts, OrganizationContacts } from '../database/models';
 
-export async function setOrganizations(contact: Contacts, organizationIds: number[], emails: string[], phones: string[]) {
+export async function setOrganizations(contact: Contacts, organizationIds: number[], emails: string[], phones: string[], extens: string[]) {
 	const currentOrganizations = await OrganizationContacts.findAll({
 		where: {
 			contactId: contact.id,
@@ -25,6 +25,7 @@ export async function setOrganizations(contact: Contacts, organizationIds: numbe
 			contactId: contact.id,
 			email: emails[index], // Use the email at the same index
 			phone: phones[index], // Use the phone at the same index
+			exten: extens[index], // Use the exten at the same index
 			organizationId: organizationId,
 		};
 	}

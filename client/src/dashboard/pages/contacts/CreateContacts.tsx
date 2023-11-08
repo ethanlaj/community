@@ -14,7 +14,8 @@ export interface InfoForOrganization {
   id: number,
   name: string;
   email: string;
-  phone: string
+  phone: string;
+  exten: string;
   [key: string]: string | number| undefined;
 }
 
@@ -60,15 +61,35 @@ function CreateContacts() {
     infoPerOrganization: Joi.array().items(
       Joi.object({
         email: Joi.string().email({ tlds: { allow: false } }).allow(null, '').label('Email'),
-        phone: Joi.string().replace(/-/g, '').length(10).pattern(/^[0-9]+$/).allow(null, '').label('Phone Number'),
+        phone: Joi.string().replace(/-/g, '').replace(/^\+/, '').pattern(/^[0-9+]+$/)
+          .min(10).max(15).allow(null, '').label('Phone Number'),
+        exten: Joi.string().allow(null, '').pattern(/^[0-9+#*]+$/).label('Phone Extension'),
+      }).when(Joi.object({ exten: Joi.exist() }), {
+        then: Joi.object({ phone: Joi.string().required().label('Phone Number') }),
+        otherwise: Joi.object({ phone: Joi.string().label('Phone Number') }),
+      }).or('email', 'phone').options({ allowUnknown: true }).custom((value, helpers) => {
+        if ((value.email === null || value.email === '') && (value.phone === null || value.phone === '')) {
+          return helpers.error('object.missing', { customValue: value });
+        }
+        if (value.exten && !value.phone) {
+          return helpers.error('object.extensionWithoutPhone', { customValue: value });
+        }
+        return value;
+      }).messages({
+        'object.missing': 'Each row must contain at least one of Email or Phone Number.',
+        'object.extensionWithoutPhone': 'Extensions must have a phone number',
       }).unknown(true),
-    ).min(1).label('Organizations'),
-  }).options({ allowUnknown: true });
+    ).min(1).label('Organizations').messages({ 'array.min': 'Must have at least one organization.' }),
+  });
 
   const doSubmit = async () => {
     const info = form.data.infoPerOrganization.map((infoPerOrg) => {
-      const { id, email, phone } = infoPerOrg;
-      return { id, email, phone };
+      const {
+        id, email, phone, exten,
+      } = infoPerOrg;
+      return {
+        id, email, phone, exten,
+      };
     });
 
     try {
@@ -78,6 +99,7 @@ function CreateContacts() {
           id: item.id,
           email: item.email,
           phone: item.phone,
+          exten: item.exten,
         })),
       };
 
