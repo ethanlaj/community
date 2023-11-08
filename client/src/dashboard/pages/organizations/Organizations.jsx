@@ -14,6 +14,7 @@ function Organizations() {
   useEffect(() => {
     const fetchOrganizations = async () => {
       let data = await organizationService.getAll();
+      console.log(data);
 
       data = data.map((org) => {
         const comm = org.communications[0];
@@ -33,6 +34,7 @@ function Organizations() {
   }, []);
 
   const columns = [
+    { title: 'Communication Status', field: 'comStatus' }, // adding flag into the table
     { title: 'Name', field: 'name' },
     { title: 'Last Communication Date', field: 'lastComDate' },
     { title: 'Last Communication Office', field: 'lastComOffice' },
