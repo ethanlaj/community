@@ -67,7 +67,7 @@ contactsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
 	const organizationEmails = organizations.map(org => org.email);
 	const organizationPhones = organizations.map(org => org.phone);
 	const organizationExtens = organizations.map(org => org.exten);
-	console.log(organizationExtens);
+
 
 	try {
 		const newContact = await Contacts.create({

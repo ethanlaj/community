@@ -31,15 +31,11 @@ export default class ContactService {
       exten: org.exten || '',
     }));
 
-    console.log(mappedOrganizations);
-
     // Create a new DTO with mapped organizations
     const updatedContactDTO: CreateContactDTO = {
       name: createContactDTO.name,
       organizations: mappedOrganizations,
     };
-
-    console.log(updatedContactDTO);
     const response = await http.post(
       apiEndpoint,
       updatedContactDTO,

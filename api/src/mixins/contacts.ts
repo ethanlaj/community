@@ -7,7 +7,6 @@ export async function setOrganizations(contact: Contacts, organizationIds: numbe
 		},
 	});
 
-	console.log('The Extens in set Orgs '+extens);
 	
 	const organizationsToRemove = currentOrganizations
 		.map((organization) => organization.id)
