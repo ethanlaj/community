@@ -11,7 +11,7 @@ contactsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
 
 	try {
 		const results = await OrganizationContacts.findAll({
-			attributes: ['contactId','email', 'phone','organizationId'],
+			attributes: ['contactId','email', 'phone','organizationId', 'exten'],
 			include: [
 				{
 					model: Organizations,
@@ -29,6 +29,7 @@ contactsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
 			name: result.contact? result.contact.name : null,
 			email: result.email,
 			phone: result.phone,
+			exten: result.exten,
 			organizationName: result.organization ? result.organization.name: null,
 			contactId: result.contactId,
 			organizationId: result.organizationId,
@@ -65,13 +66,15 @@ contactsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
 	const organizationIds = organizations.map(org => org.id);
 	const organizationEmails = organizations.map(org => org.email);
 	const organizationPhones = organizations.map(org => org.phone);
+	const organizationExtens = organizations.map(org => org.exten);
+
 
 	try {
 		const newContact = await Contacts.create({
 			name,
 		});
 		if (organizations) {
-			await setOrganizations(newContact, organizationIds, organizationEmails, organizationPhones);
+			await setOrganizations(newContact, organizationIds, organizationEmails, organizationPhones, organizationExtens);
 		}
 
 		res.status(201).json(newContact);

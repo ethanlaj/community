@@ -4,6 +4,7 @@ export interface CreateContactDTO {
       id: number,
       email: string;
       phone: string;
+      exten: string;
     }[];
   }
   
