@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Joi from 'joi';
 import useForm from '@/shared/hooks/useForm';
-import styles from './AddUsers.module.css';
+import styles from './CreateUsers.module.css';
 import userService from '@/services/userService';
 import officeService from '@/services/officeService';
 import { User, UserDTO } from '@/types/user';
