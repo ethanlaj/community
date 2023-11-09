@@ -1,4 +1,4 @@
-const importFields = [
+export const importFields = [
   {
     label: 'Name',
     key: 'name',
@@ -115,4 +115,13 @@ const importFields = [
 
 ];
 
-export default importFields;
+export const importTemplate = [
+  'Name,Location1,Address1,Location2,Address2,Location3,Address3,Location4,Address4,Location5,Address5',
+  'Sample Company,Harrisburg,123 Main St,Lancaster,123 Main St,York,123 Main St,Reading,123 Main St,Philadelphia,123 Main St,',
+].join('\n');
+
+export const exportColumns = [
+  { title: 'Name', field: 'name' },
+  { title: 'Last Communication Date', field: 'lastComDate' },
+  { title: 'Last Communication Office', field: 'lastComOffice' },
+];
