@@ -16,6 +16,7 @@ export interface CreateContactDTO {
       phone: string | undefined;
       exten: string | undefined;
     }[];
+    aliases: string[];
   }
 
 export interface deletedContactIdentifiers {
