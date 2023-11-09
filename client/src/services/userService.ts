@@ -13,8 +13,8 @@ export default class UserService {
     return response.data;
   }
 
-  static async getAllByOrgId(orgId: number) {
-    const response = await http.get(apiEndpoint, { params: { orgId } });
+  static async getAllByOfficeId(officeId: number) {
+    const response = await http.get(apiEndpoint, { params: { officeId } });
     return response.data;
   }
 

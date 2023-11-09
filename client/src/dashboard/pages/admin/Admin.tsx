@@ -11,16 +11,7 @@ function Admin() {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      let data = await userService.getAll();
-
-      data = data.map((content: any) => {
-        const userCont = content.User;
-        if (!userCont) return content;
-
-        return {
-          ...content,
-        };
-      });
+      const data = await userService.getAll();
 
       setUsers(data);
     };

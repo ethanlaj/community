@@ -22,6 +22,9 @@ export class Users extends Model {
 		office!: EtownOffices;
 
 	@Column({ type: DataType.INTEGER, allowNull: false })
+	public officeID!: number;
+
+	@Column({ type: DataType.INTEGER, allowNull: false })
 	public permissionLevel!: number;
 
 	@Column({ type: DataType.STRING, allowNull: false })
