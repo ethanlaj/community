@@ -1,0 +1,175 @@
+import React, { useState } from 'react';
+import ExcelImport from './ExcelImport';
+import organizationService from '@/services/organizationService';
+
+export default function ImportFields() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState([]);
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+  const handleSubmit = async (newData) => {
+    console.log('newData', newData);
+    setData(newData);
+    setIsOpen(false);
+
+    try {
+      const { validData } = newData;
+      const response = await organizationService.createBulk({ ...validData });
+      console.log('response', response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+
+  const fields = [
+    {
+      label: 'Name',
+      key: 'name',
+      alternateMatches: ['first name', 'first'],
+      fieldType: {
+        type: 'input',
+      },
+      example: 'Stephanie',
+      validations: [
+        {
+          rule: 'required',
+          errorMessage: 'Name is required',
+          level: 'error',
+        },
+      ],
+    },
+    {
+      label: 'Location1',
+      key: 'location1',
+      alternateMatches: ['location 1', 'location1'],
+      fieldType: {
+        type: 'input',
+      },
+      example: '123 Main St',
+      validations: [
+        {
+          rule: 'required',
+          errorMessage: 'Location1 is required',
+          level: 'error',
+        },
+      ],
+    },
+    {
+      label: 'Location2',
+      key: 'location2',
+      alternateMatches: ['location 2', 'location2'],
+      fieldType: {
+        type: 'input',
+      },
+      example: 'Apt 1',
+    },
+    {
+      label: 'Location3',
+      key: 'location3',
+      alternateMatches: ['location 3', 'location3'],
+      fieldType: {
+        type: 'input',
+      },
+      example: 'Apt 1',
+    },
+    {
+      label: 'Location4',
+      key: 'location4',
+      alternateMatches: ['location 4', 'location4'],
+      fieldType: {
+        type: 'input',
+      },
+      example: 'Apt 1',
+    },
+    {
+      label: 'Location5',
+      key: 'location5',
+      alternateMatches: ['location 5', 'location5'],
+      fieldType: {
+        type: 'input',
+      },
+      example: 'Apt 1',
+    },
+    {
+      label: 'Address1',
+      key: 'address1',
+      alternateMatches: ['address 1', 'address1'],
+      fieldType: {
+        type: 'input',
+      },
+      example: '123 Main St',
+      validations: [
+        {
+          rule: 'required',
+          errorMessage: 'Address1 is required',
+          level: 'error',
+        },
+      ],
+    },
+    {
+      label: 'Address2',
+      key: 'address2',
+      alternateMatches: ['address 2', 'address2'],
+      fieldType: {
+        type: 'input',
+      },
+      example: '123 Main St',
+    },
+    {
+      label: 'Address3',
+      key: 'address3',
+      alternateMatches: ['address 3', 'address3'],
+      fieldType: {
+        type: 'input',
+      },
+      example: '123 Main St',
+    },
+    {
+      label: 'Address4',
+      key: 'address4',
+      alternateMatches: ['address 4', 'address4'],
+      fieldType: {
+        type: 'input',
+      },
+      example: '123 Main St',
+    },
+    {
+      label: 'Address5',
+      key: 'address5',
+      alternateMatches: ['address 5', 'address5'],
+      fieldType: {
+        type: 'input',
+      },
+      example: '123 Main St',
+    },
+
+  ];
+
+  return (
+    <div>
+      <button type="button" onClick={handleOpen}>Import Data</button>
+      <ExcelImport isOpen={isOpen} onClose={handleClose} onSubmit={handleSubmit} fields={fields} />
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.validData?.map((row) => (
+            <tr key={row.name}>
+              <td>{row.name}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
