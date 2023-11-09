@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import exportToExcel from '../../../utils/excelExport';
 import styles from './Organizations.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import organizationService from '@/services/organizationService';
+import ExcelExportButton from '@/shared/components/ExcelExportButton';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
@@ -36,6 +38,18 @@ function Organizations() {
     { title: 'Last Communication Office', field: 'lastComOffice' },
   ];
 
+  const handleExport = () => {
+    const dataToExport = organizations.map((org) => {
+      // Create an object where each key is the column title
+      const exportRow = {};
+      columns.forEach((column) => {
+        exportRow[column.title] = org[column.field] || '';
+      });
+      return exportRow;
+    });
+    exportToExcel([{ name: 'Organizations', data: dataToExport }], 'Organizations');
+  };
+
   const handleRowClick = (row) => {
     navigate(`/organization/${row.id}`);
   };
@@ -62,6 +76,9 @@ function Organizations() {
         onRowClick={handleRowClick}
         onRowDelete={handleRowDelete}
       />
+      <ExcelExportButton onExport={handleExport}>
+        Export
+      </ExcelExportButton>
     </div>
   );
 }

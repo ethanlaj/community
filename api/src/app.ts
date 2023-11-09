@@ -17,6 +17,7 @@ import locationsRouter from './controllers/locations';
 import communicationsRouter from './controllers/communications';
 import usersRouter from './controllers/users';
 import officesRouter from './controllers/offices';
+import isAuthenticated from './middleware/isAuthenticated';
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', healthRouter);
+app.use(isAuthenticated); // Requires authentication for all routes below
 app.use('/contacts', contactsRouter);
 app.use('/organizations', organizationsRouter);
 app.use('/locations', locationsRouter);
