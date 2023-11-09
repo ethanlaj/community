@@ -116,8 +116,8 @@ export const importFields = [
 ];
 
 export const importTemplate = [
-  'Name,Location1,Address1,Location2,Address2,Location3,Address3,Location4,Address4,Location5,Address5',
-  'Sample Company,Harrisburg,123 Main St,Lancaster,123 Main St,York,123 Main St,Reading,123 Main St,Philadelphia,123 Main St,',
+  'Name,Location1,Location2,Location3,Location4,Location5,Address1,Address2,Address3,Address4,Address5',
+  'Sample Company,Harrisburg,Lancaster,York,Reading,Philadelphia,123 Main St,432 East Willow St,567 West Main St,142 Oak St,332 Orange St',
 ].join('\n');
 
 export const exportColumns = [
