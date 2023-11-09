@@ -148,7 +148,10 @@ organizationsRouter.post('/bulk', errorHandler(async (req: Request, res: Respons
 				);
 		}
 
-		res.status(201).json(newOrganizations);
+		res.status(201).json({
+			message: 'Organizations Imported Successfully.',
+			data: newOrganizations,
+		});
 	} catch (error) {
 		res.status(500).send((error as Error).message);
 	}

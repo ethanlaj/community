@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ExcelImport from './ExcelImport';
 import organizationService from '@/services/organizationService';
+import fields from '../../dashboard/pages/organizations/constants';
 
 export default function ImportFields() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,14 +12,12 @@ export default function ImportFields() {
   };
 
   const handleSubmit = async (newData) => {
-    console.log('newData', newData);
     setData(newData);
     setIsOpen(false);
 
     try {
       const { validData } = newData;
-      const response = await organizationService.createBulk({ ...validData });
-      console.log('response', response.data);
+      await organizationService.createBulk({ ...validData });
     } catch (error) {
       console.error(error);
     }
@@ -28,133 +27,27 @@ export default function ImportFields() {
     setIsOpen(true);
   };
 
-  const fields = [
-    {
-      label: 'Name',
-      key: 'name',
-      alternateMatches: ['first name', 'first'],
-      fieldType: {
-        type: 'input',
-      },
-      example: 'Stephanie',
-      validations: [
-        {
-          rule: 'required',
-          errorMessage: 'Name is required',
-          level: 'error',
-        },
-      ],
-    },
-    {
-      label: 'Location1',
-      key: 'location1',
-      alternateMatches: ['location 1', 'location1'],
-      fieldType: {
-        type: 'input',
-      },
-      example: '123 Main St',
-      validations: [
-        {
-          rule: 'required',
-          errorMessage: 'Location1 is required',
-          level: 'error',
-        },
-      ],
-    },
-    {
-      label: 'Location2',
-      key: 'location2',
-      alternateMatches: ['location 2', 'location2'],
-      fieldType: {
-        type: 'input',
-      },
-      example: 'Apt 1',
-    },
-    {
-      label: 'Location3',
-      key: 'location3',
-      alternateMatches: ['location 3', 'location3'],
-      fieldType: {
-        type: 'input',
-      },
-      example: 'Apt 1',
-    },
-    {
-      label: 'Location4',
-      key: 'location4',
-      alternateMatches: ['location 4', 'location4'],
-      fieldType: {
-        type: 'input',
-      },
-      example: 'Apt 1',
-    },
-    {
-      label: 'Location5',
-      key: 'location5',
-      alternateMatches: ['location 5', 'location5'],
-      fieldType: {
-        type: 'input',
-      },
-      example: 'Apt 1',
-    },
-    {
-      label: 'Address1',
-      key: 'address1',
-      alternateMatches: ['address 1', 'address1'],
-      fieldType: {
-        type: 'input',
-      },
-      example: '123 Main St',
-      validations: [
-        {
-          rule: 'required',
-          errorMessage: 'Address1 is required',
-          level: 'error',
-        },
-      ],
-    },
-    {
-      label: 'Address2',
-      key: 'address2',
-      alternateMatches: ['address 2', 'address2'],
-      fieldType: {
-        type: 'input',
-      },
-      example: '123 Main St',
-    },
-    {
-      label: 'Address3',
-      key: 'address3',
-      alternateMatches: ['address 3', 'address3'],
-      fieldType: {
-        type: 'input',
-      },
-      example: '123 Main St',
-    },
-    {
-      label: 'Address4',
-      key: 'address4',
-      alternateMatches: ['address 4', 'address4'],
-      fieldType: {
-        type: 'input',
-      },
-      example: '123 Main St',
-    },
-    {
-      label: 'Address5',
-      key: 'address5',
-      alternateMatches: ['address 5', 'address5'],
-      fieldType: {
-        type: 'input',
-      },
-      example: '123 Main St',
-    },
+  const handleDownloadTemplate = () => {
+    const template = [
+      'Name,Location1,Address1,Location2,Address2,Location3,Address3,Location4,Address4,Location5,Address5',
+      'Sample Company,Harrisburg,123 Main St,Lancaster,123 Main St,York,123 Main St,Reading,123 Main St,Philadelphia,123 Main St,',
+    ].join('\n');
 
-  ];
+    const blob = new Blob([template], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'OrganizationsImportTemplate.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div>
       <button type="button" onClick={handleOpen}>Import Data</button>
+      <button type="button" onClick={handleDownloadTemplate}>Download CSV Template</button>
       <ExcelImport isOpen={isOpen} onClose={handleClose} onSubmit={handleSubmit} fields={fields} />
       <table>
         <thead>

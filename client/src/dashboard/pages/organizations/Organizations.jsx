@@ -6,6 +6,9 @@ import styles from './Organizations.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import organizationService from '@/services/organizationService';
 import ExcelExportButton from '@/shared/components/ExcelExportButton';
+import ImportButton from '@/shared/components/ImportButton';
+import importFields from './constants';
+import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
@@ -66,6 +69,11 @@ function Organizations() {
     }
   };
 
+  const importTemplate = [
+    'Name,Location1,Address1,Location2,Address2,Location3,Address3,Location4,Address4,Location5,Address5',
+    'Sample Company,Harrisburg,123 Main St,Lancaster,123 Main St,York,123 Main St,Reading,123 Main St,Philadelphia,123 Main St,',
+  ].join('\n');
+
   return (
     <div className={styles.content}>
       <h1>Organizations</h1>
@@ -76,9 +84,17 @@ function Organizations() {
         onRowClick={handleRowClick}
         onRowDelete={handleRowDelete}
       />
-      <ExcelExportButton onExport={handleExport}>
-        Export
-      </ExcelExportButton>
+      <div className="d-flex align-items-center justify-content-start mt-8">
+        <ExcelExportButton onExport={handleExport}>
+          Export
+        </ExcelExportButton>
+        <ImportButton
+          fields={importFields}
+          serviceFunction={organizationService.createBulk}
+        />
+        <DownloadTemplateButton template={importTemplate} name="OrganizationsTemplate.csv" />
+      </div>
+
     </div>
   );
 }
