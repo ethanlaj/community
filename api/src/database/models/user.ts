@@ -22,7 +22,7 @@ export class Users extends Model {
 		office!: EtownOffices;
 
 	@Column({ type: DataType.INTEGER, allowNull: false })
-	public officeID!: number;
+	public officeId!: number;
 
 	@Column({ type: DataType.INTEGER, allowNull: false })
 	public permissionLevel!: number;
