@@ -12,9 +12,21 @@ function Sidebar() {
     <div className={styles.sidebar}>
       <ul className={styles.nav}>
         <li className={styles.navItem}>
-          <NavLink to="/admin" activeclassname={styles.activeNavLink}>
-            Admin
-          </NavLink>
+          <div onClick={() => handleExpandClick('user')}>
+            <NavLink to="/admin" activeclassname={styles.activeNavLink}>
+              Admin
+            </NavLink>
+            <span className={isExpanded.user ? styles.arrowUp : styles.arrowDown} />
+          </div>
+          {isExpanded.user && (
+            <ul className={styles.subNav}>
+              <li className={styles.subNavItem}>
+                <NavLink to="/admin/add-user" activeclassname={styles.activeNavLink}>
+                  - Add User
+                </NavLink>
+              </li>
+            </ul>
+          )}
         </li>
         <li className={styles.navItem}>
           <div onClick={() => handleExpandClick('org')}>

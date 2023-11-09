@@ -24,6 +24,8 @@ import { msalConfig } from './config';
 import useInterceptor from './shared/hooks/useInterceptor';
 import Loading from './shared/components/Loading';
 import Home from './dashboard/pages/Home';
+import Admin from './dashboard/pages/admin';
+import AddUsers from './dashboard/pages/users/AddUsers';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -52,6 +54,8 @@ function AppContent() {
     { path: '/communications', element: <Communications /> },
     { path: '/communications/create', element: <CreateCommunication /> },
     { path: '/organization/:id', element: <Organization /> },
+    { path: '/admin', element: <Admin /> },
+    { path: '/admin/add-user', element: <AddUsers /> },
   ];
 
   return (

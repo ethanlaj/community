@@ -18,12 +18,19 @@ export class Users extends Model {
 	public id!: number;
 
 	@ForeignKey(() => EtownOffices)
-	@Column({ type: DataType.INTEGER, allowNull: true })
-	public officeId?: number;
+	@BelongsTo(() => EtownOffices, 'officeId')
+		office!: EtownOffices;
+
+	@Column({ type: DataType.INTEGER, allowNull: false })
+	public officeId!: number;
 
 	@Column({ type: DataType.INTEGER, allowNull: false })
 	public permissionLevel!: number;
 
-	@BelongsTo(() => EtownOffices, 'officeId')
-		office!: EtownOffices;
+	@Column({ type: DataType.STRING, allowNull: false })
+	public email!: string;
+
+	@Column({ type: DataType.STRING, allowNull: false })
+	public name!: string;
+	
 }

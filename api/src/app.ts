@@ -16,6 +16,7 @@ import organizationsRouter from './controllers/organizations';
 import locationsRouter from './controllers/locations';
 import communicationsRouter from './controllers/communications';
 import usersRouter from './controllers/users';
+import officesRouter from './controllers/offices';
 import isAuthenticated from './middleware/isAuthenticated';
 
 const app = express();
@@ -43,6 +44,7 @@ app.use('/organizations', organizationsRouter);
 app.use('/locations', locationsRouter);
 app.use('/communications', communicationsRouter);
 app.use('/users', usersRouter);
+app.use('/offices', officesRouter);
 
 app.use(errorHandler);
 

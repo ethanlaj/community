@@ -49,13 +49,8 @@ usersRouter.get('/:id', errorHandler(async (req: Request, res: Response) => {
 usersRouter.post('/', errorHandler(async (req: Request, res: Response) => {
 	const userData = req.body;
 	try {
+		console.log(userData);
 		const newUser = await Users.create(userData);
-
-		// if the officeId is provided in the request body
-		if (req.body.officeId) {
-			newUser.officeId = req.body.officeId;
-			await newUser.save();
-		}
 
 		res.status(201).json(newUser);
 	} catch (error) {
