@@ -19,13 +19,13 @@ import Contacts from './dashboard/pages/contacts/Contacts';
 import Communications from './dashboard/pages/communications/Communications';
 import { ModalProvider } from './shared/components/ModalContext';
 import CreateContacts from './dashboard/pages/contacts/CreateContacts';
-import Admin from './dashboard/pages/admin/Admin';
-import AddUsers from './dashboard/pages/users/AddUsers';
 import ProtectedRoute from './shared/components/ProtectedRoute';
 import { msalConfig } from './config';
 import useInterceptor from './shared/hooks/useInterceptor';
 import Loading from './shared/components/Loading';
 import Home from './dashboard/pages/Home';
+import Admin from './dashboard/pages/admin';
+import AddUsers from './dashboard/pages/users/AddUsers';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -54,6 +54,8 @@ function AppContent() {
     { path: '/communications', element: <Communications /> },
     { path: '/communications/create', element: <CreateCommunication /> },
     { path: '/organization/:id', element: <Organization /> },
+    { path: '/admin', element: <Admin /> },
+    { path: '/admin/add-user', element: <AddUsers /> },
   ];
 
   return (
@@ -83,27 +85,6 @@ function App() {
   return (
     <ModalProvider>
       <ToastContainer />
-      <Router>
-        <div className={styles.content}>
-          <Sidebar />
-          <ErrorBoundary FallbackComponent={UnexpectedError}>
-            <Routes>
-              <Route path="/" element={<Organizations />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/admin/add-user" element={<AddUsers />} />
-              <Route path="/organizations/create" element={<CreateOrganization />} />
-              <Route path="/organizations" element={<Organizations />} />
-              <Route path="/contacts" element={<Contacts />} />
-              <Route path="/contacts/create" element={<CreateContacts />} />
-              <Route path="/communications" element={<Communications />} />
-              <Route path="/communications/create" element={<CreateCommunication />} />
-              <Route path="/organization/:id" element={<Organization />} />
-              <Route path="/unauthorized" element={<Unauthorized />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </ErrorBoundary>
-        </div>
-      </Router>
       <MsalProvider instance={msalInstance}>
         <AppContent />
       </MsalProvider>

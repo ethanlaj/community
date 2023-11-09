@@ -1,8 +1,7 @@
 import http from './httpService';
-import config from '../config';
+import { apiUrl } from '../config';
 import { User, UserDTO } from '@/types/user';
 
-const { apiUrl } = config;
 const apiEndpoint = `${apiUrl}/users`;
 
 export default class UserService {
