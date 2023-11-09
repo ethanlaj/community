@@ -1,57 +1,56 @@
 {
-	"name": "api",
-	"version": "0.0.0",
-	"private": true,
-	"scripts": {
-		"dev": "nodemon",
-		"start": "node dist/app.js",
-		"lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-		"fix": "npm run lint -- --fix",
-		"build": "tsc",
-		"db:init": "ts-node src/database/scripts/init.ts",
-		"db:create": "ts-node src/database/scripts/createMigrationPrompt.ts",
-		"db:migrate": "sequelize db:migrate",
-		"db:undo": "sequelize db:migrate:undo"
-	},
-	"nodemonConfig": {
-		"watch": [
-			"src"
-		],
-		"ext": "ts,js,json",
-		"exec": "ts-node ./src/app.ts"
-	},
-	"dependencies": {
-		"cookie-parser": "~1.4.4",
-		"cors": "^2.8.5",
-		"debug": "~2.6.9",
-		"dotenv": "^16.0.3",
-		"express": "^4.18.2",
-		"jsonwebtoken": "^9.0.2",
-		"jwks-rsa": "^3.1.0",
-		"morgan": "~1.9.1",
-		"mysql2": "^3.2.0",
-		"react-spreadsheet-import": "^4.4.0",
-		"sequelize": "^6.33.0",
-		"sequelize-auto": "^0.8.8",
-		"sequelize-cli": "^6.6.1",
-		"sequelize-typescript": "^2.1.5",
-		"typescript": "^5.2.2"
-	},
-	"devDependencies": {
-		"@types/cookie-parser": "^1.4.5",
-		"@types/cors": "^2.8.15",
-		"@types/express": "^4.17.20",
-		"@types/morgan": "^1.9.7",
-		"@types/node": "^20.8.7",
-		"@types/readline-sync": "^1.4.6",
-		"@types/sequelize": "^4.28.17",
-		"@typescript-eslint/eslint-plugin": "^6.7.5",
-		"@typescript-eslint/parser": "^6.7.5",
-		"eslint": "^8.50.0",
-		"readline-sync": "^1.4.10",
-		"ts-node": "^10.9.1"
-	},
-	"lint-staged": {
-		"*.{js,jsx,ts,tsx}": "eslint --fix"
-	}
+  "name": "api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node dist/app.js",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "fix": "npm run lint -- --fix",
+    "build": "tsc",
+    "db:init": "ts-node src/database/scripts/init.ts",
+    "db:create": "ts-node src/database/scripts/createMigrationPrompt.ts",
+    "db:migrate": "sequelize db:migrate",
+    "db:undo": "sequelize db:migrate:undo"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts,js,json",
+    "exec": "ts-node ./src/app.ts"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
+    "morgan": "~1.9.1",
+    "mysql2": "^3.2.0",
+    "sequelize": "^6.33.0",
+    "sequelize-auto": "^0.8.8",
+    "sequelize-cli": "^6.6.1",
+    "sequelize-typescript": "^2.1.5",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.5",
+    "@types/cors": "^2.8.15",
+    "@types/express": "^4.17.20",
+    "@types/morgan": "^1.9.7",
+    "@types/node": "^20.8.7",
+    "@types/readline-sync": "^1.4.6",
+    "@types/sequelize": "^4.28.17",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "eslint": "^8.50.0",
+    "readline-sync": "^1.4.10",
+    "ts-node": "^10.9.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
+  }
 }
