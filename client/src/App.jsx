@@ -26,7 +26,6 @@ import Loading from './shared/components/Loading';
 import Home from './dashboard/pages/Home';
 import Admin from './dashboard/pages/admin';
 import AddUsers from './dashboard/pages/users/AddUsers';
-import Import from './dashboard/pages/import/import';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -57,7 +56,6 @@ function AppContent() {
     { path: '/organization/:id', element: <Organization /> },
     { path: '/admin', element: <Admin /> },
     { path: '/admin/add-user', element: <AddUsers /> },
-    { path: '/import', element: <Import /> },
   ];
 
   return (
