@@ -22,7 +22,7 @@ export const importFields = [
     fieldType: {
       type: 'input',
     },
-    example: '123 Main St',
+    example: 'Harriburg',
     validations: [
       {
         rule: 'required',
@@ -38,7 +38,7 @@ export const importFields = [
     fieldType: {
       type: 'input',
     },
-    example: 'Apt 1',
+    example: 'Lancaster',
   },
   {
     label: 'Location3',
@@ -47,7 +47,7 @@ export const importFields = [
     fieldType: {
       type: 'input',
     },
-    example: 'Apt 1',
+    example: 'York',
   },
   {
     label: 'Location4',
@@ -56,7 +56,7 @@ export const importFields = [
     fieldType: {
       type: 'input',
     },
-    example: 'Apt 1',
+    example: 'Palmyra',
   },
   {
     label: 'Location5',
@@ -65,7 +65,7 @@ export const importFields = [
     fieldType: {
       type: 'input',
     },
-    example: 'Apt 1',
+    example: 'Hershey',
   },
   {
     label: 'Address1',
@@ -83,7 +83,7 @@ export const importFields = [
     fieldType: {
       type: 'input',
     },
-    example: '123 Main St',
+    example: '432 East Willow St',
   },
   {
     label: 'Address3',
@@ -92,7 +92,7 @@ export const importFields = [
     fieldType: {
       type: 'input',
     },
-    example: '123 Main St',
+    example: '567 West Main St',
   },
   {
     label: 'Address4',
@@ -101,7 +101,7 @@ export const importFields = [
     fieldType: {
       type: 'input',
     },
-    example: '123 Main St',
+    example: '142 Oak St',
   },
   {
     label: 'Address5',
@@ -110,7 +110,7 @@ export const importFields = [
     fieldType: {
       type: 'input',
     },
-    example: '123 Main St',
+    example: '332 Orange St',
   },
 
 ];
