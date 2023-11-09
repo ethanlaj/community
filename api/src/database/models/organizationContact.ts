@@ -31,8 +31,11 @@ export class OrganizationContacts extends Model {
 	@Column({ type: DataType.INTEGER, allowNull: false })
 		organizationId!: number;
 
-	@Column({ type: DataType.STRING(10), allowNull: true })
+	@Column({ type: DataType.STRING(15), allowNull: true })
 		phone?: string;
+
+	@Column({ type: DataType.STRING(10), allowNull: true })
+		exten?: string;
 	
 	@Column({ type: DataType.STRING(75), allowNull: true })
 		email?: string;
