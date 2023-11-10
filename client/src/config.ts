@@ -1,4 +1,4 @@
-import { Configuration } from '@azure/msal-browser';
+import { Configuration, RedirectRequest } from '@azure/msal-browser';
 
 export const apiUrl = process.env.NODE_ENV === 'production'
   ? 'https://community-production-c11b.up.railway.app'
@@ -13,4 +13,9 @@ export const msalConfig: Configuration = {
   cache: {
     cacheLocation: 'localStorage',
   },
+};
+
+export const msalRequest: RedirectRequest = {
+  scopes: ['openid', 'profile', `${msalConfig.auth.clientId}/.default`],
+  domainHint: 'etown.edu',
 };
