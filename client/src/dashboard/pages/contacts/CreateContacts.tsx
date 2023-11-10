@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Joi from 'joi';
 import { toast } from 'react-toastify';
+import { Form } from 'react-bootstrap';
 import OrganizationService from '@/services/organizationService';
 import useForm from '@/shared/hooks/useForm';
 import { Organization } from '@/types/organization';
 import AddContactsInfoTable from './AddContactsInfoTable';
 import { CreateContactDTO } from '@/types/contact';
 import ContactService from '@/services/contactService';
+import AddUpdateAliases from '@/shared/components/AddUpdateAliases';
 
 export interface InfoForOrganization {
   id: number,
@@ -23,6 +25,7 @@ export interface FormProps{
   name: string;
   organizations: Organization[];
   infoPerOrganization: InfoForOrganization[];
+  aliases: string[];
 }
 
 function CreateContacts() {
@@ -53,11 +56,15 @@ function CreateContacts() {
     name: '',
     organizations: [],
     infoPerOrganization: [],
-
+    aliases: [],
   };
 
   const schema = Joi.object({
     name: Joi.string().required().label('Name'),
+    aliases: Joi.array().unique().items(Joi.string().label('Aliases'))
+      .messages({
+        'array.unique': 'Duplicate alias detected, please remove it.',
+      }),
     infoPerOrganization: Joi.array().items(
       Joi.object({
         email: Joi.string().email({ tlds: { allow: false } }).allow(null, '').label('Email'),
@@ -93,6 +100,7 @@ function CreateContacts() {
     try {
       const ContactDTO: CreateContactDTO = {
         name: form.data.name,
+        aliases: form.data.aliases,
         organizations: info.map((item) => ({
           id: item.id,
           email: item.email,
@@ -119,8 +127,15 @@ function CreateContacts() {
       <h1>Create Contact</h1>
       <form className="m-auto w-70p">
         {form.renderInput({ id: 'name', label: 'Name' })}
+
+        <Form.Label>Add Aliases</Form.Label>
+        <AddUpdateAliases
+          aliases={form.data.aliases}
+          handleChange={form.handleDataChange}
+          error={form.errors.aliases}
+        />
       </form>
-      <div className="m-auto w-80p center">
+      <div className="m-auto w-80p center mt-3">
         <AddContactsInfoTable
           allOrganizations={allOrganizations}
           organizations={form.data.infoPerOrganization}

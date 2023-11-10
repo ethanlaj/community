@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import { CommunicationContacts, CommunicationUsers, Communications, Contacts, EtownOffices, OrganizationLocations, Organizations, Users, CommunicationOrganizations, OrganizationContacts } from './models';
 import { OrganizationAliases } from './models/organizationAliases';
+import { ContactAliases } from './models/contactAliases';
 
 const isProd = process.env.NODE_ENV === 'production';
 const DB_CONNECTION_STRING = isProd
@@ -28,7 +29,8 @@ const sequelize = new Sequelize(DB_CONNECTION_STRING, {
 		EtownOffices, 
 		CommunicationOrganizations, 
 		OrganizationContacts, 
-		OrganizationAliases
+		OrganizationAliases,
+		ContactAliases,
 	],
 });
 

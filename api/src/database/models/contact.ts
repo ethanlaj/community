@@ -9,6 +9,7 @@ import {
 	HasMany
 } from 'sequelize-typescript';
 import { CommunicationContacts, OrganizationContacts, Organizations } from '.';
+import { ContactAliases } from './contactAliases';
 
 @Table({ tableName: 'Contacts' })
 export class Contacts extends Model {
@@ -29,4 +30,6 @@ export class Contacts extends Model {
 	@HasMany(() => OrganizationContacts, 'contactId')
 		organizationContacts?: OrganizationContacts[];
 
+	@HasMany(() => ContactAliases)
+		aliases?: ContactAliases[];
 }

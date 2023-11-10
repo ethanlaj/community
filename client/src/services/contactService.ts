@@ -34,8 +34,10 @@ export default class ContactService {
     // Create a new DTO with mapped organizations
     const updatedContactDTO: CreateContactDTO = {
       name: createContactDTO.name,
+      aliases: createContactDTO.aliases,
       organizations: mappedOrganizations,
     };
+
     const response = await http.post(
       apiEndpoint,
       updatedContactDTO,
