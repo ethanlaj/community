@@ -15,6 +15,7 @@ export class OrganizationAliases extends Model {
 	@Column({ type: DataType.STRING, allowNull: false })
 		alias!: string;
 	
+	@PrimaryKey
 	@ForeignKey(() => Organizations)
 	@Column
 		organizationId!: number;
