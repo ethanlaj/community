@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Joi from 'joi';
 import useForm from '@/shared/hooks/useForm';
-import AddUsers from '@/dashboard/pages/users/AddUsers';
 import AddLocation from '@/dashboard/pages/organizations/AddLocation';
 import CommunicationService from '@/services/communicationService';
 import { RenderSelectOption } from '@/types/inputTypes';
@@ -13,6 +12,9 @@ import AddContactsAndOrganizations from './AddContactsAndOrganizations';
 import { Contact } from '@/types/contact';
 import { Organization } from '@/types/organization';
 import { Location } from '@/types/location';
+import { ComUser } from '@/types/user';
+import AddUserTable from './addUserTable';
+import UserService from '@/services/userService';
 
 interface FormProps {
   date: string;
@@ -43,6 +45,7 @@ function CreateCommunication() {
   const nowLocal = new Date(now.getTime() - timeZoneOffset * 60 * 1000);
   const [allOrganizations, setAllOrganizations] = useState<Organization[]>([]);
   const [allContacts, setAllContacts] = useState<Contact[]>([]);
+  const [allUsers, setAllUsers] = useState<ComUser[]>([]);
 
   const fields = {
     type: '',
@@ -112,12 +115,14 @@ function CreateCommunication() {
         const promises = [
           OrganizationService.getAll(),
           ContactService.getAll(),
+          UserService.getAll(),
         ];
 
-        const [allOrganizationsResponse, allContactsResponse] = await Promise.all(promises);
+        const [allOrganizationsResponse, allContactsResponse, allUsersResponse] = await Promise.all(promises);
 
         setAllOrganizations(allOrganizationsResponse);
         setAllContacts(allContactsResponse);
+        setAllUsers(allUsersResponse);
       } catch (ex) {
         toast.error('An unexpected error occurred.');
       }
@@ -161,7 +166,12 @@ function CreateCommunication() {
           <p>
             Which Elizabethtown College staff were a part of this communication?
           </p>
-          {form.renderChildForm(form, 'users', AddUsers, form.data.users)}
+          <AddUserTable
+            users={form.data.users}
+            allUsers={allUsers}
+            handleChange={form.handleDataChange}
+            UsersError={form.errors.users}
+          />
         </div>
 
         {form.renderButton('Create')}

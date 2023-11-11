@@ -13,3 +13,8 @@ export interface UserDTO{
   email: string;
   name: string;
 }
+
+export interface ComUser{
+  id: number;
+  name: string;
+}

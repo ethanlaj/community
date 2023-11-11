@@ -71,10 +71,17 @@ function AddUsers() {
         {form.renderSearch({
           id: 'office',
           items: allOffices,
+          headerLabel: 'Office',
+          selectionLabel: 'Select Office',
           keyPath: 'id',
           valuePath: 'name',
         })}
-        {form.renderInput({ id: 'permissionLevel', label: 'Permission Level', type: 'number' })}
+        {form.renderInput({
+          id: 'permissionLevel',
+          label: 'Permission Level',
+          type: 'number',
+          placeholder: 'Permission Level 1-4',
+        })}
         {form.renderButton('Add')}
       </form>
     </div>

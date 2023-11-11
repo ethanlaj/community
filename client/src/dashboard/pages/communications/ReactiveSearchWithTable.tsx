@@ -3,6 +3,7 @@ import ReactiveSearch from '@/shared/components/ReactiveSearch';
 
 interface ReactiveSearchWithTableProps {
   id: string;
+  classStyle: string;
   tableHeaderName: string;
   selectedItems: any[];
   options: any[];
@@ -14,6 +15,7 @@ interface ReactiveSearchWithTableProps {
 
 function ReactiveSearchWithTable({
   id,
+  classStyle,
   selectedItems,
   tableHeaderName,
   selectionLabel,
@@ -23,7 +25,7 @@ function ReactiveSearchWithTable({
   handleDelete,
 }: ReactiveSearchWithTableProps) {
   return (
-    <div className="w-50">
+    <div className={classStyle}>
       <ReactiveSearch
         id={id}
         items={options}
