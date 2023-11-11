@@ -22,9 +22,9 @@ import isAuthenticated from './middleware/isAuthenticated';
 const app = express();
 
 sequelize
-	.authenticate()
+	.sync({ force: false })
 	.then(() => {
-		console.log('Database connected successfully.');
+		console.log('Database synced successfully.');
 	})
 	.catch((err) => {
 		console.error('Unable to connect to database:', err);
