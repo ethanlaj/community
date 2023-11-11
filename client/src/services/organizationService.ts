@@ -38,6 +38,11 @@ export default class OrganizationService {
     return response.data;
   };
 
+  static getbyName = async (name: string): Promise<Organization> => {
+    const response = await http.get(`${apiEndpoint}/name/${name}`);
+    return response.data;
+  };
+
   static create = async (organization: CreateOrganizationDTO) => {
     const response = await http.post(apiEndpoint, organization);
     return response.data;

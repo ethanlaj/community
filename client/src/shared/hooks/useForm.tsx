@@ -195,6 +195,7 @@ function useForm<T extends object>({
   return {
     data,
     errors,
+    setErrors,
     setData,
     handleSubmit,
     handleChange,

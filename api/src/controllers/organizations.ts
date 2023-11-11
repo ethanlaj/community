@@ -1,10 +1,10 @@
 import express, { Router, Request, Response } from 'express';
 import { Communications, Organizations, OrganizationLocations, Contacts } from '../database/models';
-
 import errorHandler from '../errorHandler';
 import { CreateOrganizationDTO } from '../types/CreateOrganizationDTO';
 import { CreateOrganizationBulkDTO } from '../types/CreateOrganizationBulkDTO';
 import { OrganizationAliases } from '../database/models/organizationAliases';
+import { Sequelize } from 'sequelize';
 
 const organizationsRouter: Router = express.Router();
 
@@ -40,6 +40,26 @@ organizationsRouter.get('/:id', errorHandler(async (req: Request, res: Response)
 
 		if (!organization) {
 			res.status(404).send('Organization not found');
+		} else {
+			res.json(organization);
+		}
+	} catch (error) {
+		res.status(500).send((error as Error).message);
+	}
+})
+);
+
+// GET an organization by ID
+organizationsRouter.get('/name/:name', errorHandler(async (req: Request, res: Response): Promise<void> => {
+	const name = req.params.name;
+	try {
+		const organization = await Organizations.findOne({
+			where: Sequelize.literal(`LOWER(name) = LOWER('${name}')`)
+		});
+ 
+
+		if (!organization) {
+			res.json(null);
 		} else {
 			res.json(organization);
 		}
