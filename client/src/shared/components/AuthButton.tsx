@@ -5,7 +5,8 @@ import { msalRequest } from '@/config';
 function AuthButton() {
   const { accounts, instance } = useMsal();
   const account = accounts[0];
-  const firstName = account?.name?.split(' ')[1] || 'User';
+  const nameParts = account?.name?.split(',');
+  const firstName = nameParts ? nameParts[1].trim().split(' ')[0] : 'User';
 
   if (account) {
     return (
