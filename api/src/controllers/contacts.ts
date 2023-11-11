@@ -5,11 +5,12 @@ import errorHandler from '../errorHandler';
 import { CreateContactDTO } from '../types/ContactDTO';
 import { setOrganizations } from '../mixins/contacts';
 import { ContactAliases } from '../database/models/contactAliases';
+import isAuthorized from '../middleware/isAuthorized';
 
 const contactsRouter: Router = express.Router();
 
 
-contactsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
+contactsRouter.get('/', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
 
 	try {
 		const contacts = await Contacts.findAll({
@@ -30,7 +31,7 @@ contactsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
 
 
 
-contactsRouter.get('/getbyOrg', errorHandler(async (req: Request, res: Response) => {
+contactsRouter.get('/getbyOrg', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
 
 	try {
 		const results = await OrganizationContacts.findAll({
@@ -68,7 +69,7 @@ contactsRouter.get('/getbyOrg', errorHandler(async (req: Request, res: Response)
 
 
 
-contactsRouter.get('/:id', errorHandler(async (req: Request, res: Response) => {
+contactsRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
 	const { id } = req.params;
 
 	try {
@@ -86,7 +87,7 @@ contactsRouter.get('/:id', errorHandler(async (req: Request, res: Response) => {
 	}
 }));
 
-contactsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
+contactsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
 	const { name , organizations, aliases }  = req.body as CreateContactDTO;
 	const organizationIds = organizations.map(org => org.id);
 	const organizationEmails = organizations.map(org => org.email);
@@ -119,7 +120,7 @@ contactsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
 	
 }));
 
-contactsRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
+contactsRouter.put('/:id', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
 	const { id } = req.params;
 	const { name, organizations } = req.body;
 
@@ -156,7 +157,7 @@ contactsRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
 	}
 }));
 
-contactsRouter.delete('/:conId/:orgId', errorHandler(async (req: Request, res: Response) => {
+contactsRouter.delete('/:conId/:orgId', isAuthorized(3), errorHandler(async (req: Request, res: Response) => {
 	
 	const { conId,orgId } = req.params;
 	try {

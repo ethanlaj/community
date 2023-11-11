@@ -9,6 +9,7 @@ import ExcelExportButton from '@/shared/components/ExcelExportButton';
 import ImportButton from '@/shared/components/ImportButton';
 import { importFields, importTemplate, exportColumns } from './constants';
 import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
+import ProtectedElement from '@/shared/components/ProtectedElement';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
@@ -77,11 +78,13 @@ function Organizations() {
         <ExcelExportButton onExport={handleExport}>
           Export
         </ExcelExportButton>
-        <ImportButton
-          fields={importFields}
-          serviceFunction={organizationService.createBulk}
-        />
-        <DownloadTemplateButton template={importTemplate} name="OrganizationsTemplate.csv" />
+        <ProtectedElement minLevel={2}>
+          <ImportButton
+            fields={importFields}
+            serviceFunction={organizationService.createBulk}
+          />
+          <DownloadTemplateButton template={importTemplate} name="OrganizationsTemplate.csv" />
+        </ProtectedElement>
       </div>
 
     </div>

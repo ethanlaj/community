@@ -2,6 +2,7 @@ import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { CRequest } from '../types/CRequest';
+import { Users } from '../database/models';
 
 // Create a JWKS client
 const client = jwksClient({
@@ -26,7 +27,7 @@ const isAuthenticated = async (req: CRequest, res: Response, next: NextFunction)
 
 	const token = authHeader.split(' ')[1];
 
-	jwt.verify(token, getSigningKey, { algorithms: ['RS256'] }, (err, decoded) => {
+	jwt.verify(token, getSigningKey, { algorithms: ['RS256'] }, async (err, decoded) => {
 		if (err) {
 			res.status(401).send({ msg: 'Unauthorized: Invalid token' });
 			return;
@@ -39,7 +40,14 @@ const isAuthenticated = async (req: CRequest, res: Response, next: NextFunction)
 
 		if ('upn' in decoded) {
 			const { upn } = decoded;
-			req.userEmail = upn;
+			const userEmail = upn;
+
+			const user = await Users.findOne({ where: { email: userEmail } });
+			if (!user) {
+				return res.status(403).send('Forbidden: Logged in user does not exist.');
+			}
+
+			req.user = user;
 
 			next();
 		} else {

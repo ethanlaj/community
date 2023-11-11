@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Table, Button } from 'react-bootstrap';
 import styles from './ClickableTable.module.css';
 import { ModalContext } from './ModalContext';
+import ProtectedElement from './ProtectedElement';
 
 function ClickableTable({
   columns, data, onRowClick, onRowDelete, deleteModalRenderer,
@@ -33,7 +34,9 @@ function ClickableTable({
           {columns.map((column, index) => (
             <th key={index}>{column.title}</th>
           ))}
-          {onRowDelete && <th />}
+          <ProtectedElement minLevel={3}>
+            {onRowDelete && <th />}
+          </ProtectedElement>
         </tr>
       </thead>
       <tbody>
@@ -45,11 +48,13 @@ function ClickableTable({
               </td>
             ))}
             {onRowDelete && (
-              <td className={styles.deleteColumn}>
-                <Button variant="danger" onClick={(e) => handleDeleteClick(e, row)}>
-                  Delete
-                </Button>
-              </td>
+              <ProtectedElement minLevel={3}>
+                <td className={styles.deleteColumn}>
+                  <Button variant="danger" onClick={(e) => handleDeleteClick(e, row)}>
+                    Delete
+                  </Button>
+                </td>
+              </ProtectedElement>
             )}
           </tr>
         ))}

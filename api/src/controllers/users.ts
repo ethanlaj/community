@@ -1,8 +1,22 @@
 import express, { Router, Request, Response } from 'express';
 import { EtownOffices, Users } from '../database/models';
 import errorHandler from '../errorHandler';
+import isAuthorized from '../middleware/isAuthorized';
+import { CRequest } from '../types/CRequest';
 
 const usersRouter: Router = express.Router();
+
+usersRouter.get('/me', errorHandler(async (req: CRequest, res: Response) => {
+	const date = new Date();
+
+	res.json({
+		permissionLevel: req.user?.permissionLevel,
+		officeId: req.user?.officeId,
+		expires: date.setDate(date.getDate() + 1),
+	});
+}));
+
+usersRouter.use(isAuthorized(4)); // Admin only routes below
 
 // Get all users
 usersRouter.get('/', errorHandler(async (req: Request, res: Response) => {

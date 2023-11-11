@@ -7,11 +7,12 @@ import {
 import errorHandler from '../errorHandler';
 import { CreateCommunicationDTO } from '../types/CreateCommunicationDTO';
 import { setContacts, setOrganizations } from '../mixins/communications';
+import isAuthorized from '../middleware/isAuthorized';
 
 const communicationsRouter: Router = express.Router();
 
 // GET all communications
-communicationsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
+communicationsRouter.get('/', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
 	const communications = await Communications.findAll({
 		include: [OrganizationLocations, Organizations],
 		order: [['createdAt', 'DESC']],
@@ -22,7 +23,7 @@ communicationsRouter.get('/', errorHandler(async (req: Request, res: Response) =
 );
 
 // GET a communication by ID
-communicationsRouter.get('/:id', errorHandler(async (req: Request, res: Response) => {
+communicationsRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
 	const id = req.params.id;
 	const communication = await Communications.findByPk(id, {
 		include: [OrganizationLocations],
@@ -39,7 +40,7 @@ communicationsRouter.get('/:id', errorHandler(async (req: Request, res: Response
 );
 
 // POST a new communication
-communicationsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
+communicationsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
 	const communicationData = req.body as CreateCommunicationDTO;
 
 	try {
@@ -64,7 +65,7 @@ communicationsRouter.post('/', errorHandler(async (req: Request, res: Response) 
 );
 
 // PUT (update) a communication by ID
-communicationsRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
+communicationsRouter.put('/:id', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
 	const id = req.params.id;
 	const communicationData = req.body;
 
@@ -81,7 +82,7 @@ communicationsRouter.put('/:id', errorHandler(async (req: Request, res: Response
 );
 
 // DELETE a communication by ID
-communicationsRouter.delete('/:id', errorHandler(async (req: Request, res: Response) => {
+communicationsRouter.delete('/:id', isAuthorized(3), errorHandler(async (req: Request, res: Response) => {
 	const id = req.params.id;
 
 	const communication = await Communications.findByPk(id);
