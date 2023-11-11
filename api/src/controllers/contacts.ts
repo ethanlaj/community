@@ -7,7 +7,29 @@ import { setOrganizations } from '../mixins/contacts';
 
 const contactsRouter: Router = express.Router();
 
+
 contactsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
+
+	try {
+		const contacts = await Contacts.findAll({
+			include: [
+				{
+					model: Organizations,
+					attributes: ['name','id'],
+				},				
+			],
+		});
+	
+		res.status(200).json(contacts);
+	} catch (error) {
+		console.log(error);
+		res.status(500).send((error as Error).message);
+	}
+}));
+
+
+
+contactsRouter.get('/getbyOrg', errorHandler(async (req: Request, res: Response) => {
 
 	try {
 		const results = await OrganizationContacts.findAll({
@@ -41,6 +63,8 @@ contactsRouter.get('/', errorHandler(async (req: Request, res: Response) => {
 		res.status(500).send((error as Error).message);
 	}
 }));
+
+
 
 contactsRouter.get('/:id', errorHandler(async (req: Request, res: Response) => {
 	const { id } = req.params;
