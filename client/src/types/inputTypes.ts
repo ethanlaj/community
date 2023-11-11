@@ -12,6 +12,7 @@ export interface UseFormProps<T> {
 export interface UseFormReturn<T> {
     data: T;
     errors: Errors<T>;
+    setErrors: (errors: Errors<T>) => void;
     setData: (data: T) => void;
     handleSubmit: (event: SubmitEvent) => void;
     handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
