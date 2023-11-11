@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import AuthButton from './AuthButton';
 import styles from './Sidebar.module.css';
 
 function Sidebar() {
@@ -9,7 +10,7 @@ function Sidebar() {
   };
 
   return (
-    <div className={styles.sidebar}>
+    <div className={`${styles.sidebar} flex flex-col`}>
       <ul className={styles.nav}>
         <li className={styles.navItem}>
           <div onClick={() => handleExpandClick('user')}>
@@ -80,6 +81,7 @@ function Sidebar() {
           )}
         </li>
       </ul>
+      <AuthButton />
     </div>
   );
 }
