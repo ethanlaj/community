@@ -43,11 +43,15 @@ function CreateOrganization() {
 
   const doSubmit = async () => {
     try {
-      console.log('Submit to api', { ...form.data });
+      const existingOrg = await organizationService.getbyName(form.data.name);
 
-      await organizationService.create({ ...form.data });
+      if (!existingOrg) {
+        await organizationService.create({ ...form.data });
 
-      navigate('/organizations', { replace: true });
+        navigate('/organizations', { replace: true });
+      } else {
+        form.setErrors({ name: 'Organization already exists with this name' });
+      }
     } catch (ex: any) {
       console.log(ex); // TODO: Toast
     }
