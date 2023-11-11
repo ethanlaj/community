@@ -3,6 +3,7 @@ import { Communications, Organizations, OrganizationLocations, Contacts } from '
 
 import errorHandler from '../errorHandler';
 import { CreateOrganizationDTO } from '../types/CreateOrganizationDTO';
+import { CreateOrganizationBulkDTO } from '../types/CreateOrganizationBulkDTO';
 import { OrganizationAliases } from '../database/models/organizationAliases';
 
 const organizationsRouter: Router = express.Router();
@@ -73,6 +74,84 @@ organizationsRouter.post('/', errorHandler(async (req: Request, res: Response) =
 			);
 
 		res.status(201).json(newOrganization);
+	} catch (error) {
+		res.status(500).send((error as Error).message);
+	}
+})
+);
+
+// POST multiple organizations
+organizationsRouter.post('/bulk', errorHandler(async (req: Request, res: Response) => {
+	const organizationsData = req.body as CreateOrganizationBulkDTO[];
+	try {
+		const newOrganizations = await Organizations.bulkCreate(
+			Object.values(organizationsData).map((data: CreateOrganizationBulkDTO) => ({
+				name: data.name,
+				location1: data.location1,
+				address1: data.address1,
+				location2: data.location2,
+				address2: data.address2,
+				location3: data.location3,
+				address3: data.address3,
+				location4: data.location4,
+				address4: data.address4,
+				location5: data.location5,
+				address5: data.address5,
+			}))
+		);
+
+		for (let i = 0; i < newOrganizations.length; i++) {
+			const organization = newOrganizations[i];
+			const data = organizationsData[i];
+
+			const locations = [];
+			if (data.location1 && data.address1)
+				locations.push({
+					name: data.location1,
+					address: data.address1,
+				});
+			if (data.location2 && data.address2)
+				locations.push({
+					name: data.location2,
+					address: data.address2,
+				});
+			if (data.location3 && data.address3)
+				locations.push({
+					name: data.location3,
+					address: data.address3,
+				});
+			if (data.location4 && data.address4)
+				locations.push({
+					name: data.location4,
+					address: data.address4,
+				});
+			if (data.location5 && data.address5)
+				locations.push({
+					name: data.location5,
+					address: data.address5,
+				});
+
+			if (locations.length > 0)
+				await OrganizationLocations.bulkCreate(
+					locations.map((location: any) => ({
+						...location,
+						organizationId: organization.id,
+					}))
+				);
+
+			if (data.aliases)
+				await OrganizationAliases.bulkCreate(
+					data.aliases.map((alias: string) => ({ 
+						alias,
+						organizationId: organization.id,
+					}))
+				);
+		}
+
+		res.status(201).json({
+			message: 'Organizations Imported Successfully.',
+			data: newOrganizations,
+		});
 	} catch (error) {
 		res.status(500).send((error as Error).message);
 	}

@@ -43,6 +43,11 @@ export default class OrganizationService {
     return response.data;
   };
 
+  static createBulk = async (organizations: CreateOrganizationDTO[]) => {
+    const response = await http.post(`${apiEndpoint}/bulk`, organizations);
+    return response.data;
+  };
+
   static update = async (id: number, updatedOrganization: string) => {
     const response = await http.put(
       `${apiEndpoint}/${id}`,
