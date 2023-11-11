@@ -22,6 +22,11 @@ export default class UserService {
     return response.data;
   }
 
+  static async getMe() {
+    const response = await http.get(`${apiEndpoint}/me`);
+    return response.data;
+  }
+
   static async create(createUser: UserDTO) {
     const response = await http.post(apiEndpoint, createUser);
     return response.data;

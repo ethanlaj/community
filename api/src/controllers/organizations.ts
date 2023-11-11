@@ -5,11 +5,12 @@ import { CreateOrganizationDTO } from '../types/CreateOrganizationDTO';
 import { CreateOrganizationBulkDTO } from '../types/CreateOrganizationBulkDTO';
 import { OrganizationAliases } from '../database/models/organizationAliases';
 import { Sequelize } from 'sequelize';
+import isAuthorized from '../middleware/isAuthorized';
 
 const organizationsRouter: Router = express.Router();
 
 // GET all organizations
-organizationsRouter.get('/', errorHandler(async (_req: Request, res: Response) => {
+organizationsRouter.get('/', isAuthorized(1), errorHandler(async (_req: Request, res: Response) => {
 	try {
 		const organizations = await Organizations.findAll({
 			include: [
@@ -31,7 +32,7 @@ organizationsRouter.get('/', errorHandler(async (_req: Request, res: Response) =
 }));
 
 // GET an organization by ID
-organizationsRouter.get('/:id', errorHandler(async (req: Request, res: Response): Promise<void> => {
+organizationsRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Request, res: Response): Promise<void> => {
 	const id = req.params.id;
 	try {
 		const organization = await Organizations.findByPk(id, {
@@ -70,7 +71,7 @@ organizationsRouter.get('/name/:name', errorHandler(async (req: Request, res: Re
 );
 
 // POST a new organization
-organizationsRouter.post('/', errorHandler(async (req: Request, res: Response) => {
+organizationsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
 	const { name, locations, aliases } = req.body as CreateOrganizationDTO;
 	try {
 		const newOrganization = await Organizations.create({
@@ -101,7 +102,7 @@ organizationsRouter.post('/', errorHandler(async (req: Request, res: Response) =
 );
 
 // POST multiple organizations
-organizationsRouter.post('/bulk', errorHandler(async (req: Request, res: Response) => {
+organizationsRouter.post('/bulk', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
 	const organizationsData = req.body as CreateOrganizationBulkDTO[];
 	try {
 		const newOrganizations = await Organizations.bulkCreate(
@@ -179,7 +180,7 @@ organizationsRouter.post('/bulk', errorHandler(async (req: Request, res: Respons
 );
 
 // PUT (update) an organization by ID
-organizationsRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
+organizationsRouter.put('/:id', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
 	const id = req.params.id;
 	const organizationData = req.body;
 	try {
@@ -227,7 +228,7 @@ organizationsRouter.put('/:id', errorHandler(async (req: Request, res: Response)
 );
 
 // DELETE an organization by ID
-organizationsRouter.delete('/:id', errorHandler(async (req: Request, res: Response) => {
+organizationsRouter.delete('/:id', isAuthorized(3), errorHandler(async (req: Request, res: Response) => {
 	const id = req.params.id;
 	try {
 		const organization = await Organizations.findByPk(id);

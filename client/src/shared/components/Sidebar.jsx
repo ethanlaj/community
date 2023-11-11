@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthButton from './AuthButton';
 import styles from './Sidebar.module.css';
+import ProtectedElement from './ProtectedElement';
 
 function Sidebar() {
   const [isExpanded, setIsExpanded] = useState({ org: false, comm: false, cont: false });
@@ -12,23 +13,25 @@ function Sidebar() {
   return (
     <div className={`${styles.sidebar} flex flex-col`}>
       <ul className={styles.nav}>
-        <li className={styles.navItem}>
-          <div onClick={() => handleExpandClick('user')}>
-            <NavLink to="/admin" activeclassname={styles.activeNavLink}>
-              Admin
-            </NavLink>
-            <span className={isExpanded.user ? styles.arrowUp : styles.arrowDown} />
-          </div>
-          {isExpanded.user && (
-            <ul className={styles.subNav}>
-              <li className={styles.subNavItem}>
-                <NavLink to="/admin/add-user" activeclassname={styles.activeNavLink}>
-                  - Add User
-                </NavLink>
-              </li>
-            </ul>
-          )}
-        </li>
+        <ProtectedElement minLevel={4}>
+          <li className={styles.navItem}>
+            <div onClick={() => handleExpandClick('user')}>
+              <NavLink to="/admin" activeclassname={styles.activeNavLink}>
+                Admin
+              </NavLink>
+              <span className={isExpanded.user ? styles.arrowUp : styles.arrowDown} />
+            </div>
+            {isExpanded.user && (
+              <ul className={styles.subNav}>
+                <li className={styles.subNavItem}>
+                  <NavLink to="/admin/add-user" activeclassname={styles.activeNavLink}>
+                    - Add User
+                  </NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
+        </ProtectedElement>
         <li className={styles.navItem}>
           <div onClick={() => handleExpandClick('org')}>
             <NavLink to="/organizations" activeclassname={styles.activeNavLink}>
@@ -37,13 +40,15 @@ function Sidebar() {
             <span className={isExpanded.org ? styles.arrowUp : styles.arrowDown} />
           </div>
           {isExpanded.org && (
-            <ul className={styles.subNav}>
-              <li className={styles.subNavItem}>
-                <NavLink to="/organizations/create" activeclassname={styles.activeNavLink}>
-                  - Create
-                </NavLink>
-              </li>
-            </ul>
+            <ProtectedElement minLevel={2}>
+              <ul className={styles.subNav}>
+                <li className={styles.subNavItem}>
+                  <NavLink to="/organizations/create" activeclassname={styles.activeNavLink}>
+                    - Create
+                  </NavLink>
+                </li>
+              </ul>
+            </ProtectedElement>
           )}
         </li>
         <li className={styles.navItem}>
@@ -54,13 +59,15 @@ function Sidebar() {
             <span className={isExpanded.cont ? styles.arrowUp : styles.arrowDown} />
           </div>
           {isExpanded.cont && (
-            <ul className={styles.subNav}>
-              <li className={styles.subNavItem}>
-                <NavLink to="/contacts/create" activeclassname={styles.activeNavLink}>
-                  - Create
-                </NavLink>
-              </li>
-            </ul>
+            <ProtectedElement minLevel={2}>
+              <ul className={styles.subNav}>
+                <li className={styles.subNavItem}>
+                  <NavLink to="/contacts/create" activeclassname={styles.activeNavLink}>
+                    - Create
+                  </NavLink>
+                </li>
+              </ul>
+            </ProtectedElement>
           )}
         </li>
         <li className={styles.navItem}>
@@ -71,13 +78,15 @@ function Sidebar() {
             <span className={isExpanded.comm ? styles.arrowUp : styles.arrowDown} />
           </div>
           {isExpanded.comm && (
-            <ul className={styles.subNav}>
-              <li className={styles.subNavItem}>
-                <NavLink to="/communications/create" activeclassname={styles.activeNavLink}>
-                  - Create
-                </NavLink>
-              </li>
-            </ul>
+            <ProtectedElement minLevel={2}>
+              <ul className={styles.subNav}>
+                <li className={styles.subNavItem}>
+                  <NavLink to="/communications/create" activeclassname={styles.activeNavLink}>
+                    - Create
+                  </NavLink>
+                </li>
+              </ul>
+            </ProtectedElement>
           )}
         </li>
       </ul>

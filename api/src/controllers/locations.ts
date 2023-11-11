@@ -2,11 +2,12 @@ import express, { Router, Request, Response, NextFunction } from 'express';
 import { OrganizationLocations } from '../database/models';
 import errorHandler from '../errorHandler';
 import { FindOptions } from 'sequelize';
+import isAuthorized from '../middleware/isAuthorized';
 
 const locationsRouter: Router = express.Router();
 
 // GET all locations
-locationsRouter.get('/', errorHandler(async (req: Request, res: Response, next: NextFunction) => {
+locationsRouter.get('/', isAuthorized(1), errorHandler(async (req: Request, res: Response, next: NextFunction) => {
 	const orgId = Number(req.query.orgId);
 	const findOptions: FindOptions = {};
 
@@ -27,7 +28,7 @@ locationsRouter.get('/', errorHandler(async (req: Request, res: Response, next: 
 );
 
 // GET a location by ID
-locationsRouter.get('/:id', errorHandler(async (req: Request, res: Response, next: NextFunction) => {
+locationsRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Request, res: Response, next: NextFunction) => {
 	const id = req.params.id;
 	try {
 		const location = await OrganizationLocations.findByPk(id);
@@ -44,7 +45,7 @@ locationsRouter.get('/:id', errorHandler(async (req: Request, res: Response, nex
 );
 
 // POST a new location
-locationsRouter.post('/', errorHandler(async (req: Request, res: Response, next: NextFunction) => {
+locationsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request, res: Response, next: NextFunction) => {
 	const locationData = req.body;
 	try {
 		const newLocation = await OrganizationLocations.create(locationData);
@@ -57,7 +58,7 @@ locationsRouter.post('/', errorHandler(async (req: Request, res: Response, next:
 );
 
 // PUT (update) a location by ID
-locationsRouter.put('/:id', errorHandler(async (req: Request, res: Response, next: NextFunction) => {
+locationsRouter.put('/:id', isAuthorized(2), errorHandler(async (req: Request, res: Response, next: NextFunction) => {
 	const id = req.params.id;
 	const locationData = req.body;
 	try {
@@ -76,7 +77,7 @@ locationsRouter.put('/:id', errorHandler(async (req: Request, res: Response, nex
 );
 
 // DELETE a location by ID
-locationsRouter.delete('/:id', errorHandler(async (req: Request, res: Response, next: NextFunction) => {
+locationsRouter.delete('/:id', isAuthorized(3), errorHandler(async (req: Request, res: Response, next: NextFunction) => {
 	const id = req.params.id;
 	try {
 		const location = await OrganizationLocations.findByPk(id);

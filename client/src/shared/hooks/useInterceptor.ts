@@ -3,6 +3,7 @@
 import axios from 'axios';
 import { AccountInfo, IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import { msalRequest } from '@/config';
 
 const urlsToUseMsal = [
@@ -11,6 +12,8 @@ const urlsToUseMsal = [
 ];
 
 const useInterceptor = () => {
+  const navigate = useNavigate();
+
   function setInterceptors(instance: IPublicClientApplication, account: AccountInfo) {
     axios.interceptors.request.clear();
     axios.interceptors.request.use(async (config) => {
@@ -56,6 +59,11 @@ const useInterceptor = () => {
           // If popup fails, redirect for login
           return instance.loginRedirect(msalRequest);
         }
+      }
+
+      if (error.response?.status === 403) {
+        navigate('/unauthorized');
+        return Promise.reject(error);
       }
 
       const expectedError = error.response

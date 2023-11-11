@@ -26,6 +26,7 @@ import Loading from './shared/components/Loading';
 import Home from './dashboard/pages/Home';
 import Admin from './dashboard/pages/admin';
 import AddUsers from './dashboard/pages/admin/CreateUsers';
+import { UserProvider } from './shared/context/UserContext';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -59,8 +60,8 @@ function AppContent() {
   ];
 
   return (
-    <Router>
-      <div className={styles.content}>
+    <div className={styles.content}>
+      <UserProvider>
         <Sidebar />
         <ErrorBoundary FallbackComponent={UnexpectedError}>
           <Routes>
@@ -76,8 +77,8 @@ function AppContent() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ErrorBoundary>
-      </div>
-    </Router>
+      </UserProvider>
+    </div>
   );
 }
 
@@ -86,7 +87,9 @@ function App() {
     <ModalProvider>
       <ToastContainer />
       <MsalProvider instance={msalInstance}>
-        <AppContent />
+        <Router>
+          <AppContent />
+        </Router>
       </MsalProvider>
     </ModalProvider>
   );

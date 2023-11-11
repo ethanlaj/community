@@ -1,11 +1,11 @@
 import express, { Router, Request, Response } from 'express';
 import { EtownOffices } from '../database/models';
 import errorHandler from '../errorHandler';
+import isAuthorized from '../middleware/isAuthorized';
 
 const officesRouter: Router = express.Router();
 
-// Get all users
-officesRouter.get('/', errorHandler(async (req: Request, res: Response) => {
+officesRouter.get('/', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
 	try {
 		const users = await EtownOffices.findAll();
 
