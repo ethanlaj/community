@@ -14,6 +14,7 @@ export interface CreateContactDTO {
       id: number,
       email: string | undefined;
       phone: string | undefined;
+      exten: string | undefined;
     }[];
   }
 
