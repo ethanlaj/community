@@ -63,7 +63,6 @@ usersRouter.get('/:id', errorHandler(async (req: Request, res: Response) => {
 usersRouter.post('/', errorHandler(async (req: Request, res: Response) => {
 	const userData = req.body;
 	try {
-		console.log(userData);
 		const newUser = await Users.create(userData);
 
 		res.status(201).json(newUser);

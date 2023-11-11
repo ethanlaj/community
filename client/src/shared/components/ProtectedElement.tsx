@@ -9,8 +9,6 @@ interface ProtectedElementProps {
 function ProtectedElement({ children, minLevel }: ProtectedElementProps) {
   const userData = useContext(UserContext);
 
-  console.log(userData);
-
   if (userData.permissionLevel >= minLevel) {
     return children;
   }
