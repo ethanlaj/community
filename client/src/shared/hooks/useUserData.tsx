@@ -7,8 +7,6 @@ const useUserData = () => {
   const account = accounts[0];
 
   async function get(): Promise<MeUser | null> {
-    console.log('useUserData: get()');
-
     if (!account) {
       return null;
     }
@@ -24,8 +22,6 @@ const useUserData = () => {
     }
 
     const user = await UserService.getMe();
-    console.log('useUserData: get()');
-
     localStorage.setItem('user', JSON.stringify(user));
     return user;
   }

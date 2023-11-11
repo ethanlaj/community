@@ -17,8 +17,6 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     get()
       .then((newData) => {
-        console.log('UserContext: newData');
-        console.log({ newData });
         setUserData(newData || defaultUser);
       }).catch(console.error);
   }, []);

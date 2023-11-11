@@ -41,7 +41,6 @@ function AddUsers() {
   });
 
   const doSubmit = async () => {
-    console.log(form.data);
     try {
       const newUser:UserDTO = {
         officeId: form.data.office?.id || 0,
