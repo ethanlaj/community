@@ -59,6 +59,7 @@ function AddContactsAndOrganizations({
     <div className="flex gap-8">
       <ReactiveSearchWithTable
         id="contacts"
+        classStyle="w-50"
         tableHeaderName="Contact"
         selectedItems={contacts}
         options={contactOptions}
@@ -69,6 +70,7 @@ function AddContactsAndOrganizations({
       />
       <ReactiveSearchWithTable
         id="organizations"
+        classStyle="w-50"
         tableHeaderName="Organization"
         selectedItems={organizations}
         options={organizationOptions}

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Joi from 'joi';
 import useForm from '@/shared/hooks/useForm';
-import styles from './AddUsers.module.css';
+import styles from './CreateUsers.module.css';
 import userService from '@/services/userService';
 import officeService from '@/services/officeService';
 import { User, UserDTO } from '@/types/user';
@@ -71,10 +71,17 @@ function AddUsers() {
         {form.renderSearch({
           id: 'office',
           items: allOffices,
+          headerLabel: 'Office',
+          selectionLabel: 'Select Office',
           keyPath: 'id',
           valuePath: 'name',
         })}
-        {form.renderInput({ id: 'permissionLevel', label: 'Permission Level', type: 'number' })}
+        {form.renderInput({
+          id: 'permissionLevel',
+          label: 'Permission Level',
+          type: 'number',
+          placeholder: 'Permission Level 1-4',
+        })}
         {form.renderButton('Add')}
       </form>
     </div>

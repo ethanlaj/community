@@ -9,7 +9,7 @@ function Contacts() {
 
   useEffect(() => {
     const fetchContacts = async () => {
-      let data = await contactService.getAll();
+      let data = await contactService.getAllTable();
 
       data = data.map((cont) => {
         const comm = cont.Communication;
