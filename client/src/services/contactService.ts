@@ -12,6 +12,11 @@ export default class ContactService {
     return response.data;
   }
 
+  static async getAllTable() {
+    const response = await http.get(`${apiEndpoint}/getbyOrg`);
+    return response.data;
+  }
+
   static async getAllByOrgId(orgId: number) {
     const response = await http.get(apiEndpoint, { params: { orgId } });
     return response.data;
