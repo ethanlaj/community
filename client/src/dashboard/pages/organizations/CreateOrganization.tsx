@@ -50,7 +50,7 @@ function CreateOrganization() {
 
         navigate('/organizations', { replace: true });
       } else {
-        form.setErrors({ name: 'Organization Already Exists with this name' });
+        form.setErrors({ name: 'Organization already exists with this name' });
       }
     } catch (ex: any) {
       console.log(ex); // TODO: Toast
