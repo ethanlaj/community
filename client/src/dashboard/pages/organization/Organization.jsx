@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { useParams, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { FaPencilAlt } from 'react-icons/fa';
+import { IoIosArrowBack } from 'react-icons/io';
 import Button from 'react-bootstrap/Button';
 import exportToExcel from '../../../utils/excelExport';
 import organizationService from '@/services/organizationService';
@@ -75,16 +76,23 @@ function Organization() {
   };
 
   const goToUpdate = () => navigate(`/organization/${organization.id}/edit`);
+  const goBack = () => navigate('/organizations');
 
   return (
     <div>
       <h1 className="flex justify-center align-items-center">
-        {organization.name}
-        <Button variant="outline-primary" className="ml-4 flex align-items-center gap-1" onClick={goToUpdate}>
-          <FaPencilAlt />
-          {' '}
-          Update
+        <Button variant="outline-secondary" className="mr-auto flex align-items-center gap-1" onClick={goBack}>
+          <IoIosArrowBack />
+          Organizations
         </Button>
+        <div className="flex mr-auto align-items-center">
+          {organization.name}
+          <Button variant="outline-primary" className="ml-4 flex align-items-center gap-1" onClick={goToUpdate}>
+            <FaPencilAlt />
+            {' '}
+            Update
+          </Button>
+        </div>
       </h1>
       <div className="mb-4 pb-4">
         <div className="d-flex align-items-center justify-content-between mb-2">
