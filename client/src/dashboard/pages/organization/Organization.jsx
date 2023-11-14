@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
+import { FaPencilAlt } from 'react-icons/fa';
+import Button from 'react-bootstrap/Button';
 import exportToExcel from '../../../utils/excelExport';
-import styles from './Organization.module.css';
 import organizationService from '@/services/organizationService';
 import ClickableTable from '@/shared/components/ClickableTable';
 import ExcelExportButton from '../../../shared/components/ExcelExportButton';
 
 function Organization() {
+  const navigate = useNavigate();
   const [organization, setOrganization] = useState({});
   const { id } = useParams();
   const formatDate = (date) => (date ? format(new Date(date), 'PPpp') : '');
@@ -72,9 +74,18 @@ function Organization() {
     return exportRow;
   };
 
+  const goToUpdate = () => navigate(`/organization/${organization.id}/edit`);
+
   return (
-    <div className={styles.content}>
-      <h1>{organization.name}</h1>
+    <div>
+      <h1 className="flex justify-center align-items-center">
+        {organization.name}
+        <Button variant="outline-primary" className="ml-4 flex align-items-center gap-1" onClick={goToUpdate}>
+          <FaPencilAlt />
+          {' '}
+          Update
+        </Button>
+      </h1>
       <div className="mb-4 pb-4">
         <div className="d-flex align-items-center justify-content-between mb-2">
           <h4 className="mb-0">Locations</h4>

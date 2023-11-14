@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { AiOutlinePlus } from 'react-icons/ai';
+import Button from 'react-bootstrap/Button';
 import exportToExcel from '../../../utils/excelExport';
 import styles from './Organizations.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
@@ -64,9 +66,19 @@ function Organizations() {
     }
   };
 
+  const goToCreate = () => navigate('/organizations/create');
+
   return (
     <div className={styles.content}>
-      <h1>Organizations</h1>
+      <h1 className="flex justify-center align-items-center">
+        Organizations
+        <Button variant="outline-primary" className="ml-4 flex align-items-center gap-1" onClick={goToCreate}>
+          <AiOutlinePlus />
+          {' '}
+          Create
+        </Button>
+      </h1>
+
       <ClickableTable
         style={{ width: '20px' }}
         columns={exportColumns}

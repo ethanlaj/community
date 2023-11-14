@@ -1,8 +1,13 @@
-import { Table, Column, Model, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Table, Column, Model, ForeignKey, BelongsTo, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
 import { Organizations } from '.';
 
-@Table({ tableName: 'OrganizationLocations' })
+@Table({ tableName: 'OrganizationLocations', paranoid: true })
 export class OrganizationLocations extends Model {
+	@PrimaryKey
+	@AutoIncrement
+	@Column
+	public id!: number;
+
 	@Column
 	public address!: string;
 

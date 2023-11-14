@@ -1,11 +1,12 @@
 import express, { Router, Request, Response } from 'express';
 import { Communications, Organizations, OrganizationLocations, Contacts } from '../database/models';
 import errorHandler from '../errorHandler';
-import { CreateOrganizationDTO } from '../types/CreateOrganizationDTO';
+import { CreateUpdateOrganizationDTO } from '../types/CreateUpdateOrganizationDTO';
 import { CreateOrganizationBulkDTO } from '../types/CreateOrganizationBulkDTO';
 import { OrganizationAliases } from '../database/models/organizationAliases';
 import { Sequelize } from 'sequelize';
 import isAuthorized from '../middleware/isAuthorized';
+import { setAliases, setLocations } from '../mixins/organizations';
 
 const organizationsRouter: Router = express.Router();
 
@@ -32,17 +33,20 @@ organizationsRouter.get('/', isAuthorized(1), errorHandler(async (_req: Request,
 }));
 
 // GET an organization by ID
-organizationsRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Request, res: Response): Promise<void> => {
+organizationsRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Request, res: Response): Promise<void> => {	
 	const id = req.params.id;
 	try {
 		const organization = await Organizations.findByPk(id, {
-			include: [Contacts, OrganizationLocations, Communications],
+			include: [Contacts, OrganizationLocations, Communications, OrganizationAliases],
 		});
 
 		if (!organization) {
 			res.status(404).send('Organization not found');
 		} else {
-			res.json(organization);
+			res.json({
+				...organization.toJSON(),
+				aliases: organization.aliases?.map((alias) => alias.alias) || [],
+			});
 		}
 	} catch (error) {
 		res.status(500).send((error as Error).message);
@@ -50,7 +54,7 @@ organizationsRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Reques
 })
 );
 
-// GET an organization by ID
+// GET an organization by name
 organizationsRouter.get('/name/:name', errorHandler(async (req: Request, res: Response): Promise<void> => {
 	const name = req.params.name;
 	try {
@@ -72,30 +76,27 @@ organizationsRouter.get('/name/:name', errorHandler(async (req: Request, res: Re
 
 // POST a new organization
 organizationsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
-	const { name, locations, aliases } = req.body as CreateOrganizationDTO;
+	const { name, organizationLocations, aliases } = req.body as CreateUpdateOrganizationDTO;
+	
+	const t = await Organizations.sequelize!.transaction();
+
 	try {
 		const newOrganization = await Organizations.create({
 			name,
-		});
+		}, { transaction: t });
 
-		if (locations)
-			await OrganizationLocations.bulkCreate(
-				locations.map((location: any) => ({
-					...location,
-					organizationId: newOrganization.id,
-				}))
-			);
+		if (organizationLocations) {
+			await setLocations(newOrganization, organizationLocations, t);
+		}
 
-		if (aliases)
-			await OrganizationAliases.bulkCreate(
-				aliases.map((alias: string) => ({ 
-					alias,
-					organizationId: newOrganization.id,
-				}))
-			);
+		if (aliases) {
+			await setAliases(newOrganization, aliases, t);
+		}
 
+		await t.commit();
 		res.status(201).json(newOrganization);
 	} catch (error) {
+		await t.rollback();
 		res.status(500).send((error as Error).message);
 	}
 })
@@ -182,46 +183,30 @@ organizationsRouter.post('/bulk', isAuthorized(2), errorHandler(async (req: Requ
 // PUT (update) an organization by ID
 organizationsRouter.put('/:id', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
 	const id = req.params.id;
-	const organizationData = req.body;
+	const organizationData = req.body as CreateUpdateOrganizationDTO;
+
+	const t = await Organizations.sequelize!.transaction();
+
 	try {
 		const organization = await Organizations.findByPk(id);
 		if (!organization) {
 			res.status(404).send('Organization not found');
 		} else {
-			if (req.body.locations) {
-				// Delete locations that were removed
-				const locations = await OrganizationLocations.findAll({
-					where: { organizationId: organization.id },
-				});
-				for (const location of locations) {
-					if (
-						!req.body.locations.find(
-							(newLocation: any) => newLocation.id === location.id
-						)
-					)
-						await OrganizationLocations.destroy({
-							where: { id: location.id },
-						});
-				}
-
-				// Create or update locations
-				for (const newLocation of req.body.locations) {
-					if (newLocation.id)
-						await OrganizationLocations.update(newLocation, {
-							where: { id: newLocation.id },
-						});
-					else
-						await OrganizationLocations.create({
-							...newLocation,
-							organizationId: organization.id,
-						});
-				}
+			if (organizationData.organizationLocations) {
+				await setLocations(organization, organizationData.organizationLocations, t);
 			}
 
-			await organization.update(organizationData);
+			if (organizationData.aliases) {
+				await setAliases(organization, organizationData.aliases, t);
+			}
+
+			await organization.update(organizationData, { transaction: t });
+
+			await t.commit();
 			res.json(organization);
 		}
 	} catch (error) {
+		await t.rollback();
 		res.status(500).send((error as Error).message);
 	}
 })
