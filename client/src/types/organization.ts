@@ -11,5 +11,7 @@ export interface Organization {
         email: string;
         phone: string;
     }[];
-    aliases: string[];
+    aliases: {
+        alias: string;
+    }[];
 }

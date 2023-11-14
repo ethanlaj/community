@@ -43,10 +43,7 @@ organizationsRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Reques
 		if (!organization) {
 			res.status(404).send('Organization not found');
 		} else {
-			res.json({
-				...organization.toJSON(),
-				aliases: organization.aliases?.map((alias) => alias.alias) || [],
-			});
+			res.json(organization);
 		}
 	} catch (error) {
 		res.status(500).send((error as Error).message);

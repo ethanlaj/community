@@ -87,7 +87,7 @@ function CreateUpdateOrganization() {
         name: location.name,
         address: location.address,
       })),
-      aliases: org.aliases,
+      aliases: org.aliases?.map((alias) => alias.alias) || [],
     });
   };
 
