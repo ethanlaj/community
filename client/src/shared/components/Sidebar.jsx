@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import AuthButton from './AuthButton';
 import styles from './Sidebar.module.css';
 import ProtectedElement from './ProtectedElement';
 
 function Sidebar() {
+  const location = useLocation();
   const [isExpanded, setIsExpanded] = useState({ org: false, comm: false, cont: false });
   const handleExpandClick = (section) => {
     setIsExpanded({ ...isExpanded, [section]: !isExpanded[section] });
@@ -90,7 +91,9 @@ function Sidebar() {
           )}
         </li>
       </ul>
-      <AuthButton />
+      {location.pathname !== '/' && (
+        <AuthButton />
+      )}
     </div>
   );
 }
