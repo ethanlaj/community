@@ -80,20 +80,21 @@ function Organization() {
 
   return (
     <div>
-      <h1 className="flex justify-center align-items-center">
-        <Button variant="outline-secondary" className="mr-auto flex align-items-center gap-1" onClick={goBack}>
+      <div className="relative w-full mb-4">
+        <Button variant="outline-secondary" className="absolute left-0 top-1/2 transform -translate-y-1/2 flex items-center gap-1" onClick={goBack}>
           <IoIosArrowBack />
           Organizations
         </Button>
-        <div className="flex mr-auto align-items-center">
-          {organization.name}
-          <Button variant="outline-primary" className="ml-4 flex align-items-center gap-1" onClick={goToUpdate}>
-            <FaPencilAlt />
-            {' '}
-            Update
-          </Button>
+        <div className="flex justify-center items-center h-full">
+          <h1 className="flex items-center justify-center gap-3 mb-0">
+            {organization.name}
+            <Button variant="outline-primary" className="inline-flex items-center gap-1" onClick={goToUpdate}>
+              <FaPencilAlt />
+              Update
+            </Button>
+          </h1>
         </div>
-      </h1>
+      </div>
       <div className="mb-4 pb-4">
         <div className="d-flex align-items-center justify-content-between mb-2">
           <h4 className="mb-0">Locations</h4>
