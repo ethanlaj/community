@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
+import { FaPencilAlt } from 'react-icons/fa';
+import { IoIosArrowBack } from 'react-icons/io';
+import Button from 'react-bootstrap/Button';
 import exportToExcel from '../../../utils/excelExport';
-import styles from './Organization.module.css';
 import organizationService from '@/services/organizationService';
 import ClickableTable from '@/shared/components/ClickableTable';
 import ExcelExportButton from '../../../shared/components/ExcelExportButton';
+import Loading from '@/shared/components/Loading';
 
 function Organization() {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const [organization, setOrganization] = useState({});
   const { id } = useParams();
   const formatDate = (date) => (date ? format(new Date(date), 'PPpp') : '');
@@ -18,6 +23,7 @@ function Organization() {
       try {
         const data = await organizationService.getById(id);
         setOrganization(data);
+        setIsLoading(false);
       } catch (error) {
         toast.error('Failed to fetch organization details');
         console.error('Error fetching organization details:', error);
@@ -72,9 +78,30 @@ function Organization() {
     return exportRow;
   };
 
+  const goToUpdate = () => navigate(`/organization/${organization.id}/edit`);
+  const goBack = () => navigate('/organizations');
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
-    <div className={styles.content}>
-      <h1>{organization.name}</h1>
+    <div>
+      <div className="relative w-full mb-4">
+        <Button variant="outline-secondary" className="absolute left-0 top-1/2 transform -translate-y-1/2 flex items-center gap-1" onClick={goBack}>
+          <IoIosArrowBack />
+          Organizations
+        </Button>
+        <div className="flex justify-center items-center h-full">
+          <h1 className="flex items-center justify-center gap-3 mb-0">
+            {organization.name}
+            <Button variant="outline-primary" className="inline-flex items-center gap-1" onClick={goToUpdate}>
+              <FaPencilAlt />
+              Update
+            </Button>
+          </h1>
+        </div>
+      </div>
       <div className="mb-4 pb-4">
         <div className="d-flex align-items-center justify-content-between mb-2">
           <h4 className="mb-0">Locations</h4>

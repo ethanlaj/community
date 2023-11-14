@@ -11,7 +11,7 @@ import Sidebar from './shared/components/Sidebar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './App.module.css';
-import CreateOrganization from './dashboard/pages/organizations/CreateOrganization';
+import CreateUpdateOrganization from './dashboard/pages/organizations/CreateUpdateOrganization';
 import CreateCommunication from './dashboard/pages/communications/CreateCommunication';
 import Organizations from './dashboard/pages/organizations/Organizations';
 import Organization from './dashboard/pages/organization/Organization';
@@ -48,13 +48,14 @@ function AppContent() {
   }
 
   const protectedRoutes = [
-    { path: '/organizations/create', element: <CreateOrganization /> },
+    { path: '/organizations/create', element: <CreateUpdateOrganization /> },
     { path: '/organizations', element: <Organizations /> },
     { path: '/contacts', element: <Contacts /> },
     { path: '/contacts/create', element: <CreateContacts /> },
     { path: '/communications', element: <Communications /> },
     { path: '/communications/create', element: <CreateCommunication /> },
     { path: '/organization/:id', element: <Organization /> },
+    { path: '/organization/:id/edit', element: <CreateUpdateOrganization /> },
     { path: '/admin', element: <Admin /> },
     { path: '/admin/add-user', element: <AddUsers /> },
   ];
