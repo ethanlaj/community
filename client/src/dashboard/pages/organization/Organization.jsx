@@ -9,9 +9,11 @@ import exportToExcel from '../../../utils/excelExport';
 import organizationService from '@/services/organizationService';
 import ClickableTable from '@/shared/components/ClickableTable';
 import ExcelExportButton from '../../../shared/components/ExcelExportButton';
+import Loading from '@/shared/components/Loading';
 
 function Organization() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const [organization, setOrganization] = useState({});
   const { id } = useParams();
   const formatDate = (date) => (date ? format(new Date(date), 'PPpp') : '');
@@ -21,6 +23,7 @@ function Organization() {
       try {
         const data = await organizationService.getById(id);
         setOrganization(data);
+        setIsLoading(false);
       } catch (error) {
         toast.error('Failed to fetch organization details');
         console.error('Error fetching organization details:', error);
@@ -77,6 +80,10 @@ function Organization() {
 
   const goToUpdate = () => navigate(`/organization/${organization.id}/edit`);
   const goBack = () => navigate('/organizations');
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div>
