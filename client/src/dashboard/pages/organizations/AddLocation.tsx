@@ -9,7 +9,8 @@ interface AddLocationProps {
   location: Location | null;
   error?: string;
   handleChange: (value: Location | null) => void;
-  organizationId?: number;
+  organizationFilter?: Organization | null;
+  setOrganizationFilter: (value: Organization | null) => void;
   organizations: Organization[];
 }
 
@@ -17,10 +18,10 @@ function AddLocation({
   location,
   error,
   handleChange,
-  organizationId,
+  organizationFilter,
+  setOrganizationFilter,
   organizations,
 }: AddLocationProps) {
-  const [organizationFilter, setOrganizationFilter] = useState<Organization | null>(null);
   const [locations, setLocations] = useState<Location[]>([]);
 
   const fetchLocation = async () => {
@@ -34,17 +35,10 @@ function AddLocation({
   useEffect(() => {
     fetchLocation();
 
-    if (location && location.organizationId !== organizationFilter?.id) {
+    if (location && organizationFilter && location.organizationId !== organizationFilter.id) {
       handleChange(null);
     }
   }, [organizationFilter]);
-
-  useEffect(() => {
-    if (!organizationFilter) {
-      const found = organizations.find((org) => org.id === organizationId);
-      setOrganizationFilter(found || null);
-    }
-  }, [organizationId]);
 
   return (
     <div>
@@ -59,7 +53,7 @@ function AddLocation({
         value={organizationFilter}
         error={undefined}
         onRefresh={undefined}
-        onChange={(_id: string, selOrganization: Organization) => { setOrganizationFilter(selOrganization); }}
+        onChange={(selOrganization: Organization) => { setOrganizationFilter(selOrganization); }}
       />
       <ReactiveSearch
         id="location"
@@ -72,7 +66,7 @@ function AddLocation({
         value={location}
         error={undefined}
         onRefresh={fetchLocation}
-        onChange={(_id: string, newLocation: Location) => { handleChange(newLocation); }}
+        onChange={(newLocation: Location) => { handleChange(newLocation); }}
       />
 
       {error && <Alert variant="danger">{error}</Alert>}
