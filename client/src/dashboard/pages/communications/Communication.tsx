@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useParams, useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
 import { FaPencilAlt } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
 import Button from 'react-bootstrap/Button';
@@ -12,6 +11,7 @@ import CommunicationService from '@/services/communicationService';
 import { Communication as CommunicationType } from '@/types/communication';
 import CommunicationCard from './CommunicationCard';
 import { Organization } from '@/types/organization';
+import formatDate from '@/utils/formatDate';
 
 function Communication() {
   const navigate = useNavigate();
@@ -19,7 +19,6 @@ function Communication() {
   const [communication, setCommunication] = useState<CommunicationType | null>(null);
   const { id } = useParams();
   const communicationId = id ? parseInt(id, 10) : null;
-  const formatDate = (date?: string) => (date ? format(new Date(date), 'PP') : '');
 
   useEffect(() => {
     const fetchCommunication = async () => {

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Joi from 'joi';
-import { parseISO, format } from 'date-fns';
 import useForm from '@/shared/hooks/useForm';
 import AddLocation from '@/dashboard/pages/organizations/AddLocation';
 import CommunicationService from '@/services/communicationService';
@@ -18,6 +17,7 @@ import AddUserTable from './addUserTable';
 import UserService from '@/services/userService';
 import Loading from '@/shared/components/Loading';
 import { Communication } from '@/types/communication';
+import formatDate from '@/utils/formatDate';
 
 interface FormProps {
   date: string;
@@ -44,9 +44,6 @@ function CreateUpdateCommunication() {
   const isUpdateMode = communicationId !== undefined;
   const [originalCommunication, setOriginalCommunication] = useState<Communication | null>(null);
 
-  const timeZoneOffset = now.getTimezoneOffset();
-  const nowLocal = new Date(now.getTime() - timeZoneOffset * 60 * 1000);
-
   const [isLoading, setIsLoading] = useState(true);
   const [allOrganizations, setAllOrganizations] = useState<Organization[]>([]);
   const [allContacts, setAllContacts] = useState<Contact[]>([]);
@@ -54,7 +51,7 @@ function CreateUpdateCommunication() {
 
   const fields: FormProps = {
     type: '',
-    date: format(nowLocal, 'yyyy-MM-dd'),
+    date: formatDate(now),
     contacts: [],
     users: [],
     note: '',
@@ -152,7 +149,7 @@ function CreateUpdateCommunication() {
   const loadCommunicationData = async (commId: number) => {
     const communication = await CommunicationService.getById(commId);
 
-    const formattedDate = format(parseISO(communication.date), 'yyyy-MM-dd');
+    const formattedDate = formatDate(communication.date);
 
     form.setData({
       date: formattedDate,

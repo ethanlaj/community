@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import communicationService from '@/services/communicationService';
 import CreateButton from '@/shared/components/CreateButton';
+import formatDate from '@/utils/formatDate';
 
 function Communications() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ function Communications() {
         return {
           ...comm,
           orgsNames: orgs.map((org) => org.name).join(', '),
+          date: formatDate(comm.date),
         };
       });
 
