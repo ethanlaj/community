@@ -16,10 +16,8 @@ usersRouter.get('/me', errorHandler(async (req: CRequest, res: Response) => {
 	});
 }));
 
-usersRouter.use(isAuthorized(4)); // Admin only routes below
-
 // Get all users
-usersRouter.get('/', errorHandler(async (req: Request, res: Response) => {
+usersRouter.get('/', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
 	const officeId = req.query.officeId as string | undefined;
 
 	try {
@@ -39,7 +37,7 @@ usersRouter.get('/', errorHandler(async (req: Request, res: Response) => {
 }));
 
 // Get user by Id
-usersRouter.get('/:id', errorHandler(async (req: Request, res: Response) => {
+usersRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
 	const { id } = req.params;
 
 	try {
@@ -60,7 +58,7 @@ usersRouter.get('/:id', errorHandler(async (req: Request, res: Response) => {
 }));
 
 // Post a new user
-usersRouter.post('/', errorHandler(async (req: Request, res: Response) => {
+usersRouter.post('/', isAuthorized(4), errorHandler(async (req: Request, res: Response) => {
 	const userData = req.body;
 	try {
 		const newUser = await Users.create(userData);
@@ -72,7 +70,7 @@ usersRouter.post('/', errorHandler(async (req: Request, res: Response) => {
 }));
 
 // Update a user using Id
-usersRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
+usersRouter.put('/:id', isAuthorized(4), errorHandler(async (req: Request, res: Response) => {
 	const userId = req.params.id;
 	const userData = req.body;
 

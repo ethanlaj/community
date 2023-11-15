@@ -5,6 +5,7 @@ import {
 	OrganizationLocations,
 	Contacts,
 	Users,
+	EtownOffices,
 } from '../database/models';
 import errorHandler from '../errorHandler';
 import { CreateUpdateCommunicationDTO } from '../types/CreateUpdateCommunicationDTO';
@@ -28,7 +29,15 @@ communicationsRouter.get('/', isAuthorized(1), errorHandler(async (req: Request,
 communicationsRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
 	const id = req.params.id;
 	const communication = await Communications.findByPk(id, {
-		include: [OrganizationLocations, Contacts, Organizations, Users],
+		include: [Contacts, Organizations, 
+			{
+				model: Users,
+				include: [EtownOffices]
+			},
+			{
+				model: OrganizationLocations,
+				include: [Organizations]
+			}],
 	});
 
 	if (!communication) {
