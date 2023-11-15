@@ -9,8 +9,7 @@ interface AddLocationProps {
   location: Location | null;
   error?: string;
   handleChange: (value: Location | null) => void;
-  organizationFilter?: Organization | null;
-  setOrganizationFilter: (value: Organization | null) => void;
+  organizationId?: number;
   organizations: Organization[];
 }
 
@@ -18,10 +17,10 @@ function AddLocation({
   location,
   error,
   handleChange,
-  organizationFilter,
-  setOrganizationFilter,
+  organizationId,
   organizations,
 }: AddLocationProps) {
+  const [organizationFilter, setOrganizationFilter] = useState<Organization | null>(null);
   const [locations, setLocations] = useState<Location[]>([]);
 
   const fetchLocation = async () => {
@@ -39,6 +38,13 @@ function AddLocation({
       handleChange(null);
     }
   }, [organizationFilter]);
+
+  useEffect(() => {
+    if (!organizationFilter) {
+      const found = organizations.find((org) => org.id === organizationId);
+      setOrganizationFilter(found || null);
+    }
+  }, [organizationId]);
 
   return (
     <div>

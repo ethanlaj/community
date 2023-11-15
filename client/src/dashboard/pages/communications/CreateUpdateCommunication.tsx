@@ -43,7 +43,6 @@ function CreateUpdateCommunication() {
   let communicationId = id ? parseInt(id, 10) : undefined;
   const isUpdateMode = communicationId !== undefined;
   const [originalCommunication, setOriginalCommunication] = useState<Communication | null>(null);
-  const [organizationFilter, setOrganizationFilter] = useState<Organization | null>(null);
 
   const timeZoneOffset = now.getTimezoneOffset();
   const nowLocal = new Date(now.getTime() - timeZoneOffset * 60 * 1000);
@@ -168,20 +167,15 @@ function CreateUpdateCommunication() {
     setOriginalCommunication(communication);
   };
 
-  useEffect(() => {
-    let newOrganizationFilter;
-
+  const getOrgIdFilterForAddLocation = () => {
     if (originalCommunication?.organizationLocation) {
-      newOrganizationFilter = originalCommunication.organizationLocation.organization;
+      return originalCommunication.organizationLocation.organizationId;
     }
-
     if (form.data.organizations.length === 1) {
-      const [firstOrganization] = form.data.organizations;
-      newOrganizationFilter = firstOrganization;
+      return form.data.organizations[0].id;
     }
-
-    setOrganizationFilter(newOrganizationFilter || null);
-  }, [form.data.organizations, originalCommunication]);
+    return undefined;
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -219,8 +213,7 @@ function CreateUpdateCommunication() {
             error={form.errors.organizationLocation}
             handleChange={(value) => form.handleDataChange('organizationLocation', value)}
             location={form.data.organizationLocation}
-            organizationFilter={organizationFilter}
-            setOrganizationFilter={setOrganizationFilter}
+            organizationId={getOrgIdFilterForAddLocation()}
             organizations={form.data.organizations}
           />
 
