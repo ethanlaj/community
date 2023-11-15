@@ -13,7 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './App.module.css';
 import CreateUpdateOrganization from './dashboard/pages/organizations/CreateUpdateOrganization';
-import CreateCommunication from './dashboard/pages/communications/CreateCommunication';
+import CreateCommunication from './dashboard/pages/communications/CreateUpdateCommunication';
 import Organizations from './dashboard/pages/organizations/Organizations';
 import Organization from './dashboard/pages/organization/Organization';
 import Contacts from './dashboard/pages/contacts/Contacts';
@@ -28,6 +28,7 @@ import Home from './dashboard/pages/Home';
 import Admin from './dashboard/pages/admin';
 import AddUsers from './dashboard/pages/admin/CreateUsers';
 import { UserProvider } from './shared/context/UserContext';
+import Communication from './dashboard/pages/communications/Communication';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -54,6 +55,8 @@ function AppContent() {
     { path: '/contacts', element: <Contacts /> },
     { path: '/contacts/create', element: <CreateContacts /> },
     { path: '/communications', element: <Communications /> },
+    { path: '/communications/:id', element: <Communication /> },
+    { path: '/communications/:id/edit', element: <CreateCommunication /> },
     { path: '/communications/create', element: <CreateCommunication /> },
     { path: '/organization/:id', element: <Organization /> },
     { path: '/organization/:id/edit', element: <CreateUpdateOrganization /> },

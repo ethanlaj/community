@@ -2,14 +2,13 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useParams, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
-import { FaPencilAlt } from 'react-icons/fa';
-import { IoIosArrowBack } from 'react-icons/io';
-import Button from 'react-bootstrap/Button';
 import exportToExcel from '../../../utils/excelExport';
 import organizationService from '@/services/organizationService';
 import ClickableTable from '@/shared/components/ClickableTable';
 import ExcelExportButton from '../../../shared/components/ExcelExportButton';
 import Loading from '@/shared/components/Loading';
+import UpdateButton from '@/shared/components/UpdateButton';
+import BackButton from '@/shared/components/BackButton';
 
 function Organization() {
   const navigate = useNavigate();
@@ -88,17 +87,11 @@ function Organization() {
   return (
     <div>
       <div className="relative w-full mb-4">
-        <Button variant="outline-secondary" className="absolute left-0 top-1/2 transform -translate-y-1/2 flex items-center gap-1" onClick={goBack}>
-          <IoIosArrowBack />
-          Organizations
-        </Button>
+        <BackButton handleClick={goBack}>Organizations</BackButton>
         <div className="flex justify-center items-center h-full">
-          <h1 className="flex items-center justify-center gap-3 mb-0">
+          <h1 className="flex items-center justify-center mb-0">
             {organization.name}
-            <Button variant="outline-primary" className="inline-flex items-center gap-1" onClick={goToUpdate}>
-              <FaPencilAlt />
-              Update
-            </Button>
+            <UpdateButton handleClick={goToUpdate} />
           </h1>
         </div>
       </div>

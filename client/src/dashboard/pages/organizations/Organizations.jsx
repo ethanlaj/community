@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { AiOutlinePlus } from 'react-icons/ai';
-import Button from 'react-bootstrap/Button';
 import exportToExcel from '../../../utils/excelExport';
 import styles from './Organizations.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
@@ -12,6 +10,7 @@ import ImportButton from '@/shared/components/ImportButton';
 import { importFields, importTemplate, exportColumns } from './constants';
 import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
 import ProtectedElement from '@/shared/components/ProtectedElement';
+import CreateButton from '@/shared/components/CreateButton';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
@@ -72,11 +71,7 @@ function Organizations() {
     <div className={styles.content}>
       <h1 className="flex justify-center align-items-center">
         Organizations
-        <Button variant="outline-primary" className="ml-4 flex align-items-center gap-1" onClick={goToCreate}>
-          <AiOutlinePlus />
-          {' '}
-          Create
-        </Button>
+        <CreateButton handleClick={goToCreate} />
       </h1>
 
       <ClickableTable

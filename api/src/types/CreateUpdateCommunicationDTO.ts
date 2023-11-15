@@ -1,4 +1,4 @@
-export interface CreateCommunicationDTO {
+export interface CreateUpdateCommunicationDTO {
 	date: string;
 	type: string;
 	contactIds: number[];
