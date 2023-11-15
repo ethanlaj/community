@@ -1,9 +1,10 @@
 import http from './httpService';
 import { apiUrl } from '../config';
+import { Communication } from '@/types/communication';
 
 const apiEndpoint = `${apiUrl}/communications`;
 
-interface CreateCommunicationDTO {
+interface CreateUpdateCommunicationDTO {
   date: string;
   type: string;
   contactIds: number[];
@@ -21,17 +22,17 @@ export default class CommunicationService {
     return response.data;
   }
 
-  static async getById(id: number) {
+  static async getById(id: number): Promise<Communication> {
     const response = await http.get(`${apiEndpoint}/${id}`);
     return response.data;
   }
 
-  static async create(communication: CreateCommunicationDTO) {
+  static async create(communication: CreateUpdateCommunicationDTO): Promise<Communication> {
     const response = await http.post(apiEndpoint, communication);
     return response.data;
   }
 
-  static async update(id: number, updatedCommunication: string) {
+  static async update(id: number, updatedCommunication: CreateUpdateCommunicationDTO) {
     const response = await http.put(
       `${apiEndpoint}/${id}`,
       updatedCommunication,

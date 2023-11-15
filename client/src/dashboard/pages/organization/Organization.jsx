@@ -10,6 +10,7 @@ import organizationService from '@/services/organizationService';
 import ClickableTable from '@/shared/components/ClickableTable';
 import ExcelExportButton from '../../../shared/components/ExcelExportButton';
 import Loading from '@/shared/components/Loading';
+import ProtectedElement from '@/shared/components/ProtectedElement';
 
 function Organization() {
   const navigate = useNavigate();
@@ -95,10 +96,12 @@ function Organization() {
         <div className="flex justify-center items-center h-full">
           <h1 className="flex items-center justify-center gap-3 mb-0">
             {organization.name}
-            <Button variant="outline-primary" className="inline-flex items-center gap-1" onClick={goToUpdate}>
-              <FaPencilAlt />
-              Update
-            </Button>
+            <ProtectedElement minLevel={2}>
+              <Button variant="outline-primary" className="inline-flex items-center gap-1" onClick={goToUpdate}>
+                <FaPencilAlt />
+                Update
+              </Button>
+            </ProtectedElement>
           </h1>
         </div>
       </div>

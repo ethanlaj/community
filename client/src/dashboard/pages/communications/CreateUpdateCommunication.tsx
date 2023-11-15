@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Joi from 'joi';
+import { parseISO, format } from 'date-fns';
 import useForm from '@/shared/hooks/useForm';
 import AddLocation from '@/dashboard/pages/organizations/AddLocation';
 import CommunicationService from '@/services/communicationService';
@@ -12,22 +13,19 @@ import AddContactsAndOrganizations from './AddContactsAndOrganizations';
 import { Contact } from '@/types/contact';
 import { Organization } from '@/types/organization';
 import { Location } from '@/types/location';
-import { ComUser } from '@/types/user';
+import { ComUser, User } from '@/types/user';
 import AddUserTable from './addUserTable';
 import UserService from '@/services/userService';
+import Loading from '@/shared/components/Loading';
+import { Communication } from '@/types/communication';
 
 interface FormProps {
   date: string;
   type: string;
   contacts: Contact[];
-  users: {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-  }[];
+  users: User[];
   note: string;
-  location: Location | null;
+  organizationLocation: Location | null;
   organizations: Organization[];
 }
 
@@ -38,22 +36,29 @@ const typeOptions: RenderSelectOption[] = [
   { value: 'mail', name: 'Mail' },
 ];
 
-function CreateCommunication() {
+function CreateUpdateCommunication() {
   const navigate = useNavigate();
+  const { id } = useParams();
   const now = new Date();
+  let communicationId = id ? parseInt(id, 10) : undefined;
+  const isUpdateMode = communicationId !== undefined;
+  const [originalCommunication, setOriginalCommunication] = useState<Communication | null>(null);
+
   const timeZoneOffset = now.getTimezoneOffset();
   const nowLocal = new Date(now.getTime() - timeZoneOffset * 60 * 1000);
+
+  const [isLoading, setIsLoading] = useState(true);
   const [allOrganizations, setAllOrganizations] = useState<Organization[]>([]);
   const [allContacts, setAllContacts] = useState<Contact[]>([]);
   const [allUsers, setAllUsers] = useState<ComUser[]>([]);
 
-  const fields = {
+  const fields: FormProps = {
     type: '',
-    date: nowLocal.toISOString().substr(0, 10),
+    date: format(nowLocal, 'yyyy-MM-dd'),
     contacts: [],
     users: [],
     note: '',
-    location: null,
+    organizationLocation: null,
     organizations: [],
   };
 
@@ -71,7 +76,8 @@ function CreateCommunication() {
       .label('Users')
       .required(),
     note: Joi.string().allow('').label('Note'),
-    location: Joi.object().allow(null).label('Location'),
+    locationId: Joi.number().allow(null).label('Location ID'),
+    organizationLocation: Joi.object().allow(null).label('Location'),
     organizations: Joi.array()
       .items(Joi.object().label('Organization'))
       .label('Organizations')
@@ -86,21 +92,27 @@ function CreateCommunication() {
   const doSubmit = async () => {
     try {
       const {
-        date, contacts, users, note, location, organizations, type,
+        date, contacts, users, note, organizationLocation, organizations, type,
       } = form.data;
 
       const communication = {
         date,
         type,
         note,
-        locationId: location?.id,
+        locationId: organizationLocation?.id,
         organizationIds: organizations?.map((o) => o.id),
         contactIds: contacts.map((c) => c.id),
         userIds: users.map((u) => u.id),
       };
 
-      await CommunicationService.create(communication);
-      navigate('/communications', { replace: true });
+      if (isUpdateMode) {
+        await CommunicationService.update(communicationId!, communication);
+      } else {
+        const newCommunication = await CommunicationService.create(communication);
+        communicationId = newCommunication.id;
+      }
+
+      navigate(`/communications/${communicationId}`, { replace: true });
     } catch (ex) {
       toast.error('An unexpected error occurred.');
     }
@@ -118,22 +130,65 @@ function CreateCommunication() {
           UserService.getAll(),
         ];
 
+        if (isUpdateMode) {
+          promises.push(loadCommunicationData(communicationId!));
+        }
+
         const [allOrganizationsResponse, allContactsResponse, allUsersResponse] = await Promise.all(promises);
 
         setAllOrganizations(allOrganizationsResponse);
         setAllContacts(allContactsResponse);
         setAllUsers(allUsersResponse);
+
+        setIsLoading(false);
       } catch (ex) {
         toast.error('An unexpected error occurred.');
       }
     }
 
     fetchRequiredData();
-  }, []);
+  }, [id]);
+
+  const loadCommunicationData = async (commId: number) => {
+    const communication = await CommunicationService.getById(commId);
+
+    const formattedDate = format(parseISO(communication.date), 'yyyy-MM-dd');
+
+    form.setData({
+      date: formattedDate,
+      type: communication.type,
+      note: communication.note,
+      contacts: communication.contacts,
+      users: communication.users,
+      organizationLocation: communication.organizationLocation,
+      organizations: communication.organizations,
+    });
+
+    setOriginalCommunication(communication);
+  };
+
+  const getOrgIdFilterForAddLocation = () => {
+    if (originalCommunication?.organizationLocation) {
+      return originalCommunication.organizationLocation.organizationId;
+    }
+    if (form.data.organizations.length === 1) {
+      return form.data.organizations[0].id;
+    }
+
+    return undefined;
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div>
-      <h1>Create Communication</h1>
+      <h1>
+        {isUpdateMode ? 'Update' : 'Create'}
+        {' '}
+        Communication
+      </h1>
       <form className="m-auto w-70p">
         {form.renderInput({ id: 'date', label: 'Date', type: 'date' })}
         {form.renderInput({ id: 'note', label: 'Note', type: 'textarea' })}
@@ -155,14 +210,15 @@ function CreateCommunication() {
           />
 
           <h3>Location</h3>
-          {form.renderChildForm(form, 'location', AddLocation, form.data.location, {
-            organizationId: form.data.organizations.length === 1
-              ? form.data.organizations[0].id
-              : undefined,
-            organizations: form.data.organizations,
-          })}
+          <AddLocation
+            error={form.errors.organizationLocation}
+            handleChange={(value) => form.handleDataChange('organizationLocation', value)}
+            location={form.data.organizationLocation}
+            organizationId={getOrgIdFilterForAddLocation()}
+            organizations={form.data.organizations}
+          />
 
-          <h3>Add Users</h3>
+          <h3>Users</h3>
           <p>
             Which Elizabethtown College staff were a part of this communication?
           </p>
@@ -174,10 +230,10 @@ function CreateCommunication() {
           />
         </div>
 
-        {form.renderButton('Create')}
+        {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
       </form>
     </div>
   );
 }
 
-export default CreateCommunication;
+export default CreateUpdateCommunication;

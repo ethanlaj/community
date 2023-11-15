@@ -1,76 +1,81 @@
 import { useState, useEffect } from 'react';
 import { Alert } from 'react-bootstrap';
 import locationService from '@/services/locationService';
-import { UseFormReturn } from '@/types/inputTypes';
 import { Organization } from '@/types/organization';
 import { Location } from '@/types/location';
-
-interface FormProps {
-  location: Location;
-}
+import ReactiveSearch from '@/shared/components/ReactiveSearch';
 
 interface AddLocationProps {
-  form: UseFormReturn<FormProps>;
-  errors: UseFormReturn<FormProps>['errors'];
-  onChange: (value: any) => void;
+  location: Location | null;
+  error?: string;
+  handleChange: (value: Location | null) => void;
   organizationId?: number;
   organizations: Organization[];
 }
 
 function AddLocation({
-  form,
-  errors,
-  onChange: handleChange,
+  location,
+  error,
+  handleChange,
   organizationId,
   organizations,
 }: AddLocationProps) {
-  const isChild = form !== undefined;
-  const [organizationFilter, setOrganizationFilter] = useState(organizationId);
-  const [locations, setLocation] = useState([]);
+  const [organizationFilter, setOrganizationFilter] = useState<Organization | null>(null);
+  const [locations, setLocations] = useState<Location[]>([]);
 
   const fetchLocation = async () => {
     const locationsResult = await (organizationFilter
-      ? locationService.getAllByOrgId(organizationFilter)
+      ? locationService.getAllByOrgId(organizationFilter.id)
       : locationService.getAll());
 
-    setLocation(locationsResult);
+    setLocations(locationsResult);
   };
 
   useEffect(() => {
     fetchLocation();
-    handleChange(null);
+
+    if (location && location.organizationId !== organizationFilter?.id) {
+      handleChange(null);
+    }
   }, [organizationFilter]);
 
   useEffect(() => {
     if (!organizationFilter) {
-      setOrganizationFilter(organizationId);
+      const found = organizations.find((org) => org.id === organizationId);
+      setOrganizationFilter(found || null);
     }
   }, [organizationId]);
 
   return (
     <div>
-      {!isChild && <h1>Add Location</h1>}
-      {!organizationId && form.renderSearch({
-        id: 'organizationFilter',
-        items: organizations,
-        keyPath: 'id',
-        valuePath: 'name',
-        handleChange: (_id, organization: Organization) => { setOrganizationFilter(organization.id); },
-        selectionLabel: 'Filter by Organization',
-        onRefresh: fetchLocation,
-      })}
-      {organizationFilter
-      && form.renderSearch({
-        id: 'location',
-        items: locations,
-        keyPath: 'id',
-        valuePath: 'name',
-        handleChange: (_id, location: Location) => { handleChange(location); },
-        selectionLabel: 'Search Locations',
-        onRefresh: fetchLocation,
-      })}
+      <ReactiveSearch
+        id="organizationFilter"
+        items={organizations}
+        headerLabel={undefined}
+        resetOnSelect={false}
+        selectionLabel="Filter by Organization"
+        idPath="id"
+        valuePath="name"
+        value={organizationFilter}
+        error={undefined}
+        onRefresh={undefined}
+        onChange={(_id: string, selOrganization: Organization) => { setOrganizationFilter(selOrganization); }}
+      />
+      <ReactiveSearch
+        id="location"
+        items={locations}
+        headerLabel={undefined}
+        resetOnSelect={false}
+        selectionLabel="Search Locations"
+        idPath="id"
+        valuePath="name"
+        value={location}
+        error={undefined}
+        onRefresh={fetchLocation}
+        onChange={(_id: string, newLocation: Location) => { handleChange(newLocation); }}
+      />
 
-      {errors.location && <Alert variant="danger">{errors.location}</Alert>}
+      {error && <Alert variant="danger">{error}</Alert>}
     </div>
   );
 }

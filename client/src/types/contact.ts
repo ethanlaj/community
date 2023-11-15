@@ -6,6 +6,8 @@ export interface Contact {
     email: string;
     phone: string;
     organizations: Organization[];
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface CreateContactDTO {

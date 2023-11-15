@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import Joi from 'joi';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import useForm from '@/shared/hooks/useForm';
 import CreateLocation from '@/dashboard/pages/organizations/CreateLocation';
 import organizationService from '@/services/organizationService';
@@ -64,8 +65,8 @@ function CreateUpdateOrganization() {
       }
 
       navigate(`/organization/${organizationId}`, { replace: true });
-    } catch (ex: any) {
-      console.log(ex); // TODO: Toast
+    } catch (ex) {
+      toast.error('Error creating organization');
     }
   };
 
