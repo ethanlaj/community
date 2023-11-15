@@ -73,7 +73,7 @@ function AppContent() {
                 path={route.path}
                 element={(
                   <ProtectedRoute>
-                    <AnimatePresence mode="wait">
+                    <AnimatePresence mode="popLayout">
                       <div key={index}>
                         <motion.div
                           initial={{ opacity: 0, y: '-100%' }}
