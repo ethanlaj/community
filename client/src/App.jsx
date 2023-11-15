@@ -4,6 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { ToastContainer } from 'react-toastify';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { MsalProvider, useMsal } from '@azure/msal-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import UnexpectedError from './shared/components/UnexpectedError';
 import NotFound from './shared/components/NotFound';
 import Unauthorized from './shared/components/Unauthorized';
@@ -68,9 +69,24 @@ function AppContent() {
           <Routes>
             {protectedRoutes.map((route, index) => (
               <Route
-                key={index}
+                key={route.path}
                 path={route.path}
-                element={<ProtectedRoute>{route.element}</ProtectedRoute>}
+                element={(
+                  <ProtectedRoute>
+                    <AnimatePresence mode="wait">
+                      <div key={index}>
+                        <motion.div
+                          initial={{ opacity: 0, y: '-100%' }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, x: '+100%' }}
+                          transition={{ duration: 0.25 }}
+                        >
+                          {route.element}
+                        </motion.div>
+                      </div>
+                    </AnimatePresence>
+                  </ProtectedRoute>
+                )}
               />
             ))}
             <Route path="/" element={<Home />} />
