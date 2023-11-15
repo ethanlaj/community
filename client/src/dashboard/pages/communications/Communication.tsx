@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaPencilAlt } from 'react-icons/fa';
-import { IoIosArrowBack } from 'react-icons/io';
-import Button from 'react-bootstrap/Button';
 import ClickableTable from '@/shared/components/ClickableTable';
 import Loading from '@/shared/components/Loading';
-import ProtectedElement from '@/shared/components/ProtectedElement';
 import CommunicationService from '@/services/communicationService';
 import { Communication as CommunicationType } from '@/types/communication';
 import CommunicationCard from './CommunicationCard';
 import { Organization } from '@/types/organization';
 import formatDate from '@/utils/formatDate';
+import UpdateButton from '@/shared/components/UpdateButton';
+import BackButton from '@/shared/components/BackButton';
 
 function Communication() {
   const navigate = useNavigate();
@@ -61,19 +59,11 @@ function Communication() {
   return (
     <div>
       <div className="relative w-full mb-4">
-        <Button variant="outline-secondary" className="absolute left-0 top-1/2 transform -translate-y-1/2 flex items-center gap-1" onClick={goBack}>
-          <IoIosArrowBack />
-          Communications
-        </Button>
+        <BackButton handleClick={goBack}>Communications</BackButton>
         <div className="flex justify-center items-center h-full">
-          <h1 className="flex items-center justify-center gap-3 mb-0">
+          <h1 className="flex items-center justify-center mb-0">
             Communication Details
-            <ProtectedElement minLevel={2}>
-              <Button variant="outline-primary" className="inline-flex items-center gap-1" onClick={goToUpdate}>
-                <FaPencilAlt />
-                Update
-              </Button>
-            </ProtectedElement>
+            <UpdateButton handleClick={goToUpdate} />
           </h1>
         </div>
       </div>
