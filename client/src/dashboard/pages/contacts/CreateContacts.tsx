@@ -22,7 +22,8 @@ export interface InfoForOrganization {
 }
 
 export interface FormProps{
-  name: string;
+  first_name: string;
+  last_name: string;
   organizations: Organization[];
   infoPerOrganization: InfoForOrganization[];
   aliases: string[];
@@ -53,14 +54,16 @@ function CreateContacts() {
   }, []);
 
   const fields: FormProps = {
-    name: '',
+    first_name: '',
+    last_name: '',
     organizations: [],
     infoPerOrganization: [],
     aliases: [],
   };
 
   const schema = Joi.object({
-    name: Joi.string().required().label('Name'),
+    first_name: Joi.string().required().label('First Name'),
+    last_name: Joi.string().required().label('Last Name'),
     aliases: Joi.array().unique().items(Joi.string().label('Aliases'))
       .messages({
         'array.unique': 'Duplicate alias detected, please remove it.',
@@ -99,7 +102,8 @@ function CreateContacts() {
 
     try {
       const ContactDTO: CreateContactDTO = {
-        name: form.data.name,
+        first_name: form.data.first_name,
+        last_name: form.data.last_name,
         aliases: form.data.aliases,
         organizations: info.map((item) => ({
           id: item.id,
@@ -126,8 +130,14 @@ function CreateContacts() {
     <>
       <h1>Create Contact</h1>
       <form className="m-auto w-70p">
-        {form.renderInput({ id: 'name', label: 'Name' })}
-
+        <div className="flex">
+          <div className="w-1/2">
+            {form.renderInput({ id: 'first_name', label: 'First Name' })}
+          </div>
+          <div className="w-1/2">
+            {form.renderInput({ id: 'last_name', label: 'Last Name' })}
+          </div>
+        </div>
         <Form.Label>Add Aliases</Form.Label>
         <AddUpdateAliases
           aliases={form.data.aliases}

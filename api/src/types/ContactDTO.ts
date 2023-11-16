@@ -1,5 +1,6 @@
 export interface CreateContactDTO {
-    name: string,
+    first_name: string,
+    last_name:string,
     aliases: string[];
     organizations:{
       id: number,
