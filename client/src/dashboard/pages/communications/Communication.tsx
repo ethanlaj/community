@@ -73,9 +73,9 @@ function Communication() {
         note={communication?.note || ''}
         type={communication?.type || ''}
         location={{
-          organization: communication?.organizationLocation.organization.name || '',
-          name: communication?.organizationLocation.name || '',
-          address: communication?.organizationLocation.address || '',
+          organization: communication?.organizationLocation?.organization?.name || '',
+          name: communication?.organizationLocation?.name || '',
+          address: communication?.organizationLocation?.address || '',
         }}
       />
 

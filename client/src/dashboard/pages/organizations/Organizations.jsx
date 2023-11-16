@@ -11,6 +11,7 @@ import { importFields, importTemplate, exportColumns } from './constants';
 import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
 import ProtectedElement from '@/shared/components/ProtectedElement';
 import CreateButton from '@/shared/components/CreateButton';
+import formatDate from '@/utils/formatDate';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
@@ -22,11 +23,12 @@ function Organizations() {
 
       data = data.map((org) => {
         const comm = org.communications[0];
+        const lastCommDate = comm?.date;
         if (!comm) return org;
 
         return {
           ...org,
-          lastComDate: comm.date,
+          lastComDate: formatDate(lastCommDate),
           lastComOffice: 'Unknown',
         };
       });
