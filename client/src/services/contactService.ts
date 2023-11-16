@@ -12,6 +12,11 @@ export default class ContactService {
     return response.data;
   }
 
+  static async getAllTable() {
+    const response = await http.get(`${apiEndpoint}/getbyOrg`);
+    return response.data;
+  }
+
   static async getAllByOrgId(orgId: number) {
     const response = await http.get(apiEndpoint, { params: { orgId } });
     return response.data;
@@ -28,13 +33,16 @@ export default class ContactService {
       id: org.id,
       email: org.email || '', // Use an empty string if email is undefined
       phone: org.phone || '', // Use an empty string if phone is undefined
+      exten: org.exten || '',
     }));
 
     // Create a new DTO with mapped organizations
     const updatedContactDTO: CreateContactDTO = {
       name: createContactDTO.name,
+      aliases: createContactDTO.aliases,
       organizations: mappedOrganizations,
     };
+
     const response = await http.post(
       apiEndpoint,
       updatedContactDTO,

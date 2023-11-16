@@ -6,6 +6,11 @@ import styles from './Organizations.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import organizationService from '@/services/organizationService';
 import ExcelExportButton from '@/shared/components/ExcelExportButton';
+import ImportButton from '@/shared/components/ImportButton';
+import { importFields, importTemplate, exportColumns } from './constants';
+import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
+import ProtectedElement from '@/shared/components/ProtectedElement';
+import CreateButton from '@/shared/components/CreateButton';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
@@ -33,18 +38,11 @@ function Organizations() {
     fetchOrganizations();
   }, []);
 
-  const columns = [
-    { title: 'Communication Status', field: 'comStatus' }, // adding flag into the table
-    { title: 'Name', field: 'name' },
-    { title: 'Last Communication Date', field: 'lastComDate' },
-    { title: 'Last Communication Office', field: 'lastComOffice' },
-  ];
-
   const handleExport = () => {
     const dataToExport = organizations.map((org) => {
       // Create an object where each key is the column title
       const exportRow = {};
-      columns.forEach((column) => {
+      exportColumns.forEach((column) => {
         exportRow[column.title] = org[column.field] || '';
       });
       return exportRow;
@@ -68,19 +66,35 @@ function Organizations() {
     }
   };
 
+  const goToCreate = () => navigate('/organizations/create');
+
   return (
     <div className={styles.content}>
-      <h1>Organizations</h1>
+      <h1 className="flex justify-center align-items-center">
+        Organizations
+        <CreateButton handleClick={goToCreate} />
+      </h1>
+
       <ClickableTable
         style={{ width: '20px' }}
-        columns={columns}
+        columns={exportColumns}
         data={organizations}
         onRowClick={handleRowClick}
         onRowDelete={handleRowDelete}
       />
-      <ExcelExportButton onExport={handleExport}>
-        Export
-      </ExcelExportButton>
+      <div className="d-flex align-items-center justify-content-start mt-8">
+        <ExcelExportButton onExport={handleExport}>
+          Export
+        </ExcelExportButton>
+        <ProtectedElement minLevel={2}>
+          <ImportButton
+            fields={importFields}
+            serviceFunction={organizationService.createBulk}
+          />
+          <DownloadTemplateButton template={importTemplate} name="OrganizationsTemplate.csv" />
+        </ProtectedElement>
+      </div>
+
     </div>
   );
 }

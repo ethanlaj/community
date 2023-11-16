@@ -1,9 +1,11 @@
 export interface CreateContactDTO {
     name: string,
+    aliases: string[];
     organizations:{
       id: number,
       email: string;
       phone: string;
+      exten: string;
     }[];
   }
   

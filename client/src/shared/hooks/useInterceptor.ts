@@ -3,7 +3,8 @@
 import axios from 'axios';
 import { AccountInfo, IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
 import { toast } from 'react-toastify';
-import { msalConfig } from '@/config';
+import { useNavigate } from 'react-router-dom';
+import { msalRequest } from '@/config';
 
 const urlsToUseMsal = [
   'https://community-production-c11b.up.railway.app',
@@ -11,6 +12,8 @@ const urlsToUseMsal = [
 ];
 
 const useInterceptor = () => {
+  const navigate = useNavigate();
+
   function setInterceptors(instance: IPublicClientApplication, account: AccountInfo) {
     axios.interceptors.request.clear();
     axios.interceptors.request.use(async (config) => {
@@ -54,8 +57,13 @@ const useInterceptor = () => {
           toast.warn('Popup failed. Falling back to redirect');
 
           // If popup fails, redirect for login
-          return instance.loginRedirect();
+          return instance.loginRedirect(msalRequest);
         }
+      }
+
+      if (error.response?.status === 403) {
+        navigate('/unauthorized');
+        return Promise.reject(error);
       }
 
       const expectedError = error.response
@@ -75,8 +83,8 @@ const useInterceptor = () => {
 
     try {
       const request: SilentRequest = {
-        scopes: ['openid', 'profile', `${msalConfig.auth.clientId}/.default`],
         account,
+        ...msalRequest,
       };
       const response = await instance.acquireTokenSilent(request);
       return response.accessToken;

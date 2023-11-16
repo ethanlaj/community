@@ -9,7 +9,7 @@ function Contacts() {
 
   useEffect(() => {
     const fetchContacts = async () => {
-      let data = await contactService.getAll();
+      let data = await contactService.getAllTable();
 
       data = data.map((cont) => {
         const comm = cont.Communication;
@@ -32,6 +32,7 @@ function Contacts() {
     { title: 'Email', field: 'email' },
     { title: 'Phone Number', field: 'phone' },
     { title: 'Organization', field: 'organizationName' },
+    { title: 'Extension', field: 'exten' },
     // { title: 'OrgId', field: 'organizationId' },
     // { title: 'ConId', field: 'contactId' },
   ];

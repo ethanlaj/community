@@ -2,6 +2,7 @@ import { useMsal } from '@azure/msal-react';
 import { InteractionStatus } from '@azure/msal-browser';
 import { useEffect } from 'react';
 import Loading from './Loading';
+import { msalRequest } from '@/config';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -13,7 +14,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   useEffect(() => {
     if (inProgress === InteractionStatus.None && !account) {
-      instance.loginRedirect();
+      instance.loginRedirect(msalRequest);
     }
   }, [instance, account, inProgress]);
 

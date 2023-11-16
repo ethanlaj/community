@@ -16,14 +16,15 @@ import organizationsRouter from './controllers/organizations';
 import locationsRouter from './controllers/locations';
 import communicationsRouter from './controllers/communications';
 import usersRouter from './controllers/users';
+import officesRouter from './controllers/offices';
 import isAuthenticated from './middleware/isAuthenticated';
 
 const app = express();
 
 sequelize
-	.authenticate()
+	.sync({ force: false })
 	.then(() => {
-		console.log('Database connected successfully.');
+		console.log('Database synced successfully.');
 	})
 	.catch((err) => {
 		console.error('Unable to connect to database:', err);
@@ -43,6 +44,7 @@ app.use('/organizations', organizationsRouter);
 app.use('/locations', locationsRouter);
 app.use('/communications', communicationsRouter);
 app.use('/users', usersRouter);
+app.use('/offices', officesRouter);
 
 app.use(errorHandler);
 

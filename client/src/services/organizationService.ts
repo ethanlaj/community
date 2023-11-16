@@ -1,24 +1,13 @@
 import http from './httpService';
 import { apiUrl } from '../config';
+import { Organization } from '@/types/organization';
 
 const apiEndpoint = `${apiUrl}/organizations`;
 
-interface Organization {
+interface CreateUpdateOrganizationDTO {
   name: string;
-  locations: {
-    name: string;
-    address: string;
-  }[];
-  contacts: {
-    name: string;
-    email: string;
-    phone: string;
-  }[];
-}
-
-interface CreateOrganizationDTO {
-  name: string;
-  locations: {
+  organizationLocations: {
+    id?: number;
     name: string;
     address: string;
   }[];
@@ -38,12 +27,22 @@ export default class OrganizationService {
     return response.data;
   };
 
-  static create = async (organization: CreateOrganizationDTO) => {
+  static getbyName = async (name: string): Promise<Organization> => {
+    const response = await http.get(`${apiEndpoint}/name/${name}`);
+    return response.data;
+  };
+
+  static create = async (organization: CreateUpdateOrganizationDTO) => {
     const response = await http.post(apiEndpoint, organization);
     return response.data;
   };
 
-  static update = async (id: number, updatedOrganization: string) => {
+  static createBulk = async (organizations: CreateUpdateOrganizationDTO[]) => {
+    const response = await http.post(`${apiEndpoint}/bulk`, organizations);
+    return response.data;
+  };
+
+  static update = async (id: number, updatedOrganization: CreateUpdateOrganizationDTO) => {
     const response = await http.put(
       `${apiEndpoint}/${id}`,
       updatedOrganization,

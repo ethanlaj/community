@@ -161,6 +161,7 @@ function useForm<T extends object>({
       selectionLabel={selectionLabel}
       idPath={keyPath}
       valuePath={valuePath}
+      value={undefined}
       error={errors[id as keyof T]}
       onChange={(value: string) => (handleChange ? handleChange(id, value) : handleDataChange(id, value))}
       onRefresh={onRefresh}
@@ -195,6 +196,7 @@ function useForm<T extends object>({
   return {
     data,
     errors,
+    setErrors,
     setData,
     handleSubmit,
     handleChange,

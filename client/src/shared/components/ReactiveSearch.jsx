@@ -12,11 +12,13 @@ function ReactiveSearch({
   selectionLabel,
   idPath = '',
   valuePath = '',
+  value,
   error,
   onRefresh: handleRefreshClick,
   onChange: handleItemChange,
+  handleCreateNewClick = undefined,
 }) {
-  const [selectedItem, setSelectedItem] = useState('');
+  const [selectedItem, setSelectedItem] = useState(value);
   const [searchTerm, setSearchTerm] = useState('');
   const [showSearchBox, setShowSearchBox] = useState(false);
   const [focusedItemIndex, setFocusedItemIndex] = useState(-1);
@@ -25,7 +27,17 @@ function ReactiveSearch({
   const searchInputRef = useRef();
 
   useEffect(() => {
-    setSelectedItem('');
+    setSelectedItem(value);
+  }, [value]);
+
+  useEffect(() => {
+    if (items.length === 0 || !selectedItem) {
+      return;
+    }
+
+    if (!items.find((i) => _.get(i, idPath) === _.get(selectedItem, idPath))) {
+      setSelectedItem(null);
+    }
   }, [items]);
 
   const handleChange = (event) => {
@@ -38,7 +50,7 @@ function ReactiveSearch({
     setSearchTerm('');
     setShowSearchBox(false);
 
-    if (resetOnSelect) setSelectedItem('');
+    if (resetOnSelect) setSelectedItem(null);
   };
 
   const handleLabelClick = () => {
@@ -50,10 +62,6 @@ function ReactiveSearch({
       setShowSearchBox(false);
       setSearchTerm('');
     }
-  };
-
-  const handleCreateNewClick = () => {
-    window.open('https://example.com/new');
   };
 
   const handleInputKeyDown = (event) => {
@@ -157,12 +165,15 @@ function ReactiveSearch({
                 );
               })}
             </ul>
-            <div
-              className={`${styles.searchListItem} ${styles.createNew}`}
-              onClick={handleCreateNewClick}
-            >
-              Create New
-            </div>
+            {handleCreateNewClick
+            && (
+              <div
+                className={`${styles.searchListItem} ${styles.createNew}`}
+                onClick={handleCreateNewClick}
+              >
+                Create New
+              </div>
+            ) }
           </div>
         )}
       </div>

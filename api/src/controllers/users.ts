@@ -1,11 +1,23 @@
 import express, { Router, Request, Response } from 'express';
 import { EtownOffices, Users } from '../database/models';
 import errorHandler from '../errorHandler';
+import isAuthorized from '../middleware/isAuthorized';
+import { CRequest } from '../types/CRequest';
 
 const usersRouter: Router = express.Router();
 
+usersRouter.get('/me', errorHandler(async (req: CRequest, res: Response) => {
+	const date = new Date();
+
+	res.json({
+		permissionLevel: req.user?.permissionLevel,
+		officeId: req.user?.officeId,
+		expires: date.setDate(date.getDate() + 1),
+	});
+}));
+
 // Get all users
-usersRouter.get('/', errorHandler(async (req: Request, res: Response) => {
+usersRouter.get('/', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
 	const officeId = req.query.officeId as string | undefined;
 
 	try {
@@ -25,7 +37,7 @@ usersRouter.get('/', errorHandler(async (req: Request, res: Response) => {
 }));
 
 // Get user by Id
-usersRouter.get('/:id', errorHandler(async (req: Request, res: Response) => {
+usersRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
 	const { id } = req.params;
 
 	try {
@@ -46,16 +58,10 @@ usersRouter.get('/:id', errorHandler(async (req: Request, res: Response) => {
 }));
 
 // Post a new user
-usersRouter.post('/', errorHandler(async (req: Request, res: Response) => {
+usersRouter.post('/', isAuthorized(4), errorHandler(async (req: Request, res: Response) => {
 	const userData = req.body;
 	try {
 		const newUser = await Users.create(userData);
-
-		// if the officeId is provided in the request body
-		if (req.body.officeId) {
-			newUser.officeId = req.body.officeId;
-			await newUser.save();
-		}
 
 		res.status(201).json(newUser);
 	} catch (error) {
@@ -64,7 +70,7 @@ usersRouter.post('/', errorHandler(async (req: Request, res: Response) => {
 }));
 
 // Update a user using Id
-usersRouter.put('/:id', errorHandler(async (req: Request, res: Response) => {
+usersRouter.put('/:id', isAuthorized(4), errorHandler(async (req: Request, res: Response) => {
 	const userId = req.params.id;
 	const userData = req.body;
 

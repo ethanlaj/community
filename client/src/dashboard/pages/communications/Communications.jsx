@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import communicationService from '@/services/communicationService';
+import CreateButton from '@/shared/components/CreateButton';
+import formatDate from '@/utils/formatDate';
 
 function Communications() {
+  const navigate = useNavigate();
   const [communications, setCommunications] = useState([]);
 
   useEffect(() => {
@@ -17,6 +21,7 @@ function Communications() {
         return {
           ...comm,
           orgsNames: orgs.map((org) => org.name).join(', '),
+          date: formatDate(comm.date),
         };
       });
 
@@ -27,13 +32,13 @@ function Communications() {
   }, []);
 
   const columns = [
-    { title: 'Name', field: 'orgsNames' },
+    { title: 'Organizations', field: 'orgsNames' },
     { title: 'Note', field: 'note' },
     { title: 'Date', field: 'date' },
   ];
 
   const handleRowClick = (row) => {
-    alert(`You clicked on ${row.orgName}`);
+    navigate(`/communications/${row.id}`);
   };
 
   const deleteModalRenderer = (row) => (
@@ -57,9 +62,14 @@ function Communications() {
     }
   };
 
+  const goToCreate = () => navigate('/communications/create');
+
   return (
     <div>
-      <h1>Communications</h1>
+      <h1 className="flex justify-center align-items-center">
+        Communications
+        <CreateButton handleClick={goToCreate} />
+      </h1>
       <ClickableTable
         style={{ width: '20px' }}
         columns={columns}

@@ -6,6 +6,8 @@ export interface Contact {
     email: string;
     phone: string;
     organizations: Organization[];
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface CreateContactDTO {
@@ -14,7 +16,9 @@ export interface CreateContactDTO {
       id: number,
       email: string | undefined;
       phone: string | undefined;
+      exten: string | undefined;
     }[];
+    aliases: string[];
   }
 
 export interface deletedContactIdentifiers {
