@@ -27,17 +27,16 @@ function Contacts() {
   }, []);
 
   const columns = [
-    { title: 'Name', field: 'name' },
+    { title: 'First Name', field: 'first_name' },
+    { title: 'Last Name', field: 'last_name' },
     { title: 'Email', field: 'email' },
     { title: 'Phone Number', field: 'phone' },
     { title: 'Organization', field: 'organizationName' },
     { title: 'Extension', field: 'exten' },
-    // { title: 'OrgId', field: 'organizationId' },
-    // { title: 'ConId', field: 'contactId' },
   ];
 
   const handleRowClick = (row) => {
-    alert(`You clicked on ${row.name}`);
+    alert(`You clicked on ${row.first_name} ${row.last_name}`);
   };
 
   const handleRowDelete = async (row) => {

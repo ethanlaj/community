@@ -2,7 +2,8 @@ import { Organization } from './organization';
 
 export interface Contact {
     id: number;
-    name: string;
+    first_name: string,
+    last_name:string,
     email: string;
     phone: string;
     organizations: Organization[];
@@ -11,7 +12,8 @@ export interface Contact {
 }
 
 export interface CreateContactDTO {
-    name: string,
+    first_name: string,
+    last_name:string,
     organizations:{
       id: number,
       email: string | undefined;
