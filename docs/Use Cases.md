@@ -1,6 +1,6 @@
 Before beginning any testing, please contact Team Community to get permissions to use the site. All features are locked down.
 
-1. **Export all Organization into an Excel sheet**
+UC1. **Export all Organization into an Excel sheet**
 
 - Navigate to https://community-9eef4.web.app/
 - If you aren't already logged in, click the "Login" button in the center of the screen.
@@ -14,7 +14,7 @@ Before beginning any testing, please contact Team Community to get permissions t
 - Open the Organizations excel file.
 - Verify the Organizations in the Excel file match exactly as they do on the Organizations page.
 
-2. **Contact Search Aliases**
+UC2. **Contact Search Aliases**
 
 - Navigate to https://community-9eef4.web.app/
 - If you aren't already logged in, click the "Login" button in the center of the screen.
@@ -47,7 +47,7 @@ Before beginning any testing, please contact Team Community to get permissions t
   - Search by the contact's alias
   - Verify that it appears in the search results. It should show as (alias) Contact Name, where alias and contact name are replaced by the actual alias and contact name.
 
-3. **Create Communication**
+UC3. **Create Communication**
 
 - Navigate to https://community-9eef4.web.app/
 - If you aren't already logged in, click the "Login" button in the center of the screen.
