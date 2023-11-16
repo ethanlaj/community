@@ -32,6 +32,7 @@ function ReactiveSearchWithTable({
         onChange={(value: any) => handleSelect(value)}
         idPath="id"
         valuePath="name"
+        value={undefined}
         resetOnSelect
         headerLabel={undefined}
         selectionLabel={selectionLabel}

@@ -6,6 +6,7 @@ import { CreateContactDTO } from '../types/ContactDTO';
 import { setOrganizations } from '../mixins/contacts';
 import { ContactAliases } from '../database/models/contactAliases';
 import isAuthorized from '../middleware/isAuthorized';
+import Sequelize from '../database/database';
 
 const contactsRouter: Router = express.Router();
 
@@ -14,11 +15,12 @@ contactsRouter.get('/', isAuthorized(1), errorHandler(async (req: Request, res: 
 
 	try {
 		const contacts = await Contacts.findAll({
+			attributes: ['id', 'first_name', 'last_name', [Sequelize.literal('CONCAT(first_name, " ", last_name)'), 'name']],
 			include: [
 				{
 					model: Organizations,
 					attributes: ['name','id'],
-				},				
+				},
 			],
 		});
 	
@@ -43,14 +45,15 @@ contactsRouter.get('/getbyOrg', isAuthorized(1), errorHandler(async (req: Reques
 				},
 				{
 					model: Contacts,
-					attributes: ['name'],
+					attributes: ['first_name', 'last_name'],
 					include: [ContactAliases]
 				},
 			],
 		});
 	
 		const contactResults = results.map((result) => ({
-			name: result.contact? result.contact.name : null,
+			first_name: result.contact? result.contact.first_name : null,
+			last_name: result.contact? result.contact.last_name : null,
 			email: result.email,
 			phone: result.phone,
 			exten: result.exten,
@@ -88,7 +91,7 @@ contactsRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Request, re
 }));
 
 contactsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
-	const { name , organizations, aliases }  = req.body as CreateContactDTO;
+	const { first_name, last_name , organizations, aliases }  = req.body as CreateContactDTO;
 	const organizationIds = organizations.map(org => org.id);
 	const organizationEmails = organizations.map(org => org.email);
 	const organizationPhones = organizations.map(org => org.phone);
@@ -97,7 +100,8 @@ contactsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request, res:
 
 	try {
 		const newContact = await Contacts.create({
-			name,
+			first_name: first_name,
+			last_name: last_name,
 		});
 		if (organizations) {
 			await setOrganizations(newContact, organizationIds, organizationEmails, organizationPhones, organizationExtens);
