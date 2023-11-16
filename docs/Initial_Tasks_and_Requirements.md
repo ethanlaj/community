@@ -4,7 +4,7 @@ Note: These tasks are only the initial tasks that were created at the beginning 
 
 ## Requirements:
 
-### Client Requests
+### R1. Client Requests
 
 -   Update contact name field to include first and last name.
 -   Ability to add multiple organizations to a meeting.
@@ -14,7 +14,7 @@ Note: These tasks are only the initial tasks that were created at the beginning 
 -   Add a field to communications form that says what kind of a communication it is.
 -   Add notes field to the contact form.
 
-### Imports/Exports
+### R2. Imports/Exports
 
 -   **Exports:**
     -   Add API endpoint that sends an excel file with dummy data to the UI.
@@ -30,36 +30,36 @@ Note: These tasks are only the initial tasks that were created at the beginning 
     -   UI for organizations import.
     -   Template for excel imports.
 
-### Users
+### R3. Users
 
 -   Implement logins using Microsoft Authentication.
 -   Add create user endpoint to API.
 -   Add delete user endpoint to API.
 -   Add update user endpoint to API.
 
-### Contacts
+### R4. Contacts
 
 -   Add a Create contact page on the UI.
 -   Add ability to assign contacts to organization locations on the UI.
 
-### Communication
+### R5. Communication
 
 -   Users should be able to log communications they make with organizations/contacts.
 
-### Software Requirements
+### R6. Software Requirements
 
 -   Add Ability to do Database Migrations.
 -   Add Typescript Support.
 -   Update useForm hook to support generics.
 -   Fix ReadMe.
 
-### Notifications
+### R7. Notifications
 
 -   Add ability for users to subscribe to contacts.
 -   Add ability for users to subscribe to organizations.
 -   Show update notifications on UI.
 
-### Searching
+### R8. Searching
 
 -   Add a search bar to UI.
 -   Update DB to support aliases for Organizations.
