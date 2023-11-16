@@ -1,4 +1,4 @@
-| Requirement | UC1 | UC2 | UC3 | UC4 | UC5 | UC6 | UC7 | UC8 |
+| Requirement | PW | UC1 | UC2 | UC3 | UC4 | UC5 | UC6 | UC7 | UC8 |
 |-------------|----|-----|-----|-----|-----|-----|-----|-----|-----|
 | REQ1        | 5  | X   |     |     |     |     |     |     |     |
 | REQ2        | 2  |     | X   |     |     |     |     |     |     |
