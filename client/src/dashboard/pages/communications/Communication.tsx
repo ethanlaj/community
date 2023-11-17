@@ -10,6 +10,7 @@ import { Organization } from '@/types/organization';
 import formatDate from '@/utils/formatDate';
 import UpdateButton from '@/shared/components/UpdateButton';
 import BackButton from '@/shared/components/BackButton';
+import { Contact } from '@/types/contact';
 
 function Communication() {
   const navigate = useNavigate();
@@ -33,14 +34,15 @@ function Communication() {
     if (id) {
       fetchCommunication();
     }
-  }, [id]);
+  }, []);
 
   const organizationsColumns = [
     { title: 'Name', field: 'name' },
   ];
 
   const contactsColumns = [
-    { title: 'Name', field: 'name' },
+    { title: 'First Name', field: 'first_name' },
+    { title: 'Last Name', field: 'last_name' },
   ];
 
   const usersColumns = [
@@ -48,7 +50,8 @@ function Communication() {
     { title: 'Office', field: 'office.name' },
   ];
 
-  const handleRowClick = (row: Organization) => navigate(`/organization/${row.id}`);
+  const handleContactRowClick = (row: Contact) => navigate(`/contacts/${row.id}`);
+  const handleOrgRowClick = (row: Organization) => navigate(`/organization/${row.id}`);
   const goToUpdate = () => navigate(`/communications/${communication?.id}/edit`);
   const goBack = () => navigate('/communications');
 
@@ -84,7 +87,7 @@ function Communication() {
         <ClickableTable
           columns={organizationsColumns}
           data={communication?.organizations || []}
-          onRowClick={handleRowClick}
+          onRowClick={handleOrgRowClick}
           onRowDelete={undefined}
           deleteModalRenderer={undefined}
         />
@@ -95,7 +98,7 @@ function Communication() {
         <ClickableTable
           columns={contactsColumns}
           data={communication?.contacts || []}
-          onRowClick={undefined}
+          onRowClick={handleContactRowClick}
           onRowDelete={undefined}
           deleteModalRenderer={undefined}
         />

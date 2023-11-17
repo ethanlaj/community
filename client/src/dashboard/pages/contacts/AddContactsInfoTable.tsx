@@ -1,6 +1,6 @@
 import { Organization } from '@/types/organization';
 import ContactInfoPerOrganizationForm from './ContactInfoPerOrganizationForm';
-import { InfoForOrganization } from './CreateContacts';
+import { InfoForOrganization } from './CreateUpdateContacts';
 
 export interface Column{
   title: string;
