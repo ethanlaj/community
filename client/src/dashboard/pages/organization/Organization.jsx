@@ -22,6 +22,7 @@ function Organization() {
     const fetchOrganization = async () => {
       try {
         const data = await organizationService.getById(id);
+
         setOrganization(data);
         setIsLoading(false);
       } catch (error) {
@@ -48,8 +49,8 @@ function Organization() {
 
   const contactColumns = [
     { title: 'Name', field: 'name' },
-    { title: 'Email', field: 'email' },
-    { title: 'Phone', field: 'phone' },
+    { title: 'Email', field: 'OrganizationContacts.email' },
+    { title: 'Phone', field: 'OrganizationContacts.phone' },
     { title: 'Created At', field: 'createdAt', render: (contact) => formatDate(contact.createdAt) },
     { title: 'Last Updated', field: 'updatedAt', render: (contact) => formatDate(contact.updatedAt) },
   ];
