@@ -36,7 +36,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx && tsc --noEmit",
     "fix": "npm run lint -- --fix"
   },
   "eslintConfig": {
