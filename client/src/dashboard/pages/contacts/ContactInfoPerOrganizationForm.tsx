@@ -47,6 +47,7 @@ function ContactInfoPerOrganizationForm({
         idPath="id"
         valuePath="name"
         resetOnSelect
+        value={undefined}
         headerLabel={undefined}
         selectionLabel={selectionLabel}
         error={error}
