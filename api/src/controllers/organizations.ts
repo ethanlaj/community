@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from 'express';
-import { Communications, Organizations, OrganizationLocations, Contacts } from '../database/models';
+import { Communications, Organizations, OrganizationLocations, Contacts, Users, EtownOffices } from '../database/models';
 import errorHandler from '../errorHandler';
 import { CreateUpdateOrganizationDTO } from '../types/CreateUpdateOrganizationDTO';
 import { CreateOrganizationBulkDTO } from '../types/CreateOrganizationBulkDTO';
@@ -19,7 +19,17 @@ organizationsRouter.get('/', isAuthorized(1), errorHandler(async (_req: Request,
 				OrganizationLocations,
 				{
 					model: Communications,
-					include: [Contacts],
+					include: [
+						Contacts,
+						{
+							model: Users,
+							attributes: ['id'],
+							include: [{
+								model: EtownOffices,
+								attributes: ['name'],
+							}],
+						}
+					],
 				},
 				OrganizationAliases,
 			],
