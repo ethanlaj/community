@@ -9,5 +9,5 @@
 | REQ7. Notifications               | 1  |     |     |     |
 | REQ8. Searching                   | 3  |     | X   |     |
 | REQ9. Organizations               | 5  | X   |     |     |
-| **Max PW**                        | 5  | 5   | 5   | 5   |
-| **Total PW**                      | 32 | 8   | 10  | 12  |
+| **Max PW**                             | 5   | 5   | 5   |
+| **Total PW**                           | 8   | 10  | 12  |
