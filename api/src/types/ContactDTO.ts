@@ -1,8 +1,8 @@
-export interface CreateContactDTO {
+export interface CreateUpdateContactDTO {
     first_name: string,
     last_name:string,
     aliases: string[];
-    organizations:{
+    organizations: {
       id: number,
       email: string;
       phone: string;

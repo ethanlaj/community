@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import styles from './Contacts.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import contactService from '@/services/contactService';
 
 function Contacts() {
+  const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
@@ -36,7 +38,7 @@ function Contacts() {
   ];
 
   const handleRowClick = (row) => {
-    alert(`You clicked on ${row.first_name} ${row.last_name}`);
+    navigate(`/contacts/${row.contactId}`);
   };
 
   const handleRowDelete = async (row) => {

@@ -1,6 +1,6 @@
 import http from './httpService';
 import { apiUrl } from '../config';
-import { CreateContactDTO, deletedContactIdentifiers } from '@/types/contact';
+import { Contact, CreateUpdateContactDTO, deletedContactIdentifiers } from '@/types/contact';
 
 const apiEndpoint = `${apiUrl}/contacts`;
 
@@ -22,27 +22,13 @@ export default class ContactService {
     return response.data;
   }
 
-  static async getById(id: number) {
+  static async getById(id: number): Promise<Contact> {
     const response = await http.get(`${apiEndpoint}/${id}`);
     return response.data;
   }
 
-  static async create(createContactDTO: CreateContactDTO) {
-    // Map the organizations to replace undefined emails and phones with empty strings
-    const mappedOrganizations = createContactDTO.organizations.map((org) => ({
-      id: org.id,
-      email: org.email || '', // Use an empty string if email is undefined
-      phone: org.phone || '', // Use an empty string if phone is undefined
-      exten: org.exten || '',
-    }));
-
-    // Create a new DTO with mapped organizations
-    const updatedContactDTO: CreateContactDTO = {
-      first_name: createContactDTO.first_name,
-      last_name: createContactDTO.last_name,
-      aliases: createContactDTO.aliases,
-      organizations: mappedOrganizations,
-    };
+  static async create(createContactDTO: CreateUpdateContactDTO) {
+    const updatedContactDTO = this.getUpdatedContactDTO(createContactDTO);
 
     const response = await http.post(
       apiEndpoint,
@@ -51,8 +37,10 @@ export default class ContactService {
     return response.data;
   }
 
-  static async update(id: number, updatedContact: string) {
-    const response = await http.put(`${apiEndpoint}/${id}`, updatedContact);
+  static async update(id: number, updatedContact: CreateUpdateContactDTO) {
+    const updatedContactDTO = this.getUpdatedContactDTO(updatedContact);
+
+    const response = await http.put(`${apiEndpoint}/${id}`, updatedContactDTO);
     return response.data;
   }
 
@@ -61,5 +49,25 @@ export default class ContactService {
     const deleteEndpoint = `${apiEndpoint}/${contactIdIncoming}/${organizationIdIncoming}`;
     const response = await http.delete(deleteEndpoint);
     return response.data;
+  }
+
+  private static getUpdatedContactDTO(contactDTO: CreateUpdateContactDTO) {
+    // Map the organizations to replace undefined emails and phones with empty strings
+    const mappedOrganizations = contactDTO.organizations.map((org) => ({
+      id: org.id,
+      email: org.email || '', // Use an empty string if email is undefined
+      phone: org.phone || '', // Use an empty string if phone is undefined
+      exten: org.exten || '',
+    }));
+
+    // Create a new DTO with mapped organizations
+    const updatedContactDTO: CreateUpdateContactDTO = {
+      first_name: contactDTO.first_name,
+      last_name: contactDTO.last_name,
+      aliases: contactDTO.aliases,
+      organizations: mappedOrganizations,
+    };
+
+    return updatedContactDTO;
   }
 }
