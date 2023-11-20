@@ -1,6 +1,6 @@
 /* eslint-disable newline-per-chained-call */
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Joi from 'joi';
 import { toast } from 'react-toastify';
 import { Form } from 'react-bootstrap';
@@ -8,9 +8,10 @@ import OrganizationService from '@/services/organizationService';
 import useForm from '@/shared/hooks/useForm';
 import { Organization } from '@/types/organization';
 import AddContactsInfoTable from './AddContactsInfoTable';
-import { CreateContactDTO } from '@/types/contact';
+import { CreateUpdateContactDTO } from '@/types/contact';
 import ContactService from '@/services/contactService';
 import AddUpdateAliases from '@/shared/components/AddUpdateAliases';
+import Loading from '@/shared/components/Loading';
 
 export interface InfoForOrganization {
   id: number,
@@ -29,8 +30,12 @@ export interface FormProps{
   aliases: string[];
 }
 
-function CreateContacts() {
+function CreateUpdateContacts() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  let contactId = id ? parseInt(id, 10) : undefined;
+  const isUpdateMode = contactId !== undefined;
+  const [isLoading, setIsLoading] = useState(true);
 
   const [allOrganizations, setAllOrganizations] = useState<Organization[]>([]);
 
@@ -42,9 +47,15 @@ function CreateContacts() {
           OrganizationService.getAll(),
         ];
 
+        if (isUpdateMode) {
+          promises.push(loadContactData(contactId!));
+        }
+
         const [allOrganizationsResponse] = await Promise.all(promises);
 
         setAllOrganizations(allOrganizationsResponse);
+
+        setIsLoading(false);
       } catch (ex) {
         toast.error('An unexpected error occurred.');
       }
@@ -52,6 +63,28 @@ function CreateContacts() {
 
     fetchRequiredData();
   }, []);
+
+  const loadContactData = async (conId: number) => {
+    const contact = await ContactService.getById(conId);
+
+    form.setData({
+      first_name: contact.first_name,
+      last_name: contact.last_name,
+      aliases: contact.aliases.map((alias) => alias.alias),
+      organizations: contact.organizations,
+      infoPerOrganization: contact.organizationContacts.map((orgCon) => {
+        const organization = contact.organizations.find((org) => org.id === orgCon.organizationId);
+
+        return {
+          id: orgCon.organizationId,
+          name: organization!.name,
+          email: orgCon.email,
+          phone: orgCon.phone,
+          exten: orgCon.exten,
+        };
+      }),
+    });
+  };
 
   const fields: FormProps = {
     first_name: '',
@@ -93,15 +126,16 @@ function CreateContacts() {
   const doSubmit = async () => {
     const info = form.data.infoPerOrganization.map((infoPerOrg) => {
       const {
-        id, email, phone, exten,
+        id: orgId, email, phone, exten,
       } = infoPerOrg;
+
       return {
-        id, email, phone, exten,
+        id: orgId, email, phone, exten,
       };
     });
 
     try {
-      const ContactDTO: CreateContactDTO = {
+      const ContactDTO: CreateUpdateContactDTO = {
         first_name: form.data.first_name,
         last_name: form.data.last_name,
         aliases: form.data.aliases,
@@ -113,10 +147,12 @@ function CreateContacts() {
         })),
       };
 
-      console.log('Submit to api', ContactDTO);
-
-      // Pass CreateContactDTO with the expected structure
-      await ContactService.create(ContactDTO);
+      if (isUpdateMode) {
+        const newContact = await ContactService.update(contactId!, ContactDTO);
+        contactId = newContact.id;
+      } else {
+        await ContactService.create(ContactDTO);
+      }
 
       navigate('/contacts', { replace: true });
     } catch (ex) {
@@ -126,9 +162,17 @@ function CreateContacts() {
 
   const form = useForm<FormProps>({ fields, schema, doSubmit });
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <>
-      <h1>Create Contact</h1>
+      <h1>
+        {isUpdateMode ? 'Update' : 'Create'}
+        {' '}
+        Contact
+      </h1>
       <form className="m-auto w-70p">
         <div className="flex">
           <div className="w-1/2">
@@ -154,9 +198,9 @@ function CreateContacts() {
           lowerOrgsErrors={form.errors.infoPerOrganization}
         />
       </div>
-      {form.renderButton('Create')}
+      {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
     </>
   );
 }
 
-export default CreateContacts;
+export default CreateUpdateContacts;

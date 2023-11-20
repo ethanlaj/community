@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon",
     "start": "node dist/app.js",
-    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx && tsc --noEmit",
     "fix": "npm run lint -- --fix",
     "build": "tsc",
     "db:init": "ts-node src/database/scripts/init.ts",

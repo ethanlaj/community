@@ -1,15 +1,19 @@
+import { Transaction } from 'sequelize';
 import { Contacts, OrganizationContacts } from '../database/models';
+import { CreateUpdateContactDTO } from '../types/ContactDTO';
+import { ContactAliases } from '../database/models/contactAliases';
 
-export async function setOrganizations(contact: Contacts, organizationIds: number[], emails: string[], phones: string[], extens: string[]) {
+export async function setOrganizations(contact: Contacts, organizations: CreateUpdateContactDTO['organizations'], t: Transaction) {
 	const currentOrganizations = await OrganizationContacts.findAll({
 		where: {
 			contactId: contact.id,
 		},
 	});
 
+	const currentOrganizationIds = currentOrganizations.map((organization) => organization.organizationId);
+	const organizationIds = organizations.map((organization) => organization.id);
 	
-	const organizationsToRemove = currentOrganizations
-		.map((organization) => organization.id)
+	const organizationsToRemove = currentOrganizationIds
 		.filter(id => !organizationIds.includes(id));
   
 	const destroyPromise = OrganizationContacts.destroy({
@@ -17,22 +21,63 @@ export async function setOrganizations(contact: Contacts, organizationIds: numbe
 			contactId: contact.id,
 			organizationId: organizationsToRemove,
 		},
+		transaction: t,
+	});
+
+	const organizationsToUpdate = currentOrganizations.filter((organization) => organizationIds.includes(organization.organizationId));
+	const updatePromises = organizationsToUpdate.map((organization) => {
+		const organizationDTO = organizations.find((org) => org.id === organization.organizationId);
+		
+		return organization.update({
+			email: organizationDTO?.email,
+			phone: organizationDTO?.phone,
+			exten: organizationDTO?.exten,
+		}, { transaction: t });
 	});
   
-	// Create new associations with the corresponding emails and phones for each organization
-	const newAssociations = organizationIds.map((organizationId, index) => {
-		
+	const organizationsToCreate = organizations.filter((organization) => !currentOrganizationIds.includes(organization.id));
+	const newAssociations = organizationsToCreate.map((organization) => {
 		return {
 			contactId: contact.id,
-			email: emails[index], // Use the email at the same index
-			phone: phones[index], // Use the phone at the same index
-			exten: extens[index], // Use the exten at the same index
-			organizationId: organizationId,
+			email: organization.email,
+			phone: organization.phone,
+			exten: organization.exten,
+			organizationId: organization.id,
 		};
-	}
-	);
+	});
 
-	const createPromise = OrganizationContacts.bulkCreate(newAssociations);
+	const createPromise = OrganizationContacts.bulkCreate(newAssociations, { transaction: t });
+	
+	return await Promise.all([destroyPromise, updatePromises, createPromise]);
+}
+
+export async function setAliases(contact: Contacts, aliases: string[], t: Transaction) {
+	const currentAliases = await ContactAliases.findAll({
+		where: {
+			contactId: contact.id,
+		},
+	});
+	
+	const aliasesToRemove = currentAliases
+		.map((alias) => alias.alias)
+		.filter(alias => !aliases.includes(alias));
+  
+	const destroyPromise = ContactAliases.destroy({
+		where: {
+			alias: aliasesToRemove,
+			contactId: contact.id,
+		},
+		transaction: t,
+	});
+
+	const aliasesToCreate = aliases.filter(alias => !currentAliases.find(currentAlias => currentAlias.alias === alias));
+	const createPromise = ContactAliases.bulkCreate(
+		aliasesToCreate.map(alias => ({
+			alias,
+			contactId: contact.id,
+		})),
+		{ transaction: t }
+	);
 	
 	return await Promise.all([destroyPromise, createPromise]);
 }

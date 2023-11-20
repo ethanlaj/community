@@ -1,12 +1,10 @@
 import express, { Router, Request, Response } from 'express';
-import { Op } from 'sequelize';
-import { Contacts, Organizations, OrganizationContacts } from '../database/models';
+import { Contacts, Organizations, OrganizationContacts, Communications } from '../database/models';
 import errorHandler from '../errorHandler';
-import { CreateContactDTO } from '../types/ContactDTO';
-import { setOrganizations } from '../mixins/contacts';
+import { CreateUpdateContactDTO } from '../types/ContactDTO';
+import { setAliases, setOrganizations } from '../mixins/contacts';
 import { ContactAliases } from '../database/models/contactAliases';
 import isAuthorized from '../middleware/isAuthorized';
-import Sequelize from '../database/database';
 
 const contactsRouter: Router = express.Router();
 
@@ -15,18 +13,18 @@ contactsRouter.get('/', isAuthorized(1), errorHandler(async (req: Request, res: 
 
 	try {
 		const contacts = await Contacts.findAll({
-			attributes: ['id', 'first_name', 'last_name', [Sequelize.literal('CONCAT(first_name, " ", last_name)'), 'name']],
+			attributes: ['id', 'first_name', 'last_name', 'name'],
 			include: [
 				{
 					model: Organizations,
 					attributes: ['name','id'],
 				},
+				ContactAliases,
 			],
 		});
 	
 		res.status(200).json(contacts);
 	} catch (error) {
-		console.log(error);
 		res.status(500).send((error as Error).message);
 	}
 }));
@@ -65,7 +63,6 @@ contactsRouter.get('/getbyOrg', isAuthorized(1), errorHandler(async (req: Reques
 	
 		res.status(200).json(contactResults);
 	} catch (error) {
-		console.log(error);
 		res.status(500).send((error as Error).message);
 	}
 }));
@@ -77,7 +74,7 @@ contactsRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Request, re
 
 	try {
 		const contact = await Contacts.findByPk(id, {
-			include: Organizations,
+			include: [Organizations, ContactAliases, OrganizationContacts, Communications],
 		});
 
 		if (!contact) {
@@ -86,17 +83,15 @@ contactsRouter.get('/:id', isAuthorized(1), errorHandler(async (req: Request, re
 			res.status(200).json(contact);
 		}
 	} catch (error) {
+		console.log(error);
 		res.status(500).send((error as Error).message);
 	}
 }));
 
 contactsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
-	const { first_name, last_name , organizations, aliases }  = req.body as CreateContactDTO;
-	const organizationIds = organizations.map(org => org.id);
-	const organizationEmails = organizations.map(org => org.email);
-	const organizationPhones = organizations.map(org => org.phone);
-	const organizationExtens = organizations.map(org => org.exten);
+	const { first_name, last_name, organizations, aliases }  = req.body as CreateUpdateContactDTO;
 
+	const t = await OrganizationContacts.sequelize!.transaction();
 
 	try {
 		const newContact = await Contacts.create({
@@ -104,21 +99,17 @@ contactsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request, res:
 			last_name: last_name,
 		});
 		if (organizations) {
-			await setOrganizations(newContact, organizationIds, organizationEmails, organizationPhones, organizationExtens);
+			await setOrganizations(newContact, organizations, t);
 		}
 
 		if (aliases) {
-			await ContactAliases.bulkCreate(
-				aliases.map((alias: string) => ({ 
-					alias,
-					contactId: newContact.id,
-				}))
-			);
+			await setAliases(newContact, aliases, t);
 		}
 
+		await t.commit();
 		res.status(201).json(newContact);
 	} catch (error) {
-		console.log(error);
+		await t.rollback();
 		res.status(500).send((error as Error).message);
 	}
 	
@@ -126,10 +117,9 @@ contactsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request, res:
 
 contactsRouter.put('/:id', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
 	const { id } = req.params;
-	const { name, organizations } = req.body;
+	const { first_name, last_name , organizations, aliases }  = req.body as CreateUpdateContactDTO;
 
-
-	//email, phone,
+	const t = await OrganizationContacts.sequelize!.transaction();
 
 	try {
 		const contact = await Contacts.findByPk(id);
@@ -138,25 +128,23 @@ contactsRouter.put('/:id', isAuthorized(2), errorHandler(async (req: Request, re
 			return;
 		}
 
-		contact.name = name || contact.name;
-		// contact.email = email || contact.email;
-		// contact.phone = phone || contact.phone;
-		await contact.save();
-
 		if (organizations) {
-			const orgs = await Organizations.findAll({
-				where: {
-					id: {
-						[Op.in]: organizations,
-					},
-				},
-			});
-
-			await contact.$set('organizations', orgs);
+			await setOrganizations(contact, organizations, t);
 		}
 
+		if (aliases) {
+			await setAliases(contact, aliases, t);
+		}
+		
+		await contact.update({
+			first_name: first_name,
+			last_name: last_name,
+		}, { transaction: t });
+
+		await t.commit();
 		res.status(200).json(contact);
 	} catch (error) {
+		await t.rollback();
 		res.status(500).send((error as Error).message);
 	}
 }));
@@ -191,7 +179,6 @@ contactsRouter.delete('/:conId/:orgId', isAuthorized(3), errorHandler(async (req
 		}
 		res.status(204).json();
 	} catch (error) {
-		console.log('ERROR: ' + error);
 		res.status(500).send((error as Error).message);
 		return;
 	}
