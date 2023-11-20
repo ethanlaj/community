@@ -122,6 +122,6 @@ export const importTemplate = [
 
 export const exportColumns = [
   { title: 'Name', field: 'name' },
-  { title: 'Last Communication Date', field: 'lastComDate' },
-  { title: 'Last Communication Office', field: 'lastComOffice' },
+  { title: 'Last Contacted', field: 'lastConDate' },
+  { title: 'Last Contacted By', field: 'lastConBy' },
 ];

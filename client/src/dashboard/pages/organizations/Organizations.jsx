@@ -26,10 +26,12 @@ function Organizations() {
         const lastCommDate = comm?.date;
         if (!comm) return org;
 
+        const offices = comm.users?.map((user) => user.office?.name || '');
+
         return {
           ...org,
-          lastComDate: formatDate(lastCommDate),
-          lastComOffice: 'Unknown',
+          lastConDate: formatDate(lastCommDate),
+          lastConBy: offices.join(', ') || 'Unknown',
         };
       });
 
