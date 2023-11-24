@@ -121,7 +121,7 @@ export const importTemplate = [
 ].join('\n');
 
 export const exportColumns = [
-  { title: 'Communication Status', field: 'flag' },
+  { title: '', field: 'flag' },
   { title: 'Name', field: 'name' },
   { title: 'Last Communication Date', field: 'lastComDate' },
   { title: 'Last Communication Office', field: 'lastComOffice' },
