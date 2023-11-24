@@ -12,6 +12,7 @@ import Sidebar from './shared/components/Sidebar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './App.module.css';
+import AddFlag from './dashboard/pages/organizations/AddFlag';
 import CreateUpdateOrganization from './dashboard/pages/organizations/CreateUpdateOrganization';
 import CreateCommunication from './dashboard/pages/communications/CreateUpdateCommunication';
 import Organizations from './dashboard/pages/organizations/Organizations';
@@ -51,6 +52,7 @@ function AppContent() {
 
   const protectedRoutes = [
     { path: '/organizations/create', element: <CreateUpdateOrganization /> },
+    { path: '/organizations/flag', element: <AddFlag /> },
     { path: '/organizations', element: <Organizations /> },
     { path: '/contacts', element: <Contacts /> },
     { path: '/contacts/create', element: <CreateContacts /> },

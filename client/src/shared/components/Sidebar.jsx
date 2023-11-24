@@ -54,7 +54,7 @@ function Sidebar() {
               <ProtectedElement minLevel={4}>
                 <ul className={styles.subNav}>
                   <li className={styles.subNavItem}>
-                    <NavLink to="/organizations/create" activeclassname={styles.activeNavLink}>
+                    <NavLink to="/organizations/flag" activeclassname={styles.activeNavLink}>
                       - Update Flag
                     </NavLink>
                   </li>
