@@ -16,6 +16,7 @@ interface FormProps {
     address: string;
   }[];
   aliases: string[];
+  flag: number;
 }
 
 function CreateUpdateOrganization() {
@@ -34,6 +35,7 @@ function CreateUpdateOrganization() {
       },
     ],
     aliases: [],
+    flag: 0,
   };
 
   const schema = Joi.object({
@@ -47,6 +49,7 @@ function CreateUpdateOrganization() {
       .messages({
         'array.unique': 'Duplicate alias detected, please remove it.',
       }),
+    flag: Joi.number().min(0).max(3).label('Flag'),
   });
 
   const doSubmit = async () => {
@@ -89,6 +92,7 @@ function CreateUpdateOrganization() {
         address: location.address,
       })),
       aliases: org.aliases?.map((alias) => alias.alias) || [],
+      flag: org.flag || 0,
     });
   };
 
@@ -97,28 +101,80 @@ function CreateUpdateOrganization() {
   }
 
   return (
-    <div>
-      <h1>
-        {isUpdateMode ? 'Update' : 'Create'}
-        {' '}
-        Organization
-      </h1>
-      <form className="m-auto w-70p">
-        {form.renderInput({ id: 'name', label: 'Name' })}
+    <div style={{ display: 'flex' }}>
+      <div style={{ flex: 1 }}>
+        <h1>
+          {isUpdateMode ? 'Update' : 'Create'}
+          {' '}
+          Organization
+        </h1>
+        <form className="m-auto w-70p">
+          {form.renderInput({ id: 'name', label: 'Name' })}
 
-        <h3>Locations</h3>
-        {form.renderChildForm(form, 'organizationLocations', CreateLocation, form.data.organizationLocations)}
+          <h3>Locations</h3>
+          {form.renderChildForm(form, 'organizationLocations', CreateLocation, form.data.organizationLocations)}
 
-        <h3>Aliases</h3>
-        <AddUpdateAliases
-          aliases={form.data.aliases}
-          handleChange={form.handleDataChange}
-          error={form.errors.aliases}
-        />
+          {form.renderInput({ id: 'name', label: 'Name' })}
 
-        {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
+          {/* Flag field */}
+          {form.renderInput({
+            id: 'flag',
+            label: 'Flag',
+            type: 'number',
+            min: 0,
+            max: 3,
+          })}
 
-      </form>
+          <h3>Aliases</h3>
+          <AddUpdateAliases
+            aliases={form.data.aliases}
+            handleChange={form.handleDataChange}
+            error={form.errors.aliases}
+          />
+
+          {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
+        </form>
+      </div>
+
+      {/* Legend for flag values on the right side */}
+      <div style={{
+        marginLeft: '20px',
+        backgroundColor: '#f0f0f0',
+        borderRadius: '10px',
+        padding: '15px',
+        minWidth: '200px',
+        maxWidth: '300px',
+        maxHeight: '350px',
+      }}
+      >
+        <h3>Flag Legend:</h3>
+        <ul>
+          <li>
+            <strong>0:</strong>
+            {/* Use the imported image */}
+            <img src="/pending.png" alt="Icon" style={{ marginRight: '8px' }} />
+            Pending verification
+          </li>
+          <li>
+            <strong>1:</strong>
+            {' '}
+            <img src="/greenCheck.png" alt="Icon" style={{ marginRight: '8px' }} />
+            Open for communication
+          </li>
+          <li>
+            <strong>2:</strong>
+            {' '}
+            <img src="/yellowWarning.png" alt="Icon" style={{ marginRight: '8px' }} />
+            Contacts within the company belong to multiple companies
+          </li>
+          <li>
+            <strong>3:</strong>
+            {' '}
+            <img src="/redX.png" alt="Icon" style={{ marginRight: '8px' }} />
+            Do not contact without permission
+          </li>
+        </ul>
+      </div>
     </div>
   );
 }
