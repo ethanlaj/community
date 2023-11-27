@@ -101,7 +101,7 @@ function Organizations() {
         <input
           type="text"
           className="form-control"
-          placeholder="Search Organizations and Aliases..."
+          placeholder="Search..."
           value={combinedSearchTerm}
           onChange={(e) => setCombinedSearchTerm(e.target.value)}
         />
