@@ -15,6 +15,7 @@ import formatDate from '@/utils/formatDate';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
+  const [combinedSearchTerm, setCombinedSearchTerm] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,6 +72,24 @@ function Organizations() {
 
   const goToCreate = () => navigate('/organizations/create');
 
+  // Filter organizations based on the search term
+  const filteredOrganizations = organizations.filter((org) => {
+    const orgValues = Object.values(org);
+
+    if (orgValues.some((value) => typeof value === 'string' && value.toLowerCase().includes(combinedSearchTerm.toLowerCase()))) {
+      return true;
+    }
+
+    // Check aliases for matches
+    if (org.aliases && org.aliases.length) {
+      return org.aliases.some((alias) => alias.alias.toLowerCase().includes(combinedSearchTerm.toLowerCase()));
+    }
+
+    return false;
+  });
+
+  // Combine filtered organizations and aliases
+
   return (
     <div className={styles.content}>
       <h1 className="flex justify-center align-items-center">
@@ -78,10 +97,20 @@ function Organizations() {
         <CreateButton handleClick={goToCreate} />
       </h1>
 
+      <div className="mb-4 input-group">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search Organizations and Aliases..."
+          value={combinedSearchTerm}
+          onChange={(e) => setCombinedSearchTerm(e.target.value)}
+        />
+      </div>
+
       <ClickableTable
         style={{ width: '20px' }}
         columns={exportColumns}
-        data={organizations}
+        data={filteredOrganizations}
         onRowClick={handleRowClick}
         onRowDelete={handleRowDelete}
       />

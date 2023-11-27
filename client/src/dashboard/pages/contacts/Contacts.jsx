@@ -8,6 +8,7 @@ import contactService from '@/services/contactService';
 function Contacts() {
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -37,6 +38,21 @@ function Contacts() {
     { title: 'Extension', field: 'exten' },
   ];
 
+  const filteredContacts = contacts.filter((contact) => {
+    const contactValues = [contact.first_name, contact.last_name];
+
+    if (contactValues.some((value) => typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase()))) {
+      return true;
+    }
+
+    // Check aliases for matches
+    if (contact.aliases && contact.aliases.length) {
+      return contact.aliases.some((alias) => alias.alias.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
+
+    return false;
+  });
+
   const handleRowClick = (row) => {
     navigate(`/contacts/${row.contactId}`);
   };
@@ -62,10 +78,28 @@ function Contacts() {
   return (
     <div className={styles.content}>
       <h1>Contacts</h1>
+
+      <div className="mb-4">
+        <div className="input-group">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <div className="input-group-append">
+            <span className="input-group-text">
+              <i className="fas fa-search" />
+            </span>
+          </div>
+        </div>
+      </div>
+
       <ClickableTable
         style={{ width: '20px' }}
         columns={columns}
-        data={contacts}
+        data={filteredContacts}
         onRowClick={handleRowClick}
         onRowDelete={handleRowDelete}
       />
