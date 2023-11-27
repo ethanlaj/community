@@ -31,9 +31,9 @@ function Contacts() {
   const columns = [
     { title: 'First Name', field: 'first_name' },
     { title: 'Last Name', field: 'last_name' },
+    { title: 'Organization', field: 'organizationName' },
     { title: 'Email', field: 'email' },
     { title: 'Phone Number', field: 'phone' },
-    { title: 'Organization', field: 'organizationName' },
     { title: 'Extension', field: 'exten' },
   ];
 
