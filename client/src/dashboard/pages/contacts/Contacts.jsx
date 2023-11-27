@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Contacts.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import contactService from '@/services/contactService';
+import TableSearch from '@/shared/components/TableSearch';
 
 function Contacts() {
   const navigate = useNavigate();
@@ -79,22 +80,7 @@ function Contacts() {
     <div className={styles.content}>
       <h1>Contacts</h1>
 
-      <div className="mb-4">
-        <div className="input-group">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <div className="input-group-append">
-            <span className="input-group-text">
-              <i className="fas fa-search" />
-            </span>
-          </div>
-        </div>
-      </div>
+      <TableSearch SearchTerm={filteredContacts} onSearchChange={(value) => setSearchTerm(value)} />
 
       <ClickableTable
         style={{ width: '20px' }}

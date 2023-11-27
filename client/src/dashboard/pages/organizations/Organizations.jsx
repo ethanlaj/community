@@ -11,6 +11,7 @@ import { importFields, importTemplate, exportColumns } from './constants';
 import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
 import ProtectedElement from '@/shared/components/ProtectedElement';
 import CreateButton from '@/shared/components/CreateButton';
+import TableSearch from '@/shared/components/TableSearch';
 import formatDate from '@/utils/formatDate';
 
 function Organizations() {
@@ -97,15 +98,7 @@ function Organizations() {
         <CreateButton handleClick={goToCreate} />
       </h1>
 
-      <div className="mb-4 input-group">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search..."
-          value={combinedSearchTerm}
-          onChange={(e) => setCombinedSearchTerm(e.target.value)}
-        />
-      </div>
+      <TableSearch searchTerm={combinedSearchTerm} onSearchChange={(value) => setCombinedSearchTerm(value)} />
 
       <ClickableTable
         style={{ width: '20px' }}
