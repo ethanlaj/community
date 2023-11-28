@@ -1,11 +1,11 @@
 import { ChangeEvent } from 'react';
 
-interface SearchBarProps {
+interface TableSearchProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
 }
 
-function SearchBar({ searchTerm, onSearchChange }:SearchBarProps) {
+function TableSearch({ searchTerm, onSearchChange }:TableSearchProps) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onSearchChange(e.target.value);
   };
@@ -23,4 +23,4 @@ function SearchBar({ searchTerm, onSearchChange }:SearchBarProps) {
   );
 }
 
-export default SearchBar;
+export default TableSearch;
