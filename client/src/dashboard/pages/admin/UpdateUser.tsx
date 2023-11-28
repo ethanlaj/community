@@ -58,7 +58,6 @@ function UpdateUser() {
   const doSubmit = async () => {
     try {
       const newUser: UserDTO = {
-        // id: form.data.id,
         officeId: form.data.office?.id || 0,
         permissionLevel: form.data.permissionLevel,
         email: form.data.email,
@@ -67,7 +66,7 @@ function UpdateUser() {
 
       console.log('Submit to api', newUser);
 
-      await userService.update(userId!, { ...form.data, id: userId });
+      await userService.update(userId!, { ...form.data, id: userId! });
 
       navigate('/admin', { replace: true });
     } catch (ex) {
