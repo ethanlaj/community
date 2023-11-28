@@ -39,11 +39,17 @@ function AddUsers() {
     name: '',
   };
 
+  const domainRegex = /^[a-zA-Z0-9._%+-]+@etown\.edu$/;
+
   const schema = Joi.object({
     office: Joi.object().required().label('Office'),
     // eslint-disable-next-line newline-per-chained-call
     permissionLevel: Joi.number().required().min(1).max(4).label('User Permission Level'),
-    email: Joi.string().email({ tlds: { allow: false } }).label('Email'),
+    email: Joi.string().email({ tlds: { allow: false } }).regex(domainRegex).label('Email')
+      .messages({
+        'string.email': 'Invalid email format',
+        'string.pattern.base': 'Invalid email. Only etown.edu email addresses are allowed.',
+      }),
     name: Joi.string().required().label('Name'),
   });
 
