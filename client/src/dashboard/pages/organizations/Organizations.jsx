@@ -13,6 +13,7 @@ import ProtectedElement from '@/shared/components/ProtectedElement';
 import CreateButton from '@/shared/components/CreateButton';
 import TableSearch from '@/shared/components/TableSearch';
 import formatDate from '@/utils/formatDate';
+import filterSearch from '@/utils/filterSearch';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
@@ -73,23 +74,7 @@ function Organizations() {
 
   const goToCreate = () => navigate('/organizations/create');
 
-  // Filter organizations based on the search term
-  const filteredOrganizations = organizations.filter((org) => {
-    const orgValues = Object.values(org);
-
-    if (orgValues.some((value) => typeof value === 'string' && value.toLowerCase().includes(combinedSearchTerm.toLowerCase()))) {
-      return true;
-    }
-
-    // Check aliases for matches
-    if (org.aliases && org.aliases.length) {
-      return org.aliases.some((alias) => alias.alias.toLowerCase().includes(combinedSearchTerm.toLowerCase()));
-    }
-
-    return false;
-  });
-
-  // Combine filtered organizations and aliases
+  const filteredOrganizations = filterSearch(organizations, combinedSearchTerm);
 
   return (
     <div className={styles.content}>

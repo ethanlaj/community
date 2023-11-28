@@ -5,6 +5,7 @@ import styles from './Contacts.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import contactService from '@/services/contactService';
 import TableSearch from '@/shared/components/TableSearch';
+import filterSearch from '@/utils/filterSearch';
 
 function Contacts() {
   const navigate = useNavigate();
@@ -39,20 +40,7 @@ function Contacts() {
     { title: 'Extension', field: 'exten' },
   ];
 
-  const filteredContacts = contacts.filter((contact) => {
-    const contactValues = [contact.first_name, contact.last_name];
-
-    if (contactValues.some((value) => typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase()))) {
-      return true;
-    }
-
-    // Check aliases for matches
-    if (contact.aliases && contact.aliases.length) {
-      return contact.aliases.some((alias) => alias.alias.toLowerCase().includes(searchTerm.toLowerCase()));
-    }
-
-    return false;
-  });
+  const filteredContacts = filterSearch(contacts, searchTerm, [contacts.first_name, contacts.last_name]);
 
   const handleRowClick = (row) => {
     navigate(`/contacts/${row.contactId}`);
