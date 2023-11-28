@@ -4,10 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Contacts.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import contactService from '@/services/contactService';
+import TableSearch from '@/shared/components/TableSearch';
+import filterSearch from '@/utils/filterSearch';
 
 function Contacts() {
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -37,6 +40,8 @@ function Contacts() {
     { title: 'Extension', field: 'exten' },
   ];
 
+  const filteredContacts = filterSearch(contacts, searchTerm);
+
   const handleRowClick = (row) => {
     navigate(`/contacts/${row.contactId}`);
   };
@@ -62,10 +67,13 @@ function Contacts() {
   return (
     <div className={styles.content}>
       <h1>Contacts</h1>
+
+      <TableSearch SearchTerm={filteredContacts} onSearchChange={(value) => setSearchTerm(value)} />
+
       <ClickableTable
         style={{ width: '20px' }}
         columns={columns}
-        data={contacts}
+        data={filteredContacts}
         onRowClick={handleRowClick}
         onRowDelete={handleRowDelete}
       />
