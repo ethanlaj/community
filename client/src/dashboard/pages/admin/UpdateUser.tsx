@@ -10,7 +10,6 @@ import { UserDTO } from '@/types/user';
 import { EtownOffice } from '@/types/office';
 
 interface FormProps {
-  id: number | undefined;
   office: EtownOffice | null;
   permissionLevel: string;
   email: string;
@@ -36,7 +35,6 @@ function UpdateUser() {
   }, []);
 
   const fields: FormProps = {
-    id: userId,
     office: null,
     permissionLevel: '',
     email: '',
@@ -60,7 +58,7 @@ function UpdateUser() {
   const doSubmit = async () => {
     try {
       const newUser: UserDTO = {
-        id: form.data.id,
+        // id: form.data.id,
         officeId: form.data.office?.id || 0,
         permissionLevel: form.data.permissionLevel,
         email: form.data.email,
@@ -69,7 +67,7 @@ function UpdateUser() {
 
       console.log('Submit to api', newUser);
 
-      await userService.update(userId!, { ...form.data });
+      await userService.update(userId!, { ...form.data, id: userId });
 
       navigate('/admin', { replace: true });
     } catch (ex) {
@@ -84,7 +82,6 @@ function UpdateUser() {
   const loadUserData = async (UserId: number) => {
     const user = await userService.getById(UserId);
     form.setData({
-      id: user.id,
       office: user.office,
       permissionLevel: user.permissionLevel,
       email: user.email,

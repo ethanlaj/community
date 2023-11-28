@@ -9,7 +9,7 @@ export interface User {
 }
 
 export interface UserDTO{
-  id: number | undefined;
+  // id: number | undefined;
   officeId: number;
   permissionLevel: string;
   email: string;
