@@ -1,7 +1,7 @@
 import { EtownOffice } from './office';
 
 export interface User {
-  id: number;
+  id: number | undefined;
   office: EtownOffice | null;
   permissionLevel: string;
   email: string;
@@ -9,6 +9,7 @@ export interface User {
 }
 
 export interface UserDTO{
+  id: number | undefined;
   officeId: number;
   permissionLevel: string;
   email: string;
