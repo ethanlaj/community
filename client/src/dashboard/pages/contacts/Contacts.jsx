@@ -40,7 +40,7 @@ function Contacts() {
     { title: 'Extension', field: 'exten' },
   ];
 
-  const filteredContacts = filterSearch(contacts, searchTerm, [contacts.first_name, contacts.last_name]);
+  const filteredContacts = filterSearch(contacts, searchTerm);
 
   const handleRowClick = (row) => {
     navigate(`/contacts/${row.contactId}`);
