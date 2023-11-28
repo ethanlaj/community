@@ -22,7 +22,7 @@ function Admin() {
   }, []);
 
   const handleRowClick = (row: any) => {
-    navigate(`/admin/update-user/${row.id}`);
+    navigate(`/admin/${row.id}/edit`);
   };
 
   const handleRowDelete = async (row:any) => {

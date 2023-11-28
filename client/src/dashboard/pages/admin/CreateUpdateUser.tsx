@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Joi from 'joi';
 import useForm from '@/shared/hooks/useForm';
-import styles from './CreateUsers.module.css';
+import styles from './CreateUpdateUser.module.css';
 import userService from '@/services/userService';
 import officeService from '@/services/officeService';
 import { UserDTO } from '@/types/user';
 import { EtownOffice } from '@/types/office';
+import Loading from '@/shared/components/Loading';
 
 interface FormProps {
   office: EtownOffice | null;
@@ -16,11 +17,13 @@ interface FormProps {
   name: string;
 }
 
-function UpdateUser() {
+function CreateUpdateUser() {
   const navigate = useNavigate();
   const [allOffices, setAllOffices] = useState<EtownOffice[]>([]);
   const { id } = useParams();
   const userId = id ? parseInt(id, 10) : undefined;
+  const isUpdateMode = userId !== undefined;
+  const [isLoading, setIsLoading] = useState(isUpdateMode);
 
   useEffect(() => {
     // Fetch all data needed
@@ -66,8 +69,11 @@ function UpdateUser() {
 
       console.log('Submit to api', newUser);
 
-      await userService.update(userId!, { ...form.data, id: userId! });
-
+      if (isUpdateMode) {
+        await userService.update(userId!, { ...form.data, id: userId! });
+      } else {
+        await userService.create(newUser);
+      }
       navigate('/admin', { replace: true });
     } catch (ex) {
       console.error(ex);
@@ -76,7 +82,12 @@ function UpdateUser() {
 
   const form = useForm<FormProps>({ fields, schema, doSubmit });
 
-  useEffect(() => { loadUserData(userId!); }, []);
+  useEffect(() => {
+    if (isUpdateMode) {
+      loadUserData(userId!)
+        .then(() => setIsLoading(false));
+    }
+  }, [userId]);
 
   const loadUserData = async (UserId: number) => {
     const user = await userService.getById(UserId);
@@ -88,9 +99,17 @@ function UpdateUser() {
     });
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div>
-      <h1>Update User</h1>
+      <h1>
+        {isUpdateMode ? 'Update' : 'Create'}
+        {' '}
+        User
+      </h1>
       <form className={styles.formContainer}>
         {form.renderInput({ id: 'name', label: 'Name', type: 'string' })}
         {form.renderInput({ id: 'email', label: 'Email', type: 'string' })}
@@ -108,10 +127,10 @@ function UpdateUser() {
           type: 'number',
           placeholder: 'Permission Level 1-4',
         })}
-        {form.renderButton('Update')}
+        {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
       </form>
     </div>
   );
 }
 
-export default UpdateUser;
+export default CreateUpdateUser;
