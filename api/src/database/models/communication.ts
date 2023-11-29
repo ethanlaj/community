@@ -7,6 +7,7 @@ import {
 	ForeignKey,
 	BelongsTo,
 	BelongsToMany,
+	DataType,
 } from 'sequelize-typescript';
 import {
 	Organizations,
@@ -28,14 +29,14 @@ export class Communications extends Model {
 	@Column
 		date!: Date;
 
-	@Column
+	@Column({ type: DataType.STRING(10), allowNull: false })
 		type!: string;
 
 	@ForeignKey(() => OrganizationLocations)
 	@Column
 		locationId?: number;
 
-	@Column
+	@Column({ type: DataType.STRING(1024), allowNull: false })
 		note?: string;
 
 	@BelongsTo(() => OrganizationLocations, 'locationId')
