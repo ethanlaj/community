@@ -26,7 +26,7 @@ import useInterceptor from './shared/hooks/useInterceptor';
 import Loading from './shared/components/Loading';
 import Home from './dashboard/pages/Home';
 import Admin from './dashboard/pages/admin';
-import AddUsers from './dashboard/pages/admin/CreateUsers';
+import CreateUpdateUser from './dashboard/pages/admin/CreateUpdateUser';
 import { UserProvider } from './shared/context/UserContext';
 import Communication from './dashboard/pages/communications/Communication';
 import Contact from './dashboard/pages/contacts/Contact';
@@ -64,7 +64,8 @@ function AppContent() {
     { path: '/organization/:id', element: <Organization /> },
     { path: '/organization/:id/edit', element: <CreateUpdateOrganization /> },
     { path: '/admin', element: <Admin /> },
-    { path: '/admin/add-user', element: <AddUsers /> },
+    { path: '/admin/add-user', element: <CreateUpdateUser /> },
+    { path: '/admin/:id/edit', element: <CreateUpdateUser /> },
   ];
 
   return (

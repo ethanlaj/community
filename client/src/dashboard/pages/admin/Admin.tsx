@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { format } from 'date-fns';
-import styles from './Admin.module.css';
+import { useNavigate } from 'react-router-dom';
 import userService from '@/services/userService';
 import ClickableTable from '@/shared/components/ClickableTable';
+import styles from './Admin.module.css';
 
 function Admin() {
   const [users, setUsers] = useState([]);
   const formatDate = (date:any) => (date ? format(new Date(date), 'PPpp') : '');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -19,8 +21,8 @@ function Admin() {
     fetchUsers();
   }, []);
 
-  const handleRowClick = (row:any) => {
-    alert(`You clicked on ${row.name}`);
+  const handleRowClick = (row: any) => {
+    navigate(`/admin/${row.id}/edit`);
   };
 
   const handleRowDelete = async (row:any) => {

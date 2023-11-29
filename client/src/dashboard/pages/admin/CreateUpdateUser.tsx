@@ -1,13 +1,14 @@
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Joi from 'joi';
 import useForm from '@/shared/hooks/useForm';
-import styles from './CreateUsers.module.css';
+import styles from './CreateUpdateUser.module.css';
 import userService from '@/services/userService';
 import officeService from '@/services/officeService';
 import { UserDTO } from '@/types/user';
 import { EtownOffice } from '@/types/office';
+import Loading from '@/shared/components/Loading';
 
 interface FormProps {
   office: EtownOffice | null;
@@ -16,9 +17,13 @@ interface FormProps {
   name: string;
 }
 
-function AddUsers() {
+function CreateUpdateUser() {
   const navigate = useNavigate();
   const [allOffices, setAllOffices] = useState<EtownOffice[]>([]);
+  const { id } = useParams();
+  const userId = id ? parseInt(id, 10) : undefined;
+  const isUpdateMode = userId !== undefined;
+  const [isLoading, setIsLoading] = useState(isUpdateMode);
 
   useEffect(() => {
     // Fetch all data needed
@@ -64,8 +69,11 @@ function AddUsers() {
 
       console.log('Submit to api', newUser);
 
-      await userService.create(newUser);
-
+      if (isUpdateMode) {
+        await userService.update(userId!, { ...form.data, id: userId! });
+      } else {
+        await userService.create(newUser);
+      }
       navigate('/admin', { replace: true });
     } catch (ex) {
       console.error(ex);
@@ -74,9 +82,34 @@ function AddUsers() {
 
   const form = useForm<FormProps>({ fields, schema, doSubmit });
 
+  useEffect(() => {
+    if (isUpdateMode) {
+      loadUserData(userId!)
+        .then(() => setIsLoading(false));
+    }
+  }, [userId]);
+
+  const loadUserData = async (UserId: number) => {
+    const user = await userService.getById(UserId);
+    form.setData({
+      office: user.office,
+      permissionLevel: user.permissionLevel,
+      email: user.email,
+      name: user.name,
+    });
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div>
-      <h1>Add New User</h1>
+      <h1>
+        {isUpdateMode ? 'Update' : 'Create'}
+        {' '}
+        User
+      </h1>
       <form className={styles.formContainer}>
         {form.renderInput({ id: 'name', label: 'Name', type: 'string' })}
         {form.renderInput({ id: 'email', label: 'Email', type: 'string' })}
@@ -94,10 +127,10 @@ function AddUsers() {
           type: 'number',
           placeholder: 'Permission Level 1-4',
         })}
-        {form.renderButton('Add')}
+        {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
       </form>
     </div>
   );
 }
 
-export default AddUsers;
+export default CreateUpdateUser;
