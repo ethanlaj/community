@@ -3,7 +3,7 @@ import {
   Table, Button, Form, Alert,
 } from 'react-bootstrap';
 import ReactiveSearch from '@/shared/components/ReactiveSearch';
-import { InfoForOrganization } from './CreateContacts';
+import { InfoForOrganization } from './CreateUpdateContacts';
 import { Column } from './AddContactsInfoTable';
 
 interface ContactInfoPerOrganizationFormProps {
@@ -45,6 +45,7 @@ function ContactInfoPerOrganizationForm({
         items={options}
         onChange={(value: any) => handleSelect(value)}
         idPath="id"
+        value={undefined}
         valuePath="name"
         resetOnSelect
         headerLabel={undefined}

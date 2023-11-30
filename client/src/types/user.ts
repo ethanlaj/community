@@ -1,7 +1,7 @@
 import { EtownOffice } from './office';
 
 export interface User {
-  id: number;
+  id: number
   office: EtownOffice | null;
   permissionLevel: string;
   email: string;

@@ -8,7 +8,7 @@ import {
 	BelongsToMany,
 	HasMany
 } from 'sequelize-typescript';
-import { CommunicationContacts, OrganizationContacts, Organizations } from '.';
+import { CommunicationContacts, Communications, OrganizationContacts, Organizations } from '.';
 import { ContactAliases } from './contactAliases';
 
 @Table({ tableName: 'Contacts' })
@@ -18,14 +18,22 @@ export class Contacts extends Model {
 	@Column(DataType.INTEGER)
 		id!: number;
 
+	@Column(DataType.VIRTUAL(DataType.STRING))
+	get name(): string {
+		return this.getDataValue('first_name') + ' ' + this.getDataValue('last_name');
+	}
+
 	@Column({ type: DataType.STRING(100), allowNull: false })
-		name!: string;
+		first_name!: string;
+	
+	@Column({ type: DataType.STRING(100), allowNull: false })
+		last_name!: string;
 
 	@BelongsToMany(() => Organizations, () => OrganizationContacts, 'contactId', 'organizationId')
 		organizations?: Organizations[];
 
-	@BelongsToMany(() => Contacts, () => CommunicationContacts)
-		contacts?: Contacts[];
+	@BelongsToMany(() => Communications, () => CommunicationContacts)
+		communications?: Communications[];
 
 	@HasMany(() => OrganizationContacts, 'contactId')
 		organizationContacts?: OrganizationContacts[];

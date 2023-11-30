@@ -11,9 +11,13 @@ import { importFields, importTemplate, exportColumns } from './constants';
 import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
 import ProtectedElement from '@/shared/components/ProtectedElement';
 import CreateButton from '@/shared/components/CreateButton';
+import TableSearch from '@/shared/components/TableSearch';
+import formatDate from '@/utils/formatDate';
+import filterSearch from '@/utils/filterSearch';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
+  const [combinedSearchTerm, setCombinedSearchTerm] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,12 +27,15 @@ function Organizations() {
 
       data = data.map((org) => {
         const comm = org.communications[0];
+        const lastCommDate = comm?.date;
         if (!comm) return org;
+
+        const offices = comm.users?.map((user) => user.office?.name || '');
 
         return {
           ...org,
-          lastComDate: comm.date,
-          lastComOffice: 'Unknown',
+          lastConDate: formatDate(lastCommDate),
+          lastConBy: offices.join(', ') || 'Unknown',
         };
       });
 
@@ -68,12 +75,16 @@ function Organizations() {
 
   const goToCreate = () => navigate('/organizations/create');
 
+  const filteredOrganizations = filterSearch(organizations, combinedSearchTerm);
+
   return (
     <div className={styles.content}>
       <h1 className="flex justify-center align-items-center">
         Organizations
         <CreateButton handleClick={goToCreate} />
       </h1>
+
+      <TableSearch searchTerm={combinedSearchTerm} onSearchChange={(value) => setCombinedSearchTerm(value)} />
 
       <ClickableTable
         style={{ width: '20px' }}

@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import styles from './Contacts.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import contactService from '@/services/contactService';
+import TableSearch from '@/shared/components/TableSearch';
+import filterSearch from '@/utils/filterSearch';
 
 function Contacts() {
+  const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -28,17 +33,18 @@ function Contacts() {
 
   const columns = [
     { title: 'Communication Status', field: 'comStatus' }, // adding column for flag
-    { title: 'Name', field: 'name' },
+    { title: 'First Name', field: 'first_name' },
+    { title: 'Last Name', field: 'last_name' },
+    { title: 'Organization', field: 'organizationName' },
     { title: 'Email', field: 'email' },
     { title: 'Phone Number', field: 'phone' },
-    { title: 'Organization', field: 'organizationName' },
     { title: 'Extension', field: 'exten' },
-    // { title: 'OrgId', field: 'organizationId' },
-    // { title: 'ConId', field: 'contactId' },
   ];
 
+  const filteredContacts = filterSearch(contacts, searchTerm);
+
   const handleRowClick = (row) => {
-    alert(`You clicked on ${row.name}`);
+    navigate(`/contacts/${row.contactId}`);
   };
 
   const handleRowDelete = async (row) => {
@@ -62,10 +68,13 @@ function Contacts() {
   return (
     <div className={styles.content}>
       <h1>Contacts</h1>
+
+      <TableSearch SearchTerm={searchTerm} onSearchChange={(value) => setSearchTerm(value)} />
+
       <ClickableTable
         style={{ width: '20px' }}
         columns={columns}
-        data={contacts}
+        data={filteredContacts}
         onRowClick={handleRowClick}
         onRowDelete={handleRowDelete}
       />
