@@ -77,7 +77,6 @@ function Organizations() {
       await organizationService.createBulk(importedData);
       toast.success('Organizations imported successfully');
     } catch (error) {
-      console.log('error from org', error);
       toast.error(error.message);
     }
   };
