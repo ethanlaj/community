@@ -129,7 +129,7 @@ organizationsRouter.post('/bulk', isAuthorized(2), errorHandler(async (req: Requ
 	
 		if (duplicateNames.length > 0) {
 			const displayedNames = duplicateNames.slice(0, 3); 
-			throw new Error(`Duplicate organization names found in the import file: ${displayedNames.join(', ')} ${duplicateNames.length > 2 ? '...' : ''} No Organizations created.`);
+			throw new Error(`Duplicate organization names found in the import file: ${displayedNames.join(', ')} ${duplicateNames.length > 3 ? '...' : ''} (No Organizations created)`);
 		}
 	
 		const existingOrganizations = await Organizations.findAll({
@@ -141,7 +141,7 @@ organizationsRouter.post('/bulk', isAuthorized(2), errorHandler(async (req: Requ
 		if (existingOrganizations.length > 0) {
 			const existingNames = existingOrganizations.map(org => org.name);
 			const displayedNames = existingNames.slice(0, 3); 
-			throw new Error(`Organization already exists in the database: ${displayedNames.join(', ')} ${existingNames.length > 2 ? '...' : ''} No Organizations created.`);
+			throw new Error(`Organization already exists in the database: ${displayedNames.join(', ')} ${existingNames.length > 3 ? '...' : ''} (No Organizations created)`);
 		}
 
 		const newOrganizations = await Organizations.bulkCreate(
