@@ -1,6 +1,6 @@
 import http from './httpService';
 import { apiUrl } from '../config';
-import { User, UserDTO } from '@/types/user';
+import { UserDTO } from '@/types/user';
 
 const apiEndpoint = `${apiUrl}/users`;
 
@@ -32,7 +32,7 @@ export default class UserService {
     return response.data;
   }
 
-  static async update(id: number, updatedUser: User) {
+  static async update(id: number, updatedUser: UserDTO) {
     const response = await http.put(`${apiEndpoint}/${id}`, updatedUser);
     return response.data;
   }
