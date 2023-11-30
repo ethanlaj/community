@@ -77,8 +77,17 @@ function Organizations() {
 
       <ClickableTable
         style={{ width: '20px' }}
-        columns={exportColumns}
-        data={organizations}
+        columns={exportColumns.map((column) => ({
+          ...column,
+          render: (rowData) => {
+            if (column.field === 'flag') {
+              const flagValue = rowData[column.field] || 0;
+              return <img src={`./icons/${flagValue}.png`} alt={`Flag ${flagValue}`} />;
+            }
+            return rowData[column.field] || '';
+          },
+        }))}
+        data={filteredOrganizations}
         onRowClick={handleRowClick}
         onRowDelete={handleRowDelete}
       />

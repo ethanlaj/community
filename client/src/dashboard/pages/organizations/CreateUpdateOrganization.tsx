@@ -101,39 +101,75 @@ function CreateUpdateOrganization() {
   }
 
   return (
-    <div style={{ display: 'flex' }}>
-      <div style={{ flex: 1 }}>
-        <h1>
-          {isUpdateMode ? 'Update' : 'Create'}
-          {' '}
-          Organization
-        </h1>
-        <form className="m-auto w-70p">
-          {form.renderInput({ id: 'name', label: 'Name' })}
+    <div>
+      <div style={{ display: 'flex' }}>
+        <div style={{ flex: 1 }}>
+          <h1>
+            {isUpdateMode ? 'Update' : 'Create'}
+            {' '}
+            Organization
+          </h1>
+          <form className="m-auto w-70p">
+            {form.renderInput({ id: 'name', label: 'Name' })}
 
-          <h3>Locations</h3>
-          {form.renderChildForm(form, 'organizationLocations', CreateLocation, form.data.organizationLocations)}
+            <h3>Locations</h3>
+            {form.renderChildForm(form, 'organizationLocations', CreateLocation, form.data.organizationLocations)}
 
-          {form.renderInput({ id: 'name', label: 'Name' })}
+            {form.renderInput({ id: 'name', label: 'Name' })}
 
-          {/* Flag field */}
-          {form.renderInput({
-            id: 'flag',
-            label: 'Flag',
-            type: 'number',
-            min: 0,
-            max: 3,
-          })}
+            {/* Flag field */}
+            {form.renderInput({
+              id: 'flag',
+              label: 'Flag',
+              type: 'number',
+              min: 0,
+              max: 3,
+            })}
 
-          <h3>Aliases</h3>
-          <AddUpdateAliases
-            aliases={form.data.aliases}
-            handleChange={form.handleDataChange}
-            error={form.errors.aliases}
-          />
+            <h3>Aliases</h3>
+            <AddUpdateAliases
+              aliases={form.data.aliases}
+              handleChange={form.handleDataChange}
+              error={form.errors.aliases}
+            />
 
-          {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
-        </form>
+            {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
+          </form>
+        </div>
+        <div style={{
+          marginLeft: '20px',
+          backgroundColor: '#f0f0f0',
+          borderRadius: '10px',
+          padding: '15px',
+          minWidth: '200px',
+          maxWidth: '300px',
+          maxHeight: '350px',
+        }}
+        >
+          <h3>Flag Legend:</h3>
+          <ul>
+            <li>
+              <strong>0:</strong>
+              {' '}
+              Pending verification
+            </li>
+            <li>
+              <strong>1:</strong>
+              {' '}
+              Open for communication
+            </li>
+            <li>
+              <strong>2:</strong>
+              {' '}
+              Contacts within the company belong to multiple companies
+            </li>
+            <li>
+              <strong>3:</strong>
+              {' '}
+              Do not contact without permission
+            </li>
+          </ul>
+        </div>
       </div>
 
       {/* Legend for flag values on the right side */}
