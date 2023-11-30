@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import styles from './Organizations.module.css?inline';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import organizationService from '@/services/organizationService';
-import { importFields, importTemplate, exportColumns } from './constants';
-import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
-import ProtectedElement from '@/shared/components/ProtectedElement';
+import { Organization } from '@/types/organization';
+import FlagLegend from './FlagLegend';
+import Flag from './Flag';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
@@ -18,7 +17,7 @@ function Organizations() {
       try {
         let data = await organizationService.getAll();
 
-        data = data.map((org) => {
+        data = data.map((org: Organization) => {
           const comm = org.communications[0];
           if (!comm) return org;
 
@@ -30,7 +29,7 @@ function Organizations() {
         });
 
         // Sort the organizations based on the flag and sortOrder
-        data.sort((a, b) => {
+        data.sort((a: Organization, b: Organization) => {
           const flagA = a.flag || 0;
           const flagB = b.flag || 0;
 
@@ -49,16 +48,21 @@ function Organizations() {
     fetchOrganizations();
   }, [sortOrder]);
 
-  const handleRowClick = (row) => {
-    navigate(`/organization/${row.id}`);
+  const handleRowClick = (row: Organization) => {
+    navigate(`/organization/${row.id}/edit`);
   };
 
-  const handleSortOrderChange = (event) => {
+  const handleSortOrderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOrder(event.target.value);
   };
 
+  const columns = [
+    { title: '', field: 'flag', tdStyle: { width: '32px' } },
+    { title: 'Name', field: 'name' },
+  ];
+
   return (
-    <div className={styles.content}>
+    <div>
       <h1 className="flex justify-center align-items-center">
         Organizations
       </h1>
@@ -70,55 +74,24 @@ function Organizations() {
         <option value="desc">Descending</option>
       </select>
 
-      <ClickableTable
-        style={{ width: '20px' }}
-        columns={exportColumns.map((column) => ({
-          ...column,
-          render: (rowData) => {
-            if (column.field === 'flag') {
-              const flagValue = rowData[column.field] || 0;
-              return <img src={`./icons/${flagValue}.png`} alt={`Flag ${flagValue}`} />;
-            }
-            return rowData[column.field] || '';
-          },
-        }))}
-        data={organizations}
-        onRowClick={handleRowClick}
-      />
-      {/* Legend for flag values on the right side */}
-      <div style={{
-        marginLeft: '20px',
-        backgroundColor: '#f0f0f0',
-        borderRadius: '10px',
-        padding: '15px',
-        minWidth: '200px',
-        maxWidth: '300px',
-        maxHeight: '350px',
-      }}
-      >
-        <h3>Flag Legend:</h3>
-        <ul>
-          <li>
-            <strong>0:</strong>
-            {' '}
-            Pending verification
-          </li>
-          <li>
-            <strong>1:</strong>
-            {' '}
-            Open for communication
-          </li>
-          <li>
-            <strong>2:</strong>
-            {' '}
-            Contacts within the company belong to multiple companies
-          </li>
-          <li>
-            <strong>3:</strong>
-            {' '}
-            Do not contact without permission
-          </li>
-        </ul>
+      <div className="flex align-top">
+        <ClickableTable
+          columns={columns.map((column) => ({
+            ...column,
+            render: (rowData: Organization) => {
+              if (column.field === 'flag') {
+                const flagValue = rowData[column.field] || 0;
+                return <Flag flag={flagValue} />;
+              }
+              return rowData[column.field as keyof Organization] || '';
+            },
+          }))}
+          data={organizations}
+          onRowClick={handleRowClick}
+          onRowDelete={undefined}
+          deleteModalRenderer={undefined}
+        />
+        <FlagLegend />
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import CreateLocation from '@/dashboard/pages/organizations/CreateLocation';
 import organizationService from '@/services/organizationService';
 import AddUpdateAliases from '@/shared/components/AddUpdateAliases';
 import Loading from '@/shared/components/Loading';
+import FlagLegend from './FlagLegend';
 
 interface FormProps {
   name: string;
@@ -112,19 +113,15 @@ function CreateUpdateOrganization() {
           <form className="m-auto w-70p">
             {form.renderInput({ id: 'name', label: 'Name' })}
 
-            <h3>Locations</h3>
-            {form.renderChildForm(form, 'organizationLocations', CreateLocation, form.data.organizationLocations)}
-
-            {form.renderInput({ id: 'name', label: 'Name' })}
-
             {/* Flag field */}
             {form.renderInput({
               id: 'flag',
               label: 'Flag',
               type: 'number',
-              min: 0,
-              max: 3,
             })}
+
+            <h3>Locations</h3>
+            {form.renderChildForm(form, 'organizationLocations', CreateLocation, form.data.organizationLocations)}
 
             <h3>Aliases</h3>
             <AddUpdateAliases
@@ -136,80 +133,7 @@ function CreateUpdateOrganization() {
             {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
           </form>
         </div>
-        <div style={{
-          marginLeft: '20px',
-          backgroundColor: '#f0f0f0',
-          borderRadius: '10px',
-          padding: '15px',
-          minWidth: '200px',
-          maxWidth: '300px',
-          maxHeight: '350px',
-        }}
-        >
-          <h3>Flag Legend:</h3>
-          <ul>
-            <li>
-              <strong>0:</strong>
-              {' '}
-              Pending verification
-            </li>
-            <li>
-              <strong>1:</strong>
-              {' '}
-              Open for communication
-            </li>
-            <li>
-              <strong>2:</strong>
-              {' '}
-              Contacts within the company belong to multiple companies
-            </li>
-            <li>
-              <strong>3:</strong>
-              {' '}
-              Do not contact without permission
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      {/* Legend for flag values on the right side */}
-      <div style={{
-        marginLeft: '20px',
-        backgroundColor: '#f0f0f0',
-        borderRadius: '10px',
-        padding: '15px',
-        minWidth: '200px',
-        maxWidth: '300px',
-        maxHeight: '350px',
-      }}
-      >
-        <h3>Flag Legend:</h3>
-        <ul>
-          <li>
-            <strong>0:</strong>
-            {/* Use the imported image */}
-            <img src="/pending.png" alt="Icon" style={{ marginRight: '8px' }} />
-            Pending verification
-          </li>
-          <li>
-            <strong>1:</strong>
-            {' '}
-            <img src="/greenCheck.png" alt="Icon" style={{ marginRight: '8px' }} />
-            Open for communication
-          </li>
-          <li>
-            <strong>2:</strong>
-            {' '}
-            <img src="/yellowWarning.png" alt="Icon" style={{ marginRight: '8px' }} />
-            Contacts within the company belong to multiple companies
-          </li>
-          <li>
-            <strong>3:</strong>
-            {' '}
-            <img src="/redX.png" alt="Icon" style={{ marginRight: '8px' }} />
-            Do not contact without permission
-          </li>
-        </ul>
+        <FlagLegend />
       </div>
     </div>
   );

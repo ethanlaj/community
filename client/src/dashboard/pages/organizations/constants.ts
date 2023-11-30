@@ -121,7 +121,7 @@ export const importTemplate = [
 ].join('\n');
 
 export const exportColumns = [
-  { title: '', field: 'flag' },
+  { title: '', field: 'flag', tdStyle: { width: '50px' } },
   { title: 'Name', field: 'name' },
   { title: 'Last Contacted', field: 'lastConDate' },
   { title: 'Last Contacted By', field: 'lastConBy' },

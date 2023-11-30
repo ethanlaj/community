@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     extend: {
       width: {
+        '20p': '20%',
         '70p': '70%',
       },
     },

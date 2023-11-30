@@ -14,6 +14,7 @@ import CreateButton from '@/shared/components/CreateButton';
 import TableSearch from '@/shared/components/TableSearch';
 import formatDate from '@/utils/formatDate';
 import filterSearch from '@/utils/filterSearch';
+import Flag from './Flag';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
@@ -23,7 +24,6 @@ function Organizations() {
   useEffect(() => {
     const fetchOrganizations = async () => {
       let data = await organizationService.getAll();
-      console.log(data);
 
       data = data.map((org) => {
         const comm = org.communications[0];
@@ -87,13 +87,12 @@ function Organizations() {
       <TableSearch searchTerm={combinedSearchTerm} onSearchChange={(value) => setCombinedSearchTerm(value)} />
 
       <ClickableTable
-        style={{ width: '20px' }}
         columns={exportColumns.map((column) => ({
           ...column,
           render: (rowData) => {
             if (column.field === 'flag') {
               const flagValue = rowData[column.field] || 0;
-              return <img src={`./icons/${flagValue}.png`} alt={`Flag ${flagValue}`} />;
+              return <Flag flag={flagValue} />;
             }
             return rowData[column.field] || '';
           },
