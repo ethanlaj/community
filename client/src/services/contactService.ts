@@ -1,6 +1,8 @@
 import http from './httpService';
 import { apiUrl } from '../config';
-import { Contact, CreateUpdateContactDTO, deletedContactIdentifiers } from '@/types/contact';
+import {
+  Contact, CreateUpdateContactDTO, deletedContactIdentifiers, BulkImportContactsDTO,
+} from '@/types/contact';
 
 const apiEndpoint = `${apiUrl}/contacts`;
 
@@ -49,6 +51,19 @@ export default class ContactService {
     const deleteEndpoint = `${apiEndpoint}/${contactIdIncoming}/${organizationIdIncoming}`;
     const response = await http.delete(deleteEndpoint);
     return response.data;
+  }
+
+  static async importContacts(contacts: BulkImportContactsDTO[]) {
+    try {
+      const response = await http.post(`${apiEndpoint}/bulk-import`, contacts);
+      return response.data;
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        throw new Error(error.response.data.error);
+      } else {
+        throw error;
+      }
+    }
   }
 
   private static getUpdatedContactDTO(contactDTO: CreateUpdateContactDTO) {

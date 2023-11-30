@@ -17,6 +17,19 @@ export interface Contact {
     }[];
 }
 
+export interface ImportContactDTO {
+  first_name: string,
+  last_name: string,
+  email: string,
+  phone: string,
+  organizationName: string,
+  exten?: string
+}
+
+export interface BulkImportContactsDTO {
+  contacts: ImportContactDTO[];
+}
+
 export interface OrganizationContact {
   contactId: number,
   organizationId: number,
