@@ -72,7 +72,7 @@ function CreateUpdateCommunication() {
       .items(Joi.object().label('User'))
       .label('Users')
       .required(),
-    note: Joi.string().allow('').label('Note'),
+    note: Joi.string().allow('').max(1024).label('Note'),
     locationId: Joi.number().allow(null).label('Location ID'),
     organizationLocation: Joi.object().allow(null).label('Location'),
     organizations: Joi.array()
