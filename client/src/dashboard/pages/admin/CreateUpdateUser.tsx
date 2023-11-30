@@ -9,6 +9,7 @@ import officeService from '@/services/officeService';
 import { UserDTO } from '@/types/user';
 import { EtownOffice } from '@/types/office';
 import Loading from '@/shared/components/Loading';
+import ReactiveSearch from '@/shared/components/ReactiveSearch';
 
 interface FormProps {
   office: EtownOffice | null;
@@ -70,7 +71,7 @@ function CreateUpdateUser() {
       console.log('Submit to api', newUser);
 
       if (isUpdateMode) {
-        await userService.update(userId!, { ...form.data, id: userId! });
+        await userService.update(userId!, newUser);
       } else {
         await userService.create(newUser);
       }
@@ -113,14 +114,19 @@ function CreateUpdateUser() {
       <form className={styles.formContainer}>
         {form.renderInput({ id: 'name', label: 'Name', type: 'string' })}
         {form.renderInput({ id: 'email', label: 'Email', type: 'string' })}
-        {form.renderSearch({
-          id: 'office',
-          items: allOffices,
-          headerLabel: 'Office',
-          selectionLabel: 'Select Office',
-          keyPath: 'id',
-          valuePath: 'name',
-        })}
+        <ReactiveSearch
+          id="office"
+          items={allOffices}
+          headerLabel="Office"
+          resetOnSelect={false}
+          selectionLabel="Select Office"
+          idPath="id"
+          valuePath="name"
+          value={form.data.office}
+          error={undefined}
+          onRefresh={undefined}
+          onChange={(newOffice:EtownOffice) => { form.handleDataChange('office', newOffice); }}
+        />
         {form.renderInput({
           id: 'permissionLevel',
           label: 'Permission Level',
