@@ -11,13 +11,22 @@ import errorHandler from '../errorHandler';
 import { CreateUpdateCommunicationDTO } from '../types/CreateUpdateCommunicationDTO';
 import { setContacts, setOrganizations, setUsers } from '../mixins/communications';
 import isAuthorized from '../middleware/isAuthorized';
+import { OrganizationAliases } from '../database/models/organizationAliases';
+import { ContactAliases } from '../database/models/contactAliases';
 
 const communicationsRouter: Router = express.Router();
 
 // GET all communications
 communicationsRouter.get('/', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
 	const communications = await Communications.findAll({
-		include: [OrganizationLocations, Organizations],
+		include: [OrganizationLocations,{
+			model: Organizations,
+			include: [OrganizationAliases] // Include OrganizationAliases for searching
+		}, 
+		{
+			model: Contacts,
+			include: [ContactAliases] // Include ContactAliases for searching
+		}],
 		order: [['createdAt', 'DESC']],
 	});
 	res.json(communications);

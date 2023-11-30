@@ -68,7 +68,7 @@ function Contacts() {
     <div className={styles.content}>
       <h1>Contacts</h1>
 
-      <TableSearch SearchTerm={filteredContacts} onSearchChange={(value) => setSearchTerm(value)} />
+      <TableSearch SearchTerm={searchTerm} onSearchChange={(value) => setSearchTerm(value)} />
 
       <ClickableTable
         style={{ width: '20px' }}

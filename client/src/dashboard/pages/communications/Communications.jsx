@@ -5,10 +5,13 @@ import ClickableTable from '../../../shared/components/ClickableTable';
 import communicationService from '@/services/communicationService';
 import CreateButton from '@/shared/components/CreateButton';
 import formatDate from '@/utils/formatDate';
+import TableSearch from '@/shared/components/TableSearch';
+import filterSearch from '@/utils/filterSearch';
 
 function Communications() {
   const navigate = useNavigate();
   const [communications, setCommunications] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchCommunications = async () => {
@@ -16,11 +19,14 @@ function Communications() {
 
       data = data.map((comm) => {
         const orgs = comm.organizations;
-        if (!orgs) return comm;
+        const conts = comm.contacts;
+
+        if (!orgs && !conts) return comm;
 
         return {
           ...comm,
-          orgsNames: orgs.map((org) => org.name).join(', '),
+          orgsNames: orgs ? orgs.map((org) => org.name).join(', ') : '',
+          contactsNames: conts ? conts.map((contact) => contact.name).join(', ') : '',
           date: formatDate(comm.date),
         };
       });
@@ -34,7 +40,9 @@ function Communications() {
   const columns = [
     { title: 'Organizations', field: 'orgsNames' },
     { title: 'Note', field: 'note' },
+    { title: 'Contacts', field: 'contactsNames' },
     { title: 'Date', field: 'date' },
+
   ];
 
   const handleRowClick = (row) => {
@@ -62,6 +70,8 @@ function Communications() {
     }
   };
 
+  const filterComms = filterSearch(communications, searchTerm);
+
   const goToCreate = () => navigate('/communications/create');
 
   return (
@@ -70,10 +80,13 @@ function Communications() {
         Communications
         <CreateButton handleClick={goToCreate} />
       </h1>
+
+      <TableSearch SearchTerm={searchTerm} onSearchChange={(value) => setSearchTerm(value)} />
+
       <ClickableTable
         style={{ width: '20px' }}
         columns={columns}
-        data={communications}
+        data={filterComms}
         onRowClick={handleRowClick}
         onRowDelete={handleRowDelete}
         deleteModalRenderer={deleteModalRenderer}
