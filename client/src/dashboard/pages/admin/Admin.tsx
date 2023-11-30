@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import userService from '@/services/userService';
+import TableSearch from '@/shared/components/TableSearch';
+import filterSearch from '@/utils/filterSearch';
 import ClickableTable from '@/shared/components/ClickableTable';
 import styles from './Admin.module.css';
 
@@ -10,6 +12,7 @@ function Admin() {
   const [users, setUsers] = useState([]);
   const formatDate = (date:any) => (date ? format(new Date(date), 'PPpp') : '');
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -20,6 +23,8 @@ function Admin() {
 
     fetchUsers();
   }, []);
+
+  const filteredUsers = filterSearch(users, searchTerm);
 
   const handleRowClick = (row: any) => {
     navigate(`/admin/${row.id}/edit`);
@@ -52,9 +57,10 @@ function Admin() {
       <div className="mb-4 pb-4">
         <h1>Admin Portal</h1>
         <h2> Users </h2>
+        <TableSearch searchTerm={searchTerm} onSearchChange={(value) => setSearchTerm(value)} />
         <ClickableTable
           columns={userColumns}
-          data={users}
+          data={filteredUsers}
           onRowClick={handleRowClick}
           onRowDelete={handleRowDelete}
           deleteModalRenderer={undefined}
