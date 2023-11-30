@@ -32,7 +32,6 @@ function Contacts() {
   }, []);
 
   const columns = [
-    { title: 'Communication Status', field: 'comStatus' }, // adding column for flag
     { title: 'First Name', field: 'first_name' },
     { title: 'Last Name', field: 'last_name' },
     { title: 'Organization', field: 'organizationName' },
