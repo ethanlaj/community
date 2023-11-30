@@ -192,7 +192,7 @@ contactsRouter.post('/bulk-import', isAuthorized(2), errorHandler(async (req: Re
 	try {
 
 		const emails = contacts.map((contact: ImportContactDTO) => contact.email);
-		const phoneExtensions = contacts.map((contact: ImportContactDTO) => `${contact.phone}-${contact.exten}`);
+		const phoneExtensions = contacts.map((contact: ImportContactDTO) => `${contact.phone} ext ${contact.exten}`);
 		const duplicateEmails = emails.filter((email: any, index: any) => emails.indexOf(email) !== index);
 		const duplicatePhoneExtensions = phoneExtensions.filter((combined:any, index:any) => phoneExtensions.indexOf(combined) !== index);
 

@@ -72,6 +72,16 @@ function Organizations() {
     }
   };
 
+  const handleImport = async (importedData) => {
+    try {
+      await organizationService.createBulk(importedData);
+      toast.success('Organizations imported successfully');
+    } catch (error) {
+      console.log('error from org', error);
+      toast.error(error.message);
+    }
+  };
+
   const goToCreate = () => navigate('/organizations/create');
 
   const filteredOrganizations = filterSearch(organizations, combinedSearchTerm);
@@ -99,7 +109,7 @@ function Organizations() {
         <ProtectedElement minLevel={2}>
           <ImportButton
             fields={importFields}
-            serviceFunction={organizationService.createBulk}
+            serviceFunction={handleImport}
           />
           <DownloadTemplateButton template={importTemplate} name="OrganizationsTemplate.csv" />
         </ProtectedElement>

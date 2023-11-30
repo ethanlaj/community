@@ -113,6 +113,37 @@ organizationsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request,
 organizationsRouter.post('/bulk', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
 	const organizationsData = req.body as CreateOrganizationBulkDTO[];
 	try {
+		const organizationNames = organizationsData.map(data => data.name);
+		const nameCount = new Map<string, number>();
+		organizationNames.forEach(name => {
+			nameCount.set(name, (nameCount.get(name) || 0) + 1);
+		});
+	
+		// Find duplicate organization names
+		const duplicateNames: string[] = [];
+		nameCount.forEach((count, name) => {
+			if (count > 1) {
+				duplicateNames.push(name);
+			}
+		});
+	
+		if (duplicateNames.length > 0) {
+			const displayedNames = duplicateNames.slice(0, 3); 
+			throw new Error(`Duplicate organization names found in the import file: ${displayedNames.join(', ')} ${duplicateNames.length > 2 ? '...' : ''}`);
+		}
+	
+		const existingOrganizations = await Organizations.findAll({
+			where: { 
+				name: organizationNames 
+			}
+		});
+	
+		if (existingOrganizations.length > 0) {
+			const existingNames = existingOrganizations.map(org => org.name);
+			const displayedNames = existingNames.slice(0, 3); 
+			throw new Error(`Organization already exists in the database: ${displayedNames.join(', ')} ${existingNames.length > 2 ? '...' : ''}`);
+		}
+
 		const newOrganizations = await Organizations.bulkCreate(
 			Object.values(organizationsData).map((data: CreateOrganizationBulkDTO) => ({
 				name: data.name,
@@ -182,7 +213,12 @@ organizationsRouter.post('/bulk', isAuthorized(2), errorHandler(async (req: Requ
 			data: newOrganizations,
 		});
 	} catch (error) {
-		res.status(500).send((error as Error).message);
+		if (error instanceof Error &&( error.message.startsWith('Organization')|| error.message.startsWith('Duplicate'))) {
+			console.log('error',error.message);
+			res.status(400).send({ error: error.message });
+		} else {
+			res.status(500).send('An internal server error occurred');
+		}
 	}
 })
 );
