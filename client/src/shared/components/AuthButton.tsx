@@ -2,6 +2,7 @@ import { Button } from 'react-bootstrap';
 import { useMsal } from '@azure/msal-react';
 import { msalRequest } from '@/config';
 import useUserData from '../hooks/useUserData';
+import styles from './AuthButton.module.css';
 
 function AuthButton() {
   const { accounts, instance } = useMsal();
@@ -22,7 +23,7 @@ function AuthButton() {
   if (account) {
     return (
       <div className="mt-auto p-4">
-        <div className="mb-2 text-center text-lg font-semibold">{`Welcome, ${firstName}!`}</div>
+        <div className={styles.welcome}>{`Welcome, ${firstName}!`}</div>
         <Button variant="danger" onClick={logout} className="w-full">
           Logout
         </Button>
