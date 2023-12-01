@@ -13,15 +13,13 @@ function Sidebar() {
 
   return (
     <div className={`${styles.sidebar} flex flex-col`}>
-      <ProtectedElement minLevel={2}>
-        <li className={styles.nav}>
-          <div onClick={() => null}>
-            <NavLink to="/" activeclassname={styles.activeNavLink}>
-              <img src="/ElizabethtownLogo.png" alt="Logo" className={styles.logoImage} />
-            </NavLink>
-          </div>
-        </li>
-      </ProtectedElement>
+      <li className={styles.nav}>
+        <div onClick={() => null}>
+          <NavLink to="/" activeclassname={styles.activeNavLink}>
+            <img src="/ElizabethtownLogo.png" alt="Logo" className={styles.logoImage} />
+          </NavLink>
+        </div>
+      </li>
       <ul className={styles.nav}>
         <ProtectedElement minLevel={4}>
           <li className={styles.navItem}>
