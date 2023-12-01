@@ -5,7 +5,7 @@
 * ignoredKeys allows you to define a group of keys you dont want to be checked from the search term
 *   Default ignoredKeys are createdAt updatedAt and id
 */
-const filterSearch = (objects, searchTerm, additionalValues = [], ignoredKeys = [], surface = true) => {
+const filterSearch = (objects, searchTerm, additionalValues = [], ignoredKeys = []) => {
   const fullignoredKeys = ['createdAt', 'updatedAt', 'id', ...ignoredKeys];
 
   const checkAliases = (obj) => {
@@ -25,13 +25,6 @@ const filterSearch = (objects, searchTerm, additionalValues = [], ignoredKeys = 
     // Check for number matches
     if (objValues.some((value) => typeof value === 'number' && value === parseFloat(searchTerm))) {
       return true;
-    }
-
-    // Check aliases for matches
-    if (surface && obj.aliases && obj.aliases.length) {
-      if (obj.aliases.some((alias) => alias.alias.toLowerCase().includes(searchTerm.toLowerCase()))) {
-        return true;
-      }
     }
 
     // Recursively check nested objects
