@@ -5,7 +5,7 @@
 * ignoredKeys allows you to define a group of keys you dont want to be checked from the search term
 *   Default ignoredKeys are createdAt updatedAt and id
 */
-const filterSearch = (objects, searchTerm, additionalValues = [], ignoredKeys = [], surface = false) => {
+const filterSearch = (objects, searchTerm, additionalValues = [], ignoredKeys = [], surface = true) => {
   const fullignoredKeys = ['createdAt', 'updatedAt', 'id', ...ignoredKeys];
 
   const checkAliases = (obj) => {
