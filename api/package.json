@@ -33,7 +33,7 @@
     "sequelize": "^6.33.0",
     "sequelize-auto": "^0.8.8",
     "sequelize-cli": "^6.6.1",
-    "sequelize-typescript": "^2.1.5",
+    "sequelize-typescript": "^2.1.6",
     "typescript": "^5.2.2"
   },
   "devDependencies": {
