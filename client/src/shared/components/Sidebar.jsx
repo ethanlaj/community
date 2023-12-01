@@ -41,15 +41,26 @@ function Sidebar() {
             <span className={isExpanded.org ? styles.arrowUp : styles.arrowDown} />
           </div>
           {isExpanded.org && (
-            <ProtectedElement minLevel={2}>
-              <ul className={styles.subNav}>
-                <li className={styles.subNavItem}>
-                  <NavLink to="/organizations/create" activeclassname={styles.activeNavLink}>
-                    - Create
-                  </NavLink>
-                </li>
-              </ul>
-            </ProtectedElement>
+            <>
+              <ProtectedElement minLevel={2}>
+                <ul className={styles.subNav}>
+                  <li className={styles.subNavItem}>
+                    <NavLink to="/organizations/create" activeclassname={styles.activeNavLink}>
+                      - Create
+                    </NavLink>
+                  </li>
+                </ul>
+              </ProtectedElement>
+              <ProtectedElement minLevel={4}>
+                <ul className={styles.subNav}>
+                  <li className={styles.subNavItem}>
+                    <NavLink to="/organizations/flag" activeclassname={styles.activeNavLink}>
+                      - Update Flag
+                    </NavLink>
+                  </li>
+                </ul>
+              </ProtectedElement>
+            </>
           )}
         </li>
         <li className={styles.navItem}>
