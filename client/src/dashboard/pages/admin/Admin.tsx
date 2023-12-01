@@ -26,8 +26,6 @@ function Admin() {
 
   const filteredUsers = filterSearch(users, searchTerm, [], ['officeId']);
 
-  console.log(filteredUsers);
-
   const handleRowClick = (row: any) => {
     navigate(`/admin/${row.id}/edit`);
   };
