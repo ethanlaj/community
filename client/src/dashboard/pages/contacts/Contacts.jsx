@@ -9,6 +9,7 @@ import filterSearch from '@/utils/filterSearch';
 import ImportButton from '@/shared/components/ImportButton';
 import { importFields, importTemplate } from './constants';
 import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
+import ProtectedElement from '@/shared/components/ProtectedElement';
 
 function Contacts() {
   const navigate = useNavigate();
@@ -80,10 +81,12 @@ function Contacts() {
   return (
     <div className={styles.content}>
       <h1>Contacts</h1>
-      <div className={styles.btnContainer}>
-        <ImportButton fields={importFields} serviceFunction={handleImport} />
-        <DownloadTemplateButton template={importTemplate} name="ContactsTemplate.csv" />
-      </div>
+      <ProtectedElement minLevel={2}>
+        <div className={styles.btnContainer}>
+          <ImportButton fields={importFields} serviceFunction={handleImport} />
+          <DownloadTemplateButton template={importTemplate} name="ContactsTemplate.csv" />
+        </div>
+      </ProtectedElement>
       <TableSearch SearchTerm={searchTerm} onSearchChange={(value) => setSearchTerm(value)} />
       <ClickableTable
         style={{ width: '20px' }}
