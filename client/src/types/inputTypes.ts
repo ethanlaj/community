@@ -21,7 +21,7 @@ export interface UseFormReturn<T> {
     renderEditableTable: (props: EditableTableProps) => JSX.Element;
     renderButton: (label: string) => JSX.Element;
     renderSearch: (props: RenderSearchProps) => JSX.Element;
-    renderSelect: (id: keyof T, label: string, options: RenderSelectOption[], blankOption: boolean) => JSX.Element;
+    renderSelect: (id: keyof T, label: string, options: RenderSelectOption[], blankOption?: boolean) => JSX.Element;
     renderInput: (props: RenderInputProps<T>) => JSX.Element;
 }
 
