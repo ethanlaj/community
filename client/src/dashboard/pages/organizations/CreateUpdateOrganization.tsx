@@ -7,7 +7,8 @@ import CreateLocation from '@/dashboard/pages/organizations/CreateLocation';
 import organizationService from '@/services/organizationService';
 import AddUpdateAliases from '@/shared/components/AddUpdateAliases';
 import Loading from '@/shared/components/Loading';
-import FlagLegend from './FlagLegend';
+import ImageSelect from '@/shared/components/CustomSelect';
+import FlagOption from './FlagOption';
 
 interface FormProps {
   name: string;
@@ -103,38 +104,40 @@ function CreateUpdateOrganization() {
 
   return (
     <div>
-      <div style={{ display: 'flex' }}>
-        <div style={{ flex: 1 }}>
-          <h1>
-            {isUpdateMode ? 'Update' : 'Create'}
-            {' '}
-            Organization
-          </h1>
-          <form className="m-auto w-70p">
-            {form.renderInput({ id: 'name', label: 'Name' })}
+      <h1>
+        {isUpdateMode ? 'Update' : 'Create'}
+        {' '}
+        Organization
+      </h1>
+      <form className="m-auto w-70p">
+        {form.renderInput({ id: 'name', label: 'Name' })}
 
-            {/* Flag field */}
-            {form.renderInput({
-              id: 'flag',
-              label: 'Flag',
-              type: 'number',
-            })}
+        <ImageSelect
+          id="flag"
+          value={form.data.flag}
+          error={form.errors.flag}
+          label="Flag"
+          options={[
+            { value: 0, render: () => <FlagOption flag={0} /> },
+            { value: 1, render: () => <FlagOption flag={1} /> },
+            { value: 2, render: () => <FlagOption flag={2} /> },
+            { value: 3, render: () => <FlagOption flag={3} /> },
+          ]}
+          onSelect={(option) => form.handleDataChange('flag', option.value)}
+        />
 
-            <h3>Locations</h3>
-            {form.renderChildForm(form, 'organizationLocations', CreateLocation, form.data.organizationLocations)}
+        <h3>Locations</h3>
+        {form.renderChildForm(form, 'organizationLocations', CreateLocation, form.data.organizationLocations)}
 
-            <h3>Aliases</h3>
-            <AddUpdateAliases
-              aliases={form.data.aliases}
-              handleChange={form.handleDataChange}
-              error={form.errors.aliases}
-            />
+        <h3>Aliases</h3>
+        <AddUpdateAliases
+          aliases={form.data.aliases}
+          handleChange={form.handleDataChange}
+          error={form.errors.aliases}
+        />
 
-            {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
-          </form>
-        </div>
-        <FlagLegend />
-      </div>
+        {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
+      </form>
     </div>
   );
 }
