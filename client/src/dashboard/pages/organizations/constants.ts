@@ -120,8 +120,15 @@ export const importTemplate = [
   'Sample Company,Harrisburg,Lancaster,York,Reading,Philadelphia,123 Main St,432 East Willow St,567 West Main St,142 Oak St,332 Orange St',
 ].join('\n');
 
-export const exportColumns = [
+export const tableColumns = [
   { title: '', field: 'flag', tdStyle: { width: '50px' } },
+  { title: 'Name', field: 'name' },
+  { title: 'Last Contacted', field: 'lastConDate' },
+  { title: 'Last Contacted By', field: 'lastConBy' },
+];
+
+export const exportColumns = [
+  { title: 'Flag', field: 'flag', tdStyle: { width: '50px' } },
   { title: 'Name', field: 'name' },
   { title: 'Last Contacted', field: 'lastConDate' },
   { title: 'Last Contacted By', field: 'lastConBy' },
