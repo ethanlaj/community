@@ -15,8 +15,8 @@ function ImportButton({ fields, serviceFunction }) {
 
   return (
     <>
-      <button className="btn btn-primary ml-4" type="button" onClick={handleOpen}>Import Bulk</button>
-      <ExcelImport isOpen={isOpen} onClose={handleClose} onSubmit={handleImport} fields={fields} />
+      <button className="btn btn-primary" type="button" onClick={handleOpen}>Import Bulk</button>
+      <ExcelImport isOpen={isOpen} onClose={handleClose} onSubmit={handleImport} fields={fields} style={{ minWidth: '110px' }} />
     </>
   );
 }

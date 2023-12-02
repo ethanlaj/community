@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import exportToExcel from '../../../utils/excelExport';
-import styles from './Organizations.module.css?inline';
+import styles from './Organizations.module.css';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import organizationService from '@/services/organizationService';
 import ExcelExportButton from '@/shared/components/ExcelExportButton';
@@ -91,17 +91,7 @@ function Organizations() {
         Organizations
         <CreateButton handleClick={goToCreate} />
       </h1>
-
-      <TableSearch searchTerm={combinedSearchTerm} onSearchChange={(value) => setCombinedSearchTerm(value)} />
-
-      <ClickableTable
-        style={{ width: '20px' }}
-        columns={exportColumns}
-        data={filteredOrganizations}
-        onRowClick={handleRowClick}
-        onRowDelete={handleRowDelete}
-      />
-      <div className="d-flex align-items-center justify-content-start mt-8">
+      <div className={styles.btnContainer}>
         <ExcelExportButton onExport={handleExport}>
           Export
         </ExcelExportButton>
@@ -113,6 +103,15 @@ function Organizations() {
           <DownloadTemplateButton template={importTemplate} name="OrganizationsTemplate.csv" />
         </ProtectedElement>
       </div>
+      <TableSearch searchTerm={combinedSearchTerm} onSearchChange={(value) => setCombinedSearchTerm(value)} />
+
+      <ClickableTable
+        style={{ width: '20px' }}
+        columns={exportColumns}
+        data={filteredOrganizations}
+        onRowClick={handleRowClick}
+        onRowDelete={handleRowDelete}
+      />
 
     </div>
   );

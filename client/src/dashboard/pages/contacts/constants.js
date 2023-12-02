@@ -73,3 +73,12 @@ export const importTemplate = [
   'First Name,Last Name,Organization Name,Email,Phone Number,Extension',
   'John,Doe,Acme Corp,johndoe@example.com,123-456-7890,123',
 ].join('\n');
+
+export const exportColumns = [
+  { title: 'First Name', field: 'first_name' },
+  { title: 'Last Name', field: 'last_name' },
+  { title: 'Organization', field: 'organizationName' },
+  { title: 'Email', field: 'email' },
+  { title: 'Phone Number', field: 'phone' },
+  { title: 'Extension', field: 'exten' },
+];

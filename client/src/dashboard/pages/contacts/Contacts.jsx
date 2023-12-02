@@ -7,9 +7,11 @@ import contactService from '@/services/contactService';
 import TableSearch from '@/shared/components/TableSearch';
 import filterSearch from '@/utils/filterSearch';
 import ImportButton from '@/shared/components/ImportButton';
-import { importFields, importTemplate } from './constants';
+import ExcelExportButton from '@/shared/components/ExcelExportButton';
+import { importFields, importTemplate, exportColumns } from './constants';
 import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
 import ProtectedElement from '@/shared/components/ProtectedElement';
+import exportToExcel from '../../../utils/excelExport';
 
 function Contacts() {
   const navigate = useNavigate();
@@ -78,15 +80,31 @@ function Contacts() {
     }
   };
 
+  const handleExport = () => {
+    const dataToExport = contacts.map((contact) => {
+      const exportRow = {};
+      exportColumns.forEach((column) => {
+        exportRow[column.title] = contact[column.field] || '';
+      });
+      return exportRow;
+    });
+    exportToExcel([{ name: 'Contacts', data: dataToExport }], 'Contacts');
+  };
+
   return (
     <div className={styles.content}>
       <h1>Contacts</h1>
-      <ProtectedElement minLevel={2}>
-        <div className={styles.btnContainer}>
+
+      <div className={styles.btnContainer}>
+        <ExcelExportButton onExport={handleExport}>
+          Export
+        </ExcelExportButton>
+        <ProtectedElement minLevel={2}>
           <ImportButton fields={importFields} serviceFunction={handleImport} />
           <DownloadTemplateButton template={importTemplate} name="ContactsTemplate.csv" />
-        </div>
-      </ProtectedElement>
+        </ProtectedElement>
+      </div>
+
       <TableSearch SearchTerm={searchTerm} onSearchChange={(value) => setSearchTerm(value)} />
       <ClickableTable
         style={{ width: '20px' }}

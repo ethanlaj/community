@@ -1,4 +1,12 @@
-.formContainer{
-    margin:auto;
-    width:"20px";
+.formContainer {
+  margin: auto;
+  width: "20px";
+}
+
+.btnContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 20px;
 }
