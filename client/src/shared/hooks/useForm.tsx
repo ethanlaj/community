@@ -168,13 +168,14 @@ function useForm<T extends object>({
     />
   );
 
-  const renderSelect = (id: keyof T, label: string, options: RenderSelectOption[]) => (
+  const renderSelect = (id: keyof T, label: string, options: RenderSelectOption[], blankOption = true) => (
     <Select
       id={id}
       label={label}
       options={options}
       value={data[id]}
       error={errors[id]}
+      blankOption={blankOption}
       onChange={handleChange}
     />
   );
