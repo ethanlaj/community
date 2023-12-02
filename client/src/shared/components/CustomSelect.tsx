@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Alert, Form } from 'react-bootstrap';
 import { IoMdArrowDropdown } from 'react-icons/io';
 
@@ -21,6 +21,20 @@ function CustomSelect({
 }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<CustomOption>(options.find((option) => option.value === value)!);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [ref]);
 
   const handleSelect = (option: CustomOption) => {
     setSelectedOption(option);
@@ -29,12 +43,12 @@ function CustomSelect({
   };
 
   return (
-    <Form.Group className="mb-3" controlId={id}>
+    <Form.Group className="mb-3" controlId={id} ref={ref}>
       <Form.Label>{label}</Form.Label>
       <div className="relative">
         <button
           type="button"
-          className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-left bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring"
+          className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-left bg-white border border-gray-300 rounded-lg shadow-sm focus:ring"
           onClick={() => setIsOpen(!isOpen)}
         >
           <div className="flex items-center">
@@ -50,6 +64,8 @@ function CustomSelect({
                 key={option.value}
                 className="flex items-center px-4 py-2 text-sm cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSelect(option)}
+                tabIndex={0}
+                onKeyDown={(event) => event.key === 'Enter' && handleSelect(option)}
               >
                 {option.render()}
               </li>
