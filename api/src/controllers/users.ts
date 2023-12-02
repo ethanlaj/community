@@ -27,6 +27,7 @@ usersRouter.get('/', isAuthorized(1), errorHandler(async (req: Request, res: Res
 				where: officeId ? { id: officeId } : {},
 				required: officeId ? true : false,
 			},
+			order: [['officeId', 'ASC'],['permissionLevel','DESC']]
 		});
 
 		res.status(200).json(users);

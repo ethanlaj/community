@@ -6,6 +6,7 @@ import { ImportContactDTO } from '../types/ImportContactDTO';
 import { setAliases, setOrganizations, setOrganizationByName } from '../mixins/contacts';
 import { ContactAliases } from '../database/models/contactAliases';
 import isAuthorized from '../middleware/isAuthorized';
+import { OrganizationAliases } from '../database/models/organizationAliases';
 import { Op } from 'sequelize';
 
 const contactsRouter: Router = express.Router();
@@ -34,14 +35,14 @@ contactsRouter.get('/', isAuthorized(1), errorHandler(async (req: Request, res: 
 
 
 contactsRouter.get('/getbyOrg', isAuthorized(1), errorHandler(async (req: Request, res: Response) => {
-
 	try {
 		const results = await OrganizationContacts.findAll({
-			attributes: ['contactId','email', 'phone','organizationId', 'exten'],
+			attributes: ['contactId', 'email', 'phone', 'organizationId', 'exten'],
 			include: [
 				{
 					model: Organizations,
 					attributes: ['name'],
+					include: [OrganizationAliases]
 				},
 				{
 					model: Contacts,
@@ -50,19 +51,30 @@ contactsRouter.get('/getbyOrg', isAuthorized(1), errorHandler(async (req: Reques
 				},
 			],
 		});
-	
-		const contactResults = results.map((result) => ({
-			first_name: result.contact? result.contact.first_name : null,
-			last_name: result.contact? result.contact.last_name : null,
-			email: result.email,
-			phone: result.phone,
-			exten: result.exten,
-			organizationName: result.organization ? result.organization.name: null,
-			contactId: result.contactId,
-			organizationId: result.organizationId,
-			aliases: result.contact ? result.contact.aliases : null,
-		}));
-	
+
+		const contactResults = results.map((result) => {
+			const organizationName = result.organization ? result.organization.name : null;
+			const organizationAliases = result.organization ? result.organization.aliases : null;
+			const contactAliases = result.contact ? result.contact.aliases : null;
+
+			const organizationAliasList = organizationAliases ? organizationAliases.map(alias => alias.alias) : [''];
+			const contactAliasList = contactAliases ? contactAliases.map(alias => alias.alias) : [''];
+
+			const combinedAliasList = organizationAliasList.concat(contactAliasList);
+
+			return {
+				first_name: result.contact ? result.contact.first_name : null,
+				last_name: result.contact ? result.contact.last_name : null,
+				email: result.email,
+				phone: result.phone,
+				exten: result.exten,
+				organizationName: organizationName,
+				aliases: combinedAliasList, // Combine organizationAlias and contactAlias into one alias
+				contactId: result.contactId,
+				organizationId: result.organizationId,
+			};
+		});
+
 		res.status(200).json(contactResults);
 	} catch (error) {
 		res.status(500).send((error as Error).message);

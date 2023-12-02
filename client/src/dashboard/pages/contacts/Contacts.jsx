@@ -56,7 +56,7 @@ function Contacts() {
     { title: 'Extension', field: 'exten' },
   ];
 
-  const filteredContacts = filterSearch(contacts, searchTerm);
+  const filteredContacts = filterSearch(contacts, searchTerm, [], ['organizationId', 'contactId']);
 
   const handleRowClick = (row) => {
     navigate(`/contacts/${row.contactId}`);

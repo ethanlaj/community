@@ -85,7 +85,8 @@ function Organizations() {
 
   const goToCreate = () => navigate('/organizations/create');
 
-  const filteredOrganizations = filterSearch(organizations, combinedSearchTerm);
+  const ignoredKeys = ['address', 'lastConDate', 'date', 'UserId', 'organizationId', 'phone', 'exten', 'OrganizationId', 'contactId', 'locationId'];
+  const filteredOrganizations = filterSearch(organizations, combinedSearchTerm, [], ignoredKeys);
 
   return (
     <div className={styles.content}>
