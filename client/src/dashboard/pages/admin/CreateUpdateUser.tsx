@@ -125,14 +125,26 @@ function CreateUpdateUser() {
           value={form.data.office}
           error={undefined}
           onRefresh={undefined}
-          onChange={(newOffice:EtownOffice) => { form.handleDataChange('office', newOffice); }}
+          onChange={(newOffice: EtownOffice) => { form.handleDataChange('office', newOffice); }}
         />
-        {form.renderInput({
-          id: 'permissionLevel',
-          label: 'Permission Level',
-          type: 'number',
-          placeholder: 'Permission Level 1-4',
-        })}
+        {form.renderSelect('permissionLevel', 'Permission Level', [
+          {
+            name: '1 - Read Only',
+            value: 1,
+          },
+          {
+            name: '2 - Create & Update',
+            value: 2,
+          },
+          {
+            name: '3 - Delete',
+            value: 3,
+          },
+          {
+            name: '4 - Admin',
+            value: 4,
+          },
+        ], false)}
         {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
       </form>
     </div>

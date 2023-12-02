@@ -1,4 +1,5 @@
-import express, { Router, Request, Response } from 'express';
+import express, { Router, Response } from 'express';
+import { CRequest as Request } from '../types/CRequest';
 import { Communications, Organizations, OrganizationLocations, Contacts, Users, EtownOffices } from '../database/models';
 import errorHandler from '../errorHandler';
 import { CreateUpdateOrganizationDTO } from '../types/CreateUpdateOrganizationDTO';
@@ -84,12 +85,18 @@ organizationsRouter.get('/name/:name', errorHandler(async (req: Request, res: Re
 // POST a new organization
 organizationsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
 	const { name, organizationLocations, aliases } = req.body as CreateUpdateOrganizationDTO;
-	
+
+	let flag = 0;
+	if (req.user!.permissionLevel >= 4) {
+		flag = req.body.flag;
+	}
+
 	const t = await Organizations.sequelize!.transaction();
 
 	try {
 		const newOrganization = await Organizations.create({
 			name,
+			flag,
 		}, { transaction: t });
 
 		if (organizationLocations) {
@@ -226,6 +233,10 @@ organizationsRouter.post('/bulk', isAuthorized(2), errorHandler(async (req: Requ
 organizationsRouter.put('/:id', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {
 	const id = req.params.id;
 	const organizationData = req.body as CreateUpdateOrganizationDTO;
+
+	if (req.user!.permissionLevel < 4) {
+		delete organizationData.flag;
+	}
 
 	const t = await Organizations.sequelize!.transaction();
 
