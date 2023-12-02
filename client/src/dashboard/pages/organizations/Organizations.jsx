@@ -7,7 +7,9 @@ import ClickableTable from '../../../shared/components/ClickableTable';
 import organizationService from '@/services/organizationService';
 import ExcelExportButton from '@/shared/components/ExcelExportButton';
 import ImportButton from '@/shared/components/ImportButton';
-import { importFields, importTemplate, exportColumns } from './constants';
+import {
+  importFields, importTemplate, exportColumns, tableColumns,
+} from './constants';
 import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
 import ProtectedElement from '@/shared/components/ProtectedElement';
 import CreateButton from '@/shared/components/CreateButton';
@@ -109,7 +111,7 @@ function Organizations() {
       <TableSearch searchTerm={combinedSearchTerm} onSearchChange={(value) => setCombinedSearchTerm(value)} />
 
       <ClickableTable
-        columns={exportColumns.map((column) => ({
+        columns={tableColumns.map((column) => ({
           ...column,
           render: (rowData) => {
             if (column.field === 'flag') {
