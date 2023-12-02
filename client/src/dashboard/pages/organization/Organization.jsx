@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useParams, useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
 import exportToExcel from '../../../utils/excelExport';
 import organizationService from '@/services/organizationService';
 import ClickableTable from '@/shared/components/ClickableTable';
@@ -9,14 +8,13 @@ import ExcelExportButton from '../../../shared/components/ExcelExportButton';
 import Loading from '@/shared/components/Loading';
 import UpdateButton from '@/shared/components/UpdateButton';
 import BackButton from '@/shared/components/BackButton';
-import formatDateOnly from '@/utils/formatDate';
+import { contactColumns, locationColumns, communicationColumns } from './constants';
 
 function Organization() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [organization, setOrganization] = useState({});
   const { id } = useParams();
-  const formatDate = (date) => (date ? format(new Date(date), 'PPpp') : '');
 
   useEffect(() => {
     const fetchOrganization = async () => {
@@ -40,29 +38,6 @@ function Organization() {
     // TODO: implement click functionality
   };
 
-  const locationColumns = [
-    { title: 'Address', field: 'address' },
-    { title: 'Name', field: 'name' },
-    { title: 'Created At', field: 'createdAt', render: (location) => formatDate(location.createdAt) },
-    { title: 'Last Updated', field: 'updatedAt', render: (location) => formatDate(location.updatedAt) },
-  ];
-
-  const contactColumns = [
-    { title: 'Name', field: 'name' },
-    { title: 'Email', field: 'OrganizationContacts.email' },
-    { title: 'Phone', field: 'OrganizationContacts.phone' },
-    { title: 'Created At', field: 'createdAt', render: (contact) => formatDate(contact.createdAt) },
-    { title: 'Last Updated', field: 'updatedAt', render: (contact) => formatDate(contact.updatedAt) },
-  ];
-
-  const communicationColumns = [
-    { title: 'Date', field: 'date', render: (communication) => formatDateOnly(communication.date) },
-    { title: 'Type', field: 'type' },
-    { title: 'Note', field: 'note' },
-    { title: 'Created At', field: 'createdAt', render: (communication) => formatDate(communication.createdAt) },
-    { title: 'Last Updated', field: 'updatedAt', render: (communication) => formatDate(communication.updatedAt) },
-  ];
-
   const handleExportAll = () => {
     exportToExcel([
       { name: 'Locations', data: organization.organizationLocations.map(mapData(locationColumns)) },
@@ -71,10 +46,12 @@ function Organization() {
     ], 'Organization_Data');
   };
 
+  const getNestedValue = (item, path) => path.split('.').reduce((o, key) => (o && o[key] ? o[key] : ''), item);
+
   const mapData = (columns) => (item) => {
     const exportRow = {};
     columns.forEach((column) => {
-      exportRow[column.title] = column.render ? column.render(item) : item[column.field];
+      exportRow[column.title] = column.render ? column.render(item) : getNestedValue(item, column.field);
     });
     return exportRow;
   };
