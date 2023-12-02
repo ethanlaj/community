@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import ExcelImport from './ExcelImport';
 
 function ImportButton({ fields, serviceFunction }) {
@@ -10,19 +9,14 @@ function ImportButton({ fields, serviceFunction }) {
 
   const handleImport = async (newData) => {
     setIsOpen(false);
-    try {
-      const { validData } = newData;
-      const response = await serviceFunction(validData);
-      toast.success(response.message);
-    } catch (error) {
-      console.error('Error during import:', error);
-    }
+    const { validData } = newData;
+    await serviceFunction(validData);
   };
 
   return (
     <>
-      <button className="btn btn-primary ml-4" type="button" onClick={handleOpen}>Import Bulk</button>
-      <ExcelImport isOpen={isOpen} onClose={handleClose} onSubmit={handleImport} fields={fields} />
+      <button className="btn btn-primary" type="button" onClick={handleOpen}>Import Bulk</button>
+      <ExcelImport isOpen={isOpen} onClose={handleClose} onSubmit={handleImport} fields={fields} style={{ minWidth: '110px' }} />
     </>
   );
 }

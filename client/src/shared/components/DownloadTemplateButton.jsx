@@ -11,7 +11,7 @@ function DownloadTemplateButton({ template, name }) {
     document.body.removeChild(link);
   };
   return (
-    <button className="btn btn-primary ml-4" type="button" onClick={handleDownloadTemplate} style={{ minWidth: '110px' }}>Template</button>
+    <button className="btn btn-primary" type="button" onClick={handleDownloadTemplate} style={{ minWidth: '110px' }}>Template</button>
   );
 }
 
