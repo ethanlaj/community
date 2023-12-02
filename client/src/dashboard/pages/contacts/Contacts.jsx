@@ -39,9 +39,9 @@ function Contacts() {
 
   const handleImport = async (importedData) => {
     try {
-      await contactService.importContacts(importedData);
+      const contactImportResponse = await contactService.importContacts(importedData);
       fetchContacts();
-      toast.success('Contacts imported successfully');
+      toast.success(`${contactImportResponse?.contacts?.length} contacts imported successfully`);
     } catch (error) {
       toast.error(error.message);
     }

@@ -10,7 +10,7 @@ type ExcelExportButtonProps = {
 // Function declaration
 function ExcelExportButton({ onExport, children }: ExcelExportButtonProps) {
   return (
-    <button type="button" className="btn btn-success d-inline-flex align-items-center justify-content-center no-wrap mr-5" onClick={onExport} style={{ minWidth: '110px' }}>
+    <button type="button" className="btn btn-success d-inline-flex align-items-center justify-content-center no-wrap mr-2.5" onClick={onExport} style={{ minWidth: '110px' }}>
 
       <FaFileExcel className="mr-2" />
       {' '}
