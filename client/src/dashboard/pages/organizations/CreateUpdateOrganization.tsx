@@ -7,8 +7,9 @@ import CreateLocation from '@/dashboard/pages/organizations/CreateLocation';
 import organizationService from '@/services/organizationService';
 import AddUpdateAliases from '@/shared/components/AddUpdateAliases';
 import Loading from '@/shared/components/Loading';
-import ImageSelect from '@/shared/components/CustomSelect';
 import FlagOption from './FlagOption';
+import CustomSelect from '@/shared/components/CustomSelect';
+import ProtectedElement from '@/shared/components/ProtectedElement';
 
 interface FormProps {
   name: string;
@@ -112,19 +113,21 @@ function CreateUpdateOrganization() {
       <form className="m-auto w-70p">
         {form.renderInput({ id: 'name', label: 'Name' })}
 
-        <ImageSelect
-          id="flag"
-          value={form.data.flag}
-          error={form.errors.flag}
-          label="Flag"
-          options={[
-            { value: 0, render: () => <FlagOption flag={0} /> },
-            { value: 1, render: () => <FlagOption flag={1} /> },
-            { value: 2, render: () => <FlagOption flag={2} /> },
-            { value: 3, render: () => <FlagOption flag={3} /> },
-          ]}
-          onSelect={(option) => form.handleDataChange('flag', option.value)}
-        />
+        <ProtectedElement minLevel={4}>
+          <CustomSelect
+            id="flag"
+            value={form.data.flag}
+            error={form.errors.flag}
+            label="Flag"
+            options={[
+              { value: 0, render: () => <FlagOption flag={0} /> },
+              { value: 1, render: () => <FlagOption flag={1} /> },
+              { value: 2, render: () => <FlagOption flag={2} /> },
+              { value: 3, render: () => <FlagOption flag={3} /> },
+            ]}
+            onSelect={(option) => form.handleDataChange('flag', option.value)}
+          />
+        </ProtectedElement>
 
         <h3>Locations</h3>
         {form.renderChildForm(form, 'organizationLocations', CreateLocation, form.data.organizationLocations)}
