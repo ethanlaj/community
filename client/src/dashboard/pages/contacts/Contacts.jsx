@@ -12,11 +12,13 @@ import { importFields, importTemplate, exportColumns } from './constants';
 import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
 import ProtectedElement from '@/shared/components/ProtectedElement';
 import exportToExcel from '../../../utils/excelExport';
+import ProgressBar from '@/shared/components/ProgressBar';
 
 function Contacts() {
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchContacts();
@@ -39,11 +41,14 @@ function Contacts() {
 
   const handleImport = async (importedData) => {
     try {
+      setLoading(true);
       const contactImportResponse = await contactService.importContacts(importedData);
       fetchContacts();
       toast.success(`${contactImportResponse?.contacts?.length} contacts imported successfully`);
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,7 +109,7 @@ function Contacts() {
           <DownloadTemplateButton template={importTemplate} name="ContactsTemplate.csv" />
         </ProtectedElement>
       </div>
-
+      {loading && <ProgressBar />}
       <TableSearch SearchTerm={searchTerm} onSearchChange={(value) => setSearchTerm(value)} />
       <ClickableTable
         style={{ width: '20px' }}

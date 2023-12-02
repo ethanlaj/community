@@ -17,10 +17,12 @@ import TableSearch from '@/shared/components/TableSearch';
 import formatDate from '@/utils/formatDate';
 import filterSearch from '@/utils/filterSearch';
 import Flag from './Flag';
+import ProgressBar from '@/shared/components/ProgressBar';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
   const [combinedSearchTerm, setCombinedSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const fetchOrganizations = async () => {
@@ -77,11 +79,14 @@ function Organizations() {
 
   const handleImport = async (importedData) => {
     try {
+      setLoading(true);
       const orgImportResponse = await organizationService.createBulk(importedData);
       fetchOrganizations();
       toast.success(`${orgImportResponse?.data?.length} organizations imported successfully`);
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -107,6 +112,7 @@ function Organizations() {
           <DownloadTemplateButton template={importTemplate} name="OrganizationsTemplate.csv" />
         </ProtectedElement>
       </div>
+      {loading && <ProgressBar />}
       <TableSearch searchTerm={combinedSearchTerm} onSearchChange={(value) => setCombinedSearchTerm(value)} />
 
       <ClickableTable

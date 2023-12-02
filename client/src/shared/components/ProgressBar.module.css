@@ -1,0 +1,47 @@
+.progressBarContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.progressBar {
+  width: 368px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  height: 10px;
+}
+
+.progress {
+  background-color: #007bff;
+  height: 100%;
+  width: 50%;
+  position: absolute;
+  animation: progressAnimation 1.7s linear infinite;
+  border-radius: 2px;
+
+  /* Diagonal stripes */
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.25) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0.25) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 20px 20px;
+}
+
+@keyframes progressAnimation {
+  0% {
+    left: -50%;
+  }
+  100% {
+    left: 100%;
+  }
+}
