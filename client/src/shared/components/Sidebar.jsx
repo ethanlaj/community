@@ -13,6 +13,13 @@ function Sidebar() {
 
   return (
     <div className={`${styles.sidebar} flex flex-col`}>
+      <li className={styles.nav}>
+        <div onClick={() => null}>
+          <NavLink to="/" activeclassname={styles.activeNavLink}>
+            <img src="/ElizabethtownLogo.png" alt="Logo" className={styles.logoImage} />
+          </NavLink>
+        </div>
+      </li>
       <ul className={styles.nav}>
         <ProtectedElement minLevel={4}>
           <li className={styles.navItem}>
@@ -41,15 +48,26 @@ function Sidebar() {
             <span className={isExpanded.org ? styles.arrowUp : styles.arrowDown} />
           </div>
           {isExpanded.org && (
-            <ProtectedElement minLevel={2}>
-              <ul className={styles.subNav}>
-                <li className={styles.subNavItem}>
-                  <NavLink to="/organizations/create" activeclassname={styles.activeNavLink}>
-                    - Create
-                  </NavLink>
-                </li>
-              </ul>
-            </ProtectedElement>
+            <>
+              <ProtectedElement minLevel={2}>
+                <ul className={styles.subNav}>
+                  <li className={styles.subNavItem}>
+                    <NavLink to="/organizations/create" activeclassname={styles.activeNavLink}>
+                      - Create
+                    </NavLink>
+                  </li>
+                </ul>
+              </ProtectedElement>
+              <ProtectedElement minLevel={4}>
+                <ul className={styles.subNav}>
+                  <li className={styles.subNavItem}>
+                    <NavLink to="/organizations/flag" activeclassname={styles.activeNavLink}>
+                      - Update Flag
+                    </NavLink>
+                  </li>
+                </ul>
+              </ProtectedElement>
+            </>
           )}
         </li>
         <li className={styles.navItem}>

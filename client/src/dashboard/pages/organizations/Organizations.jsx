@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import exportToExcel from '../../../utils/excelExport';
-import styles from './Organizations.module.css?inline';
+import styles from './Organizations.module.css';
 import ClickableTable from '../../../shared/components/ClickableTable';
 import organizationService from '@/services/organizationService';
 import ExcelExportButton from '@/shared/components/ExcelExportButton';
@@ -14,33 +14,34 @@ import CreateButton from '@/shared/components/CreateButton';
 import TableSearch from '@/shared/components/TableSearch';
 import formatDate from '@/utils/formatDate';
 import filterSearch from '@/utils/filterSearch';
+import Flag from './Flag';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
   const [combinedSearchTerm, setCombinedSearchTerm] = useState('');
   const navigate = useNavigate();
 
+  const fetchOrganizations = async () => {
+    let data = await organizationService.getAll();
+
+    data = data.map((org) => {
+      const comm = org.communications[0];
+      const lastCommDate = comm?.date;
+      if (!comm) return org;
+
+      const offices = comm.users?.map((user) => user.office?.name || '');
+
+      return {
+        ...org,
+        lastConDate: formatDate(lastCommDate),
+        lastConBy: offices.join(', ') || 'Unknown',
+      };
+    });
+
+    setOrganizations(data);
+  };
+
   useEffect(() => {
-    const fetchOrganizations = async () => {
-      let data = await organizationService.getAll();
-
-      data = data.map((org) => {
-        const comm = org.communications[0];
-        const lastCommDate = comm?.date;
-        if (!comm) return org;
-
-        const offices = comm.users?.map((user) => user.office?.name || '');
-
-        return {
-          ...org,
-          lastConDate: formatDate(lastCommDate),
-          lastConBy: offices.join(', ') || 'Unknown',
-        };
-      });
-
-      setOrganizations(data);
-    };
-
     fetchOrganizations();
   }, []);
 
@@ -72,6 +73,16 @@ function Organizations() {
     }
   };
 
+  const handleImport = async (importedData) => {
+    try {
+      const orgImportResponse = await organizationService.createBulk(importedData);
+      fetchOrganizations();
+      toast.success(`${orgImportResponse?.data?.length} organizations imported successfully`);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const goToCreate = () => navigate('/organizations/create');
 
   const ignoredKeys = ['address', 'lastConDate', 'date', 'UserId', 'organizationId', 'phone', 'exten', 'OrganizationId', 'contactId', 'locationId'];
@@ -83,28 +94,35 @@ function Organizations() {
         Organizations
         <CreateButton handleClick={goToCreate} />
       </h1>
-
-      <TableSearch searchTerm={combinedSearchTerm} onSearchChange={(value) => setCombinedSearchTerm(value)} />
-
-      <ClickableTable
-        style={{ width: '20px' }}
-        columns={exportColumns}
-        data={filteredOrganizations}
-        onRowClick={handleRowClick}
-        onRowDelete={handleRowDelete}
-      />
-      <div className="d-flex align-items-center justify-content-start mt-8">
+      <div className={styles.btnContainer}>
         <ExcelExportButton onExport={handleExport}>
           Export
         </ExcelExportButton>
         <ProtectedElement minLevel={2}>
           <ImportButton
             fields={importFields}
-            serviceFunction={organizationService.createBulk}
+            serviceFunction={handleImport}
           />
           <DownloadTemplateButton template={importTemplate} name="OrganizationsTemplate.csv" />
         </ProtectedElement>
       </div>
+      <TableSearch searchTerm={combinedSearchTerm} onSearchChange={(value) => setCombinedSearchTerm(value)} />
+
+      <ClickableTable
+        columns={exportColumns.map((column) => ({
+          ...column,
+          render: (rowData) => {
+            if (column.field === 'flag') {
+              const flagValue = rowData[column.field] || 0;
+              return <Flag flag={flagValue} />;
+            }
+            return rowData[column.field] || '';
+          },
+        }))}
+        data={filteredOrganizations}
+        onRowClick={handleRowClick}
+        onRowDelete={handleRowDelete}
+      />
 
     </div>
   );

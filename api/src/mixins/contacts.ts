@@ -51,6 +51,33 @@ export async function setOrganizations(contact: Contacts, organizations: CreateU
 	return await Promise.all([destroyPromise, updatePromises, createPromise]);
 }
 
+
+export async function setOrganizationByName(contact: Contacts, organizationId: number, organizationData: { name: string, email?: string, phone?: string, exten?: string }, t: Transaction) {
+	const existingAssociation = await OrganizationContacts.findOne({
+		where: {
+			contactId: contact.id,
+			organizationId: organizationId,
+		},
+		transaction: t,
+	});
+  
+	if (existingAssociation) {
+		await existingAssociation.update({
+			email: organizationData.email,
+			phone: organizationData.phone,
+			exten: organizationData.exten,
+		}, { transaction: t });
+	} else {
+		await OrganizationContacts.create({
+			contactId: contact.id,
+			organizationId: organizationId,
+			email: organizationData.email,
+			phone: organizationData.phone,
+			exten: organizationData.exten,
+		}, { transaction: t });
+	}
+}
+
 export async function setAliases(contact: Contacts, aliases: string[], t: Transaction) {
 	const currentAliases = await ContactAliases.findAll({
 		where: {

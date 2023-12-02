@@ -43,7 +43,7 @@ function ClickableTable({
         {data.map((row, rowIndex) => (
           <tr key={rowIndex} onClick={() => onRowClick(row)}>
             {columns.map((column, colIndex) => (
-              <td key={colIndex}>
+              <td key={colIndex} style={column.tdStyle}>
                 {column.render ? column.render(row) : _.get(row, column.field)}
               </td>
             ))}

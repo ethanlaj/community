@@ -38,8 +38,16 @@ export default class OrganizationService {
   };
 
   static createBulk = async (organizations: CreateUpdateOrganizationDTO[]) => {
-    const response = await http.post(`${apiEndpoint}/bulk`, organizations);
-    return response.data;
+    try {
+      const response = await http.post(`${apiEndpoint}/bulk`, organizations);
+      return response.data;
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        throw new Error(error.response.data.error);
+      } else {
+        throw error;
+      }
+    }
   };
 
   static update = async (id: number, updatedOrganization: CreateUpdateOrganizationDTO) => {

@@ -7,6 +7,7 @@ import CreateLocation from '@/dashboard/pages/organizations/CreateLocation';
 import organizationService from '@/services/organizationService';
 import AddUpdateAliases from '@/shared/components/AddUpdateAliases';
 import Loading from '@/shared/components/Loading';
+import FlagLegend from './FlagLegend';
 
 interface FormProps {
   name: string;
@@ -16,6 +17,7 @@ interface FormProps {
     address: string;
   }[];
   aliases: string[];
+  flag: number;
 }
 
 function CreateUpdateOrganization() {
@@ -34,6 +36,7 @@ function CreateUpdateOrganization() {
       },
     ],
     aliases: [],
+    flag: 0,
   };
 
   const schema = Joi.object({
@@ -47,6 +50,7 @@ function CreateUpdateOrganization() {
       .messages({
         'array.unique': 'Duplicate alias detected, please remove it.',
       }),
+    flag: Joi.number().min(0).max(3).label('Flag'),
   });
 
   const doSubmit = async () => {
@@ -89,6 +93,7 @@ function CreateUpdateOrganization() {
         address: location.address,
       })),
       aliases: org.aliases?.map((alias) => alias.alias) || [],
+      flag: org.flag || 0,
     });
   };
 
@@ -98,27 +103,38 @@ function CreateUpdateOrganization() {
 
   return (
     <div>
-      <h1>
-        {isUpdateMode ? 'Update' : 'Create'}
-        {' '}
-        Organization
-      </h1>
-      <form className="m-auto w-70p">
-        {form.renderInput({ id: 'name', label: 'Name' })}
+      <div style={{ display: 'flex' }}>
+        <div style={{ flex: 1 }}>
+          <h1>
+            {isUpdateMode ? 'Update' : 'Create'}
+            {' '}
+            Organization
+          </h1>
+          <form className="m-auto w-70p">
+            {form.renderInput({ id: 'name', label: 'Name' })}
 
-        <h3>Locations</h3>
-        {form.renderChildForm(form, 'organizationLocations', CreateLocation, form.data.organizationLocations)}
+            {/* Flag field */}
+            {form.renderInput({
+              id: 'flag',
+              label: 'Flag',
+              type: 'number',
+            })}
 
-        <h3>Aliases</h3>
-        <AddUpdateAliases
-          aliases={form.data.aliases}
-          handleChange={form.handleDataChange}
-          error={form.errors.aliases}
-        />
+            <h3>Locations</h3>
+            {form.renderChildForm(form, 'organizationLocations', CreateLocation, form.data.organizationLocations)}
 
-        {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
+            <h3>Aliases</h3>
+            <AddUpdateAliases
+              aliases={form.data.aliases}
+              handleChange={form.handleDataChange}
+              error={form.errors.aliases}
+            />
 
-      </form>
+            {form.renderButton(isUpdateMode ? 'Update' : 'Create')}
+          </form>
+        </div>
+        <FlagLegend />
+      </div>
     </div>
   );
 }
