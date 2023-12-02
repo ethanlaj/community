@@ -259,7 +259,7 @@ contactsRouter.post('/bulk-import', isAuthorized(2), errorHandler(async (req: Re
 		}
 
 		await t.commit();
-		res.status(201).json({ message: 'Contacts imported successfully' });
+		res.status(201).json({ message: 'Contacts imported successfully', contacts: contacts });
 	} catch (error) {
 		await t.rollback();
 

@@ -20,27 +20,27 @@ function Organizations() {
   const [combinedSearchTerm, setCombinedSearchTerm] = useState('');
   const navigate = useNavigate();
 
+  const fetchOrganizations = async () => {
+    let data = await organizationService.getAll();
+
+    data = data.map((org) => {
+      const comm = org.communications[0];
+      const lastCommDate = comm?.date;
+      if (!comm) return org;
+
+      const offices = comm.users?.map((user) => user.office?.name || '');
+
+      return {
+        ...org,
+        lastConDate: formatDate(lastCommDate),
+        lastConBy: offices.join(', ') || 'Unknown',
+      };
+    });
+
+    setOrganizations(data);
+  };
+
   useEffect(() => {
-    const fetchOrganizations = async () => {
-      let data = await organizationService.getAll();
-
-      data = data.map((org) => {
-        const comm = org.communications[0];
-        const lastCommDate = comm?.date;
-        if (!comm) return org;
-
-        const offices = comm.users?.map((user) => user.office?.name || '');
-
-        return {
-          ...org,
-          lastConDate: formatDate(lastCommDate),
-          lastConBy: offices.join(', ') || 'Unknown',
-        };
-      });
-
-      setOrganizations(data);
-    };
-
     fetchOrganizations();
   }, []);
 
@@ -74,8 +74,9 @@ function Organizations() {
 
   const handleImport = async (importedData) => {
     try {
-      await organizationService.createBulk(importedData);
-      toast.success('Organizations imported successfully');
+      const orgImportResponse = await organizationService.createBulk(importedData);
+      fetchOrganizations();
+      toast.success(`${orgImportResponse?.data?.length} organizations imported successfully`);
     } catch (error) {
       toast.error(error.message);
     }
