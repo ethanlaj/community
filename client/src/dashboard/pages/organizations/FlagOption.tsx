@@ -1,11 +1,5 @@
 import Flag from './Flag';
-
-const shortDescriptions: { [key: number]: string; } = {
-  0: 'Pending',
-  1: 'Open For Communication',
-  2: 'Contacts Within the Company Belong to Multiple Companies',
-  3: 'Requires Permission to Contact',
-};
+import { shortDescriptions } from './constants';
 
 interface FlagOptionsProps {
   flag: number;

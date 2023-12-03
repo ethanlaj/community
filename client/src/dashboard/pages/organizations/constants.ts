@@ -133,3 +133,10 @@ export const exportColumns = [
   { title: 'Last Contacted', field: 'lastConDate' },
   { title: 'Last Contacted By', field: 'lastConBy' },
 ];
+
+export const shortDescriptions: { [key: number]: string; } = {
+  0: 'Pending',
+  1: 'Open For Communication',
+  2: 'Contacts Within the Company Belong to Multiple Companies',
+  3: 'Requires Permission to Contact',
+};
