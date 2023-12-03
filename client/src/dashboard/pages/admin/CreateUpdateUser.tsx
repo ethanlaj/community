@@ -55,7 +55,7 @@ function CreateUpdateUser() {
       .pattern(/^[^@.]*$/)
       .label('Email')
       .messages({
-        'string.pattern.base': 'The email domain is already provided for you',
+        'string.pattern.base': 'Enter the email without the domain',
       }),
 
     name: Joi.string().required().label('Name'),
@@ -119,12 +119,10 @@ function CreateUpdateUser() {
         <InputGroup className="mb-3">
 
           <Form.Control
-            placeholder="Recipient's username"
-            aria-describedby="basic-addon2"
             value={form.data.email}
             onChange={(e) => form.handleDataChange('email', e.target.value)}
           />
-          <InputGroup.Text id="basic-addon2">@etown.edu</InputGroup.Text>
+          <InputGroup.Text>@etown.edu</InputGroup.Text>
         </InputGroup>
         {form.errors.email && <Alert variant="danger">{form.errors.email}</Alert>}
         <ReactiveSearch
