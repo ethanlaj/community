@@ -2,6 +2,8 @@ import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Joi from 'joi';
+import { Alert, Form } from 'react-bootstrap';
+import InputGroup from 'react-bootstrap/InputGroup';
 import useForm from '@/shared/hooks/useForm';
 import styles from './CreateUpdateUser.module.css';
 import userService from '@/services/userService';
@@ -46,16 +48,13 @@ function CreateUpdateUser() {
     name: '',
   };
 
-  const domainRegex = /^[a-zA-Z0-9._%+-]+@etown\.edu$/;
-
   const schema = Joi.object({
     office: Joi.object().required().label('Office'),
     // eslint-disable-next-line newline-per-chained-call
     permissionLevel: Joi.number().required().min(1).max(4).label('User Permission Level'),
-    email: Joi.string().email({ tlds: { allow: false } }).regex(domainRegex).label('Email')
+    email: Joi.string().pattern(/^[^@.]*$/).label('Email')
       .messages({
-        'string.email': 'Invalid email format',
-        'string.pattern.base': 'Invalid email. Only etown.edu email addresses are allowed.',
+        'string.pattern.base': 'Enter the email without the domain',
       }),
     name: Joi.string().required().label('Name'),
   });
@@ -65,7 +64,7 @@ function CreateUpdateUser() {
       const newUser: UserDTO = {
         officeId: form.data.office?.id || 0,
         permissionLevel: form.data.permissionLevel,
-        email: form.data.email,
+        email: `${form.data.email}@etown.edu`,
         name: form.data.name,
       };
 
@@ -96,10 +95,24 @@ function CreateUpdateUser() {
     form.setData({
       office: user.office,
       permissionLevel: user.permissionLevel,
-      email: user.email,
+      email: user.email.split('@')[0],
       name: user.name,
     });
   };
+
+  const EtownEmailInput = (
+    <>
+      <Form.Label>Email</Form.Label>
+      <InputGroup className="mb-3">
+        <Form.Control
+          value={form.data.email}
+          onChange={(e) => form.handleDataChange('email', e.target.value)}
+        />
+        <InputGroup.Text>@etown.edu</InputGroup.Text>
+      </InputGroup>
+      {form.errors.email && <Alert variant="danger">{form.errors.email}</Alert>}
+    </>
+  );
 
   if (isLoading) {
     return <Loading />;
@@ -114,7 +127,7 @@ function CreateUpdateUser() {
       </h1>
       <form className={styles.formContainer}>
         {form.renderInput({ id: 'name', label: 'Name', type: 'string' })}
-        {form.renderInput({ id: 'email', label: 'Email', type: 'string' })}
+        {EtownEmailInput}
         <ReactiveSearch
           id="office"
           items={allOffices}
