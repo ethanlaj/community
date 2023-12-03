@@ -51,13 +51,10 @@ function CreateUpdateUser() {
     office: Joi.object().required().label('Office'),
     // eslint-disable-next-line newline-per-chained-call
     permissionLevel: Joi.number().required().min(1).max(4).label('User Permission Level'),
-    email: Joi.string()
-      .pattern(/^[^@.]*$/)
-      .label('Email')
+    email: Joi.string().pattern(/^[^@.]*$/).label('Email')
       .messages({
         'string.pattern.base': 'Enter the email without the domain',
       }),
-
     name: Joi.string().required().label('Name'),
   });
 
@@ -106,7 +103,6 @@ function CreateUpdateUser() {
     <>
       <Form.Label>Email</Form.Label>
       <InputGroup className="mb-3">
-
         <Form.Control
           value={form.data.email}
           onChange={(e) => form.handleDataChange('email', e.target.value)}
@@ -116,6 +112,7 @@ function CreateUpdateUser() {
       {form.errors.email && <Alert variant="danger">{form.errors.email}</Alert>}
     </>
   );
+
   if (isLoading) {
     return <Loading />;
   }
