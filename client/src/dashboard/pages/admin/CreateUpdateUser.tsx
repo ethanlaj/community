@@ -102,6 +102,20 @@ function CreateUpdateUser() {
     });
   };
 
+  const EtownEmailInput = (
+    <>
+      <Form.Label>Email</Form.Label>
+      <InputGroup className="mb-3">
+
+        <Form.Control
+          value={form.data.email}
+          onChange={(e) => form.handleDataChange('email', e.target.value)}
+        />
+        <InputGroup.Text>@etown.edu</InputGroup.Text>
+      </InputGroup>
+      {form.errors.email && <Alert variant="danger">{form.errors.email}</Alert>}
+    </>
+  );
   if (isLoading) {
     return <Loading />;
   }
@@ -115,16 +129,7 @@ function CreateUpdateUser() {
       </h1>
       <form className={styles.formContainer}>
         {form.renderInput({ id: 'name', label: 'Name', type: 'string' })}
-        <Form.Label>Email</Form.Label>
-        <InputGroup className="mb-3">
-
-          <Form.Control
-            value={form.data.email}
-            onChange={(e) => form.handleDataChange('email', e.target.value)}
-          />
-          <InputGroup.Text>@etown.edu</InputGroup.Text>
-        </InputGroup>
-        {form.errors.email && <Alert variant="danger">{form.errors.email}</Alert>}
+        {EtownEmailInput}
         <ReactiveSearch
           id="office"
           items={allOffices}
