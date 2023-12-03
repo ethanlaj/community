@@ -10,6 +10,7 @@ import { UserDTO } from '@/types/user';
 import { EtownOffice } from '@/types/office';
 import Loading from '@/shared/components/Loading';
 import ReactiveSearch from '@/shared/components/ReactiveSearch';
+import { permissions } from './contants';
 
 interface FormProps {
   office: EtownOffice | null;
@@ -129,19 +130,19 @@ function CreateUpdateUser() {
         />
         {form.renderSelect('permissionLevel', 'Permission Level', [
           {
-            name: '1 - Read Only',
+            name: `1 - ${permissions[1]}`,
             value: 1,
           },
           {
-            name: '2 - Create & Update',
+            name: `2 - ${permissions[2]}`,
             value: 2,
           },
           {
-            name: '3 - Delete',
+            name: `3 - ${permissions[3]}`,
             value: 3,
           },
           {
-            name: '4 - Admin',
+            name: `4 - ${permissions[4]}`,
             value: 4,
           },
         ], false)}

@@ -122,7 +122,7 @@ function Organizations() {
           render: (rowData) => {
             if (column.field === 'flag') {
               const flagValue = rowData[column.field] || 0;
-              return <Flag flag={flagValue} />;
+              return <Flag flag={flagValue} showTooltip />;
             }
             return rowData[column.field] || '';
           },

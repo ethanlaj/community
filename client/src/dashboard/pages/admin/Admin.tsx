@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { format } from 'date-fns';
@@ -7,6 +8,8 @@ import TableSearch from '@/shared/components/TableSearch';
 import filterSearch from '@/utils/filterSearch';
 import ClickableTable from '@/shared/components/ClickableTable';
 import styles from './Admin.module.css';
+import { permissions } from './contants';
+import { User } from '@/types/user';
 
 function Admin() {
   const [users, setUsers] = useState([]);
@@ -47,9 +50,13 @@ function Admin() {
     { title: 'Name', field: 'name' },
     { title: 'Email', field: 'email' },
     { title: 'Office', field: 'office.name' },
-    { title: 'Permission Level', field: 'permissionLevel' },
-    { title: 'Created At', field: 'createdAt', render: (newDate:any) => formatDate(newDate.createdAt) },
-    { title: 'Last Updated', field: 'updatedAt', render: (newDate:any) => formatDate(newDate.updatedAt) },
+    {
+      title: 'Permission Level',
+      field: 'permissionLevel',
+      render: (row: User) => (<div>{row.permissionLevel} - {permissions[row.permissionLevel]}</div>),
+    },
+    { title: 'Created At', field: 'createdAt', render: (newDate: User) => formatDate(newDate.createdAt) },
+    { title: 'Last Updated', field: 'updatedAt', render: (newDate: User) => formatDate(newDate.updatedAt) },
   ];
 
   return (
