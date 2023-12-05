@@ -1,4 +1,5 @@
 import Flag from './Flag';
+import { flagDescriptions } from './constants';
 
 interface FlagLegendItemProps {
   flag: number;
@@ -8,13 +9,15 @@ interface FlagLegendItemProps {
 function FlagLegendItem({ flag, description }: FlagLegendItemProps) {
   return (
     <div className="flex gap-2 align-items-center">
-      <Flag flag={flag} />
-      <strong>
-        {flag}
-        :
-      </strong>
-      {' '}
-      {description}
+      <Flag className="align-self-start" flag={flag} />
+      <div className="flex gap-2">
+        <strong>
+          {flag}
+          :
+        </strong>
+        {' '}
+        {description}
+      </div>
     </div>
   );
 }
@@ -28,14 +31,15 @@ function FlagLegend() {
       padding: '15px',
       minWidth: '200px',
       maxWidth: '300px',
-      maxHeight: '350px',
+      height: 'fit-content',
     }}
     >
       <h3>Flag Legend:</h3>
-      <FlagLegendItem flag={0} description="Pending verification" />
-      <FlagLegendItem flag={1} description="Open for communication" />
-      <FlagLegendItem flag={2} description="Contacts within the company belong to multiple companies" />
-      <FlagLegendItem flag={3} description="Do not contact without permission" />
+      <div className="flex flex-col gap-2">
+        {[...Array(4)].map((_, i) => (
+          <FlagLegendItem key={i} flag={i} description={flagDescriptions[i]} />
+        ))}
+      </div>
     </div>
   );
 }

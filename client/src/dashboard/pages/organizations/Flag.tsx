@@ -1,16 +1,17 @@
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
-import { shortDescriptions } from './constants';
+import { flagDescriptions } from './constants';
 
 interface FlagProps {
   flag: number;
   showTooltip?: boolean;
+  className?: string;
 }
 
-function Flag({ flag, showTooltip = false }: FlagProps) {
-  const image = <img width={32} height={32} src={`/icons/${flag}.png`} alt={`Flag ${flag}`} />;
+function Flag({ flag, showTooltip = false, className }: FlagProps) {
+  const image = <img className={className} width={32} height={32} src={`/icons/${flag}.png`} alt={`Flag ${flag}`} />;
 
   return showTooltip ? (
-    <OverlayTrigger overlay={<Tooltip>{shortDescriptions[flag]}</Tooltip>}>
+    <OverlayTrigger overlay={<Tooltip>{flagDescriptions[flag]}</Tooltip>}>
       {image}
     </OverlayTrigger>
   ) : (

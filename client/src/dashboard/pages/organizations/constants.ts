@@ -134,9 +134,9 @@ export const exportColumns = [
   { title: 'Last Contacted By', field: 'lastConBy' },
 ];
 
-export const shortDescriptions: { [key: number]: string; } = {
+export const flagDescriptions: { [key: number]: string; } = {
   0: 'Pending',
   1: 'Open For Communication',
-  2: 'Contacts Within the Company Belong to Multiple Companies',
-  3: 'Requires Permission to Contact',
+  2: 'Requires Permission to Contact',
+  3: 'Do Not Contact',
 };
