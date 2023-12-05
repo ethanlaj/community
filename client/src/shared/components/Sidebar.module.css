@@ -22,10 +22,9 @@ body{
 }
 
 .navItem {
-  margin-bottom: 10px;
   font-size:20px;
   margin:10px;
-  padding:15px;
+  padding:10px;
 }
 
 .navItem:hover {
@@ -94,6 +93,9 @@ body{
 }
 
 .logoImage {
+  display: block;
+  margin: auto;
+  padding: 2%;
   max-width: 100%;
   max-height: 100%;
 }

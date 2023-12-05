@@ -5,9 +5,9 @@ import errorHandler from '../errorHandler';
 import { CreateUpdateOrganizationDTO } from '../types/CreateUpdateOrganizationDTO';
 import { CreateOrganizationBulkDTO } from '../types/CreateOrganizationBulkDTO';
 import { OrganizationAliases } from '../database/models/organizationAliases';
-import { Sequelize } from 'sequelize';
 import isAuthorized from '../middleware/isAuthorized';
 import { setAliases, setLocations } from '../mixins/organizations';
+import { Op } from 'sequelize';
 
 const organizationsRouter: Router = express.Router();
 
@@ -67,9 +67,12 @@ organizationsRouter.get('/name/:name', errorHandler(async (req: Request, res: Re
 	const name = req.params.name;
 	try {
 		const organization = await Organizations.findOne({
-			where: Sequelize.literal(`LOWER(name) = LOWER('${name}')`)
+			where: {
+				name: {
+					[Op.like]: name
+				}
+			},
 		});
- 
 
 		if (!organization) {
 			res.json(null);
@@ -79,8 +82,8 @@ organizationsRouter.get('/name/:name', errorHandler(async (req: Request, res: Re
 	} catch (error) {
 		res.status(500).send((error as Error).message);
 	}
-})
-);
+}));
+
 
 // POST a new organization
 organizationsRouter.post('/', isAuthorized(2), errorHandler(async (req: Request, res: Response) => {

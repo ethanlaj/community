@@ -4,7 +4,10 @@ import { msalRequest } from '@/config';
 import useUserData from '../hooks/useUserData';
 import styles from './AuthButton.module.css';
 
-function AuthButton() {
+interface AuthButtonProps {
+  isWhiteText?: boolean;
+}
+function AuthButton({ isWhiteText }: AuthButtonProps) {
   const { accounts, instance } = useMsal();
   const { clear } = useUserData();
 
@@ -20,9 +23,11 @@ function AuthButton() {
     });
   };
 
+  const textClass = isWhiteText ? 'text-white' : 'text-black';
+
   if (account) {
     return (
-      <div className="mt-auto p-4">
+      <div className={`mt-auto p-4 ${textClass}`}>
         <div className={styles.welcome}>{`Welcome, ${firstName}!`}</div>
         <Button variant="danger" onClick={logout} className="w-full">
           Logout
@@ -30,8 +35,9 @@ function AuthButton() {
       </div>
     );
   }
+
   return (
-    <div className="mt-auto p-4">
+    <div className={`p-4 ${textClass}`}>
       <Button variant="primary" onClick={() => instance.loginRedirect(msalRequest)} className="w-full">
         Login
       </Button>
