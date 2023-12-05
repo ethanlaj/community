@@ -37,7 +37,7 @@ function AuthButton({ isWhiteText }: AuthButtonProps) {
   }
 
   return (
-    <div className={`mt-auto p-4 ${textClass}`}>
+    <div className={`p-4 ${textClass}`}>
       <Button variant="primary" onClick={() => instance.loginRedirect(msalRequest)} className="w-full">
         Login
       </Button>

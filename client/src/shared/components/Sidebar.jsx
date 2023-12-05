@@ -110,12 +110,13 @@ function Sidebar() {
         </li>
       </ul>
 
-      {location.pathname !== '/' && (
-        <AuthButton isWhiteText />
-      )}
+      <div className="mt-auto">
+        {location.pathname !== '/' && (
+          <AuthButton isWhiteText />
+        )}
 
-      <img src="/ElizabethtownLogo.png" alt="Logo" className="{styles.logoImage} m-0" />
-
+        <img src="/ElizabethtownLogo.png" alt="Logo" className={`${styles.logoImage} p-1`} />
+      </div>
     </div>
   );
 }
