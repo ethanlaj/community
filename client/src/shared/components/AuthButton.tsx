@@ -23,7 +23,7 @@ function AuthButton({ isWhiteText }: AuthButtonProps) {
     });
   };
 
-  const textClass = isWhiteText ? styles.whiteText : styles.blackText;
+  const textClass = isWhiteText ? 'text-white' : 'text-black';
 
   if (account) {
     return (

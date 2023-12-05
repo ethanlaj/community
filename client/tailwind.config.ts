@@ -11,8 +11,8 @@ module.exports = {
         '70p': '70%',
       },
       colors: {
-        darkLogo: '#364f6b',
-        lightLogo: '#00beff',
+        darkLogo: '#364f6b', // Color Darker blue from CommunityLogo.png
+        lightLogo: '#00beff', // Color Lighter blue from CommunityLogo.png
       },
     },
   },
