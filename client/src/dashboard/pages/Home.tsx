@@ -10,13 +10,13 @@ function Home() {
       <div className="flex space-x-6 justify-center">
         <Container className="p-6 max-w-lg bg-white rounded-xl shadow-md flex justify-center space-x-4 m-auto p-2">
           <Card className="text-center p-4">
-            <Card.Img src="/Community_Logo 2.png" alt="Logo" className="img-fluid object-cover" />
+            <Card.Img src="/Community_LogoBW.png" alt="Logo" className="img-fluid object-cover" />
             <AuthButton />
           </Card>
         </Container>
         <Container className="p-6 max-w-lg bg-white rounded-xl shadow-md flex justify-center space-x-4 m-auto p-2">
           <Card className="text-center p-8 bg-white text-black rounded-xl">
-            <p className="text-2xl font-bold text-lightLogo bg-darkLogo mb-4 p-2">Community Management System</p>
+            <p className="text-2xl font-bold text-white bg-black mb-4 p-2">Community Management System</p>
             <p className="text-md">
               Community is a robust relationship management system crafted to facilitate seamless coordination among departments.
               Its purpose is to efficiently manage business communications, preventing inadvertent overlaps and ensuring a coordinated workflow.
