@@ -10,6 +10,10 @@ module.exports = {
         '20p': '20%',
         '70p': '70%',
       },
+      colors: {
+        darkLogo: '#364f6b',
+        lightLogo: '#00beff',
+      },
     },
   },
   plugins: [],

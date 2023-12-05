@@ -16,6 +16,7 @@ function Sidebar() {
       <li className={styles.nav}>
         <div onClick={() => null}>
           <NavLink to="/" activeclassname={styles.activeNavLink}>
+            <img src="/Community_Logo.png" alt="Logo" className={styles.logoImage} />
             <img src="/ElizabethtownLogo.png" alt="Logo" className={styles.logoImage} />
           </NavLink>
         </div>
@@ -110,7 +111,7 @@ function Sidebar() {
         </li>
       </ul>
       {location.pathname !== '/' && (
-        <AuthButton />
+        <AuthButton isWhiteText />
       )}
     </div>
   );
