@@ -80,7 +80,6 @@ organizationsRouter.get('/name/:name', errorHandler(async (req: Request, res: Re
 			res.json(organization);
 		}
 	} catch (error) {
-		console.log(error);
 		res.status(500).send((error as Error).message);
 	}
 }));
