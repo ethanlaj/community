@@ -13,6 +13,7 @@ import DownloadTemplateButton from '@/shared/components/DownloadTemplateButton';
 import ProtectedElement from '@/shared/components/ProtectedElement';
 import exportToExcel from '../../../utils/excelExport';
 import ProgressBar from '@/shared/components/ProgressBar';
+import CreateButton from '@/shared/components/CreateButton';
 
 function Contacts() {
   const navigate = useNavigate();
@@ -96,9 +97,14 @@ function Contacts() {
     exportToExcel([{ name: 'Contacts', data: dataToExport }], 'Contacts');
   };
 
+  const goToCreate = () => navigate('/contacts/create');
+
   return (
     <div className={styles.content}>
-      <h1>Contacts</h1>
+      <h1 className="flex justify-center align-items-center">
+        Contacts
+        <CreateButton handleClick={goToCreate} />
+      </h1>
 
       <div className={styles.btnContainer}>
         <ExcelExportButton onExport={handleExport}>
