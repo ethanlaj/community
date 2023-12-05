@@ -148,13 +148,13 @@ function CreateUpdateContacts() {
       };
 
       if (isUpdateMode) {
-        const newContact = await ContactService.update(contactId!, ContactDTO);
-        contactId = newContact.id;
+        await ContactService.update(contactId!, ContactDTO);
       } else {
-        await ContactService.create(ContactDTO);
+        const newContact = await ContactService.create(ContactDTO);
+        contactId = newContact.id;
       }
 
-      navigate('/contacts', { replace: true });
+      navigate(`/contacts/${contactId}`, { replace: true });
     } catch (ex) {
       console.error(ex);
     }
