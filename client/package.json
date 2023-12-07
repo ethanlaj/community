@@ -28,7 +28,7 @@
     "react-toastify": "^9.1.2",
     "reactstrap": "^9.1.6",
     "typescript": "^5.2.2",
-    "vite": "^4.2.1",
+    "vite": "^4.5.1",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5"
   },
