@@ -10,15 +10,17 @@ async function markMigrationsAsExecuted() {
 
 	for (const file of migrationFiles) {
 		await sequelize.query(
-			'CREATE TABLE IF NOT EXISTS SequelizeMeta (name VARCHAR(255) NOT NULL, PRIMARY KEY (name));'
+			'IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = \'dbo\' AND  TABLE_NAME = \'SequelizeMeta\') ' +
+			'CREATE TABLE SequelizeMeta (name VARCHAR(255) NOT NULL PRIMARY KEY);'
 		);
 		await sequelize.query(
-			'INSERT IGNORE INTO SequelizeMeta (name) VALUES (?);',
+			'IF NOT EXISTS (SELECT * FROM SequelizeMeta WHERE name = :file) ' +
+			'INSERT INTO SequelizeMeta (name) VALUES (:file);',
 			{
-				replacements: [file],
+				replacements: { file: file }
 			}
 		);
-	}
+	}	
 }
 
 sequelize
