@@ -1,7 +1,8 @@
 import { Configuration, RedirectRequest } from '@azure/msal-browser';
 
 export const apiUrl = process.env.NODE_ENV === 'production'
-  ? 'https://community-production-c11b.up.railway.app'
+  // ? 'https://community-production-c11b.up.railway.app'
+  ? 'https://api-production-9db5.up.railway.app'
   : 'http://localhost:3001';
 
 export const msalConfig: Configuration = {
