@@ -15,7 +15,7 @@ if (!DB_CONNECTION_STRING) {
 console.log(`Connecting to ${isProd ? 'production' : 'local'} database`);
 
 const sequelize = new Sequelize(DB_CONNECTION_STRING, {
-	dialect: 'mysql',
+	dialect: 'mssql',
 	logging: false,
 	modelPaths: [__dirname + './models'],
 	models: [
@@ -24,6 +24,7 @@ const sequelize = new Sequelize(DB_CONNECTION_STRING, {
 		Organizations, 
 		OrganizationLocations, 
 		Users, 
+		
 		CommunicationContacts, 
 		CommunicationUsers, 
 		EtownOffices, 
