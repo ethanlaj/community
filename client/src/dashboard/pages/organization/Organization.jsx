@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import exportToExcel from '../../../utils/excelExport';
 import organizationService from '@/services/organizationService';
 import ClickableTable from '@/shared/components/ClickableTable';
+import PaginationTable from '@/shared/components/PaginationTable';
 import ExcelExportButton from '../../../shared/components/ExcelExportButton';
 import Loading from '@/shared/components/Loading';
 import UpdateButton from '@/shared/components/UpdateButton';
@@ -104,9 +105,10 @@ function Organization() {
         <div className="d-flex align-items-center justify-content-between mb-2">
           <h4 className="mb-0">Recent Communications</h4>
         </div>
-        <ClickableTable
+        <PaginationTable
           columns={communicationColumns}
           data={organization.communications || []}
+          itemsPerPage={5}
           onRowClick={handleCommRowClick}
         />
 

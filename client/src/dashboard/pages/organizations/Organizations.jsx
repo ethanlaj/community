@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import exportToExcel from '../../../utils/excelExport';
 import styles from './Organizations.module.css';
-import ClickableTable from '../../../shared/components/ClickableTable';
+import PaginationTable from '../../../shared/components/PaginationTable';
 import organizationService from '@/services/organizationService';
 import ExcelExportButton from '@/shared/components/ExcelExportButton';
 import ImportButton from '@/shared/components/ImportButton';
@@ -116,7 +116,7 @@ function Organizations() {
       {loading && <ProgressBar />}
       <TableSearch searchTerm={combinedSearchTerm} onSearchChange={(value) => setCombinedSearchTerm(value)} />
 
-      <ClickableTable
+      <PaginationTable
         columns={tableColumns.map((column) => ({
           ...column,
           render: (rowData) => {

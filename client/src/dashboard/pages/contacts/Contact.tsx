@@ -10,6 +10,7 @@ import BackButton from '@/shared/components/BackButton';
 import { Contact as ContactType, OrganizationContact } from '@/types/contact';
 import ContactService from '@/services/contactService';
 import ContactCard from './ContactCard';
+import PaginationTable from '@/shared/components/PaginationTable';
 
 function Contact() {
   const navigate = useNavigate();
@@ -105,7 +106,7 @@ function Contact() {
 
       <div className="mb-4">
         <h4 className="mb-2">Communications</h4>
-        <ClickableTable
+        <PaginationTable
           columns={communicationColumns}
           data={contact?.communications || []}
           onRowClick={handleCommRowClick}

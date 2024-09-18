@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import ClickableTable from '../../../shared/components/ClickableTable';
+import PaginationTable from '../../../shared/components/PaginationTable';
 import communicationService from '@/services/communicationService';
 import CreateButton from '@/shared/components/CreateButton';
 import formatDate from '@/utils/formatDate';
@@ -83,7 +83,7 @@ function Communications() {
 
       <TableSearch SearchTerm={searchTerm} onSearchChange={(value) => setSearchTerm(value)} />
 
-      <ClickableTable
+      <PaginationTable
         style={{ width: '20px' }}
         columns={columns}
         data={filterComms}
