@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import styles from './Contacts.module.css';
-import ClickableTable from '../../../shared/components/ClickableTable';
+import PaginationTable from '../../../shared/components/PaginationTable';
 import contactService from '@/services/contactService';
 import TableSearch from '@/shared/components/TableSearch';
 import filterSearch from '@/utils/filterSearch';
@@ -117,7 +117,7 @@ function Contacts() {
       </div>
       {loading && <ProgressBar />}
       <TableSearch SearchTerm={searchTerm} onSearchChange={(value) => setSearchTerm(value)} />
-      <ClickableTable
+      <PaginationTable
         style={{ width: '20px' }}
         columns={columns}
         data={filteredContacts}
